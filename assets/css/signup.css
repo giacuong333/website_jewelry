@@ -1,0 +1,61 @@
+.header {
+  margin: 50px 0;
+}
+
+.content-right > form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.header > p {
+  color: #7fcbc9;
+  font-size: 18px;
+  /* font-weight: 600; */
+}
+
+.top h3 {
+  margin-bottom: 10px;
+}
+
+.header > a {
+  text-decoration: none;
+}
+
+.header > p {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.top {
+  margin-bottom: 10px;
+}
+
+.top .loginby {
+  color: #fff;
+  font-size: 14px;
+}
+
+.top .loginby i {
+  padding: 10px 16px;
+}
+
+.top .loginby span {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid #ccc;
+  font-size: 10px;
+}
+
+.top .loginby > i:first-child {
+  background-color: #3b5998;
+}
+
+.top .loginby > i:last-child {
+  background-color: #e14b33;
+}
+
+.top > p {
+  margin-top: 40px;
+  font-size: 16px;
+}

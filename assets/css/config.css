@@ -1,1 +1,72 @@
 /* Viết những css dùng chung trong này */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+  max-width: 1200px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  font-family: "Roboto", sans-serif;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px 20px;
+  margin: 10px 0;
+  transition: all 0.1s ease-in-out;
+}
+
+.btn.btn--active {
+  background-color: #7fcbc9;
+}
+
+.btn:hover.btn--active {
+  background-color: #000;
+}
+
+a {
+  transition: all 0.1s ease-in-out;
+  color: #000;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #7fcbc9;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.form-group > input,
+.form-group > select {
+  outline: none;
+  border: none;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  font-size: 16px;
+  padding: 14px;
+  margin-top: 6px;
+  transition: all 0.1s ease-in-out;
+}
+
+.form-group > input:focus {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  border-color: #ccc;
+}

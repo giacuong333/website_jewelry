@@ -3,16 +3,16 @@
 class Signup extends Database
 {
 
-          protected function setUser($fullname, $email, $phone_number, $password, $role)
+          protected function setUser($fullname, $email, $phone_number, $password)
           {
                     try {
-                              $sql = "INSERT INTO user (`fullname`, `email`, `phone_number`, `password`, `role_id`) VALUES (?, ?, ?, ?, ?);";
+                              $sql = "INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) VALUES (?, ?, ?, ?);";
                               $stmt = $this->connect()->prepare($sql);
 
                               // Encode the password
                               $hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                              $stmt->execute([$fullname, $email, $phone_number, $hashPassword, $role]);
+                              $stmt->execute([$fullname, $email, $phone_number, $hashPassword]);
                     } catch (PDOException $e) {
                               header("location: ../index.php?error=stmtfailer");
                               exit();
