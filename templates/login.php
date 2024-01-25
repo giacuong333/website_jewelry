@@ -12,6 +12,8 @@
 </head>
 
 <body>
+          <?php include("../templates/header.php") ?>
+
           <main>
                     <div class="header">
                               <a href="../index.php">Trang chủ > </a>
@@ -69,6 +71,7 @@
                     </div>
           </main>
 
+          <?php include("../templates/footer.php") ?>
           <!-- <script src="./js/login.js"></script> -->
 </body>
 

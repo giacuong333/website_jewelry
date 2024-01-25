@@ -106,12 +106,12 @@ INSERT INTO `role` (`name`) VALUES ('Quản lý');
 INSERT INTO `role` (`name`) VALUES ('Nhân viên');
 INSERT INTO `role` (`name`) VALUES ('Khách hàng');
 
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '202cb962ac59075b964b07152d234b70', 1);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '250cf8b51c773f3f8dc8b4be867a9a02', 2);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '68053af2923e00204c3ca7c6a3150cf7', 2);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
+VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82');
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
+VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS');
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
+VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK');
 
 INSERT INTO `category` (`name`) VALUES ('Nhẫn');
 INSERT INTO `category` (`name`) VALUES ('Vòng Cổ');

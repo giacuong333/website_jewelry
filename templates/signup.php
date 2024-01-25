@@ -12,7 +12,8 @@
 </head>
 
 <body>
-          include()
+          <?php include("../templates/header.php") ?>
+
           <main>
                     <div class="header">
                               <a href="../index.php">Trang chủ > </a>
@@ -53,8 +54,9 @@
                                                                       </label>
                                                                       <input type="text" id="phone_number" name="phone_number" placeholder="Phone number" required />
                                                             </div>
+
                                                             <button type="submit" class="btn btn--active" name="signup" value="signup">ĐĂNG KÝ</button>
-                                                            <a href="./login.php">Đăng nhập</a>
+                                                            <a style="margin-left: 12px;" href="./login.php">Đăng nhập</a>
                                                   </div>
 
                                                   <div class="right">
@@ -88,6 +90,7 @@
                               </div>
                     </div>
           </main>
+          <?php include("../templates/footer.php") ?>
 </body>
 
 </html>
