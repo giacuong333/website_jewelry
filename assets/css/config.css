@@ -8,12 +8,12 @@
 
 body {
   src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+  font-family: "Roboto", sans-serif;
   max-width: 1200px;
   width: 100%;
   display: block;
   margin: 0 auto;
   padding: 0 20px;
-  font-family: "Roboto", sans-serif;
 }
 
 .btn {
@@ -287,3 +287,5 @@ footer {
 .footer-botoom p {
   display: inline-block;
 }
+
+/* admin */

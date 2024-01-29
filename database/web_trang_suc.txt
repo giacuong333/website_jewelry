@@ -34,7 +34,10 @@ CREATE TABLE `product` (
   `description` varchar(500),
   `created_at` date,
   `updated_at` date,
-  `deleted` int
+  `deleted` int,
+  isShow int,
+  isOutstanding int,
+  isNew int
 );
 
 CREATE TABLE `gallery` (
@@ -74,6 +77,10 @@ CREATE TABLE `orderdetail` (
   `total_money` int
 );
 
+ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
+ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
+ALTER TABLE `product` ALTER isNew SET DEFAULT 1;
+
 ALTER TABLE `user` ADD FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 
 ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
@@ -102,16 +109,20 @@ CREATE TRIGGER product_time_update BEFORE UPDATE ON `product` FOR EACH ROW SET N
 
 CREATE TRIGGER user_time_update BEFORE UPDATE ON `user` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
 
+CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.deleted = 0;
+
 INSERT INTO `role` (`name`) VALUES ('Quản lý');
 INSERT INTO `role` (`name`) VALUES ('Nhân viên');
 INSERT INTO `role` (`name`) VALUES ('Khách hàng');
 
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82');
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
-VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS');
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`) 
-VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK');
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
+VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
+VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
+VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
+VALUES ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3);
 
 INSERT INTO `category` (`name`) VALUES ('Nhẫn');
 INSERT INTO `category` (`name`) VALUES ('Vòng Cổ');
@@ -119,7 +130,7 @@ INSERT INTO `category` (`name`) VALUES ('Trâm Cài');
 INSERT INTO `category` (`name`) VALUES ('Bông tai');
 
 INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
-VALUES ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/errings/img1.png', 'Sản phẩm này rất đẹp');
+VALUES ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp');
 INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
 VALUES ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/img1.png', 'Sản phẩm hot nhất hiện nay');
 INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
