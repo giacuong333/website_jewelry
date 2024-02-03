@@ -111,6 +111,8 @@ CREATE TRIGGER user_time_update BEFORE UPDATE ON `user` FOR EACH ROW SET NEW.upd
 
 CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.deleted = 0;
 
+CREATE TRIGGER product_delete_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.deleted = 0;
+
 INSERT INTO `role` (`name`) VALUES ('Quản lý');
 INSERT INTO `role` (`name`) VALUES ('Nhân viên');
 INSERT INTO `role` (`name`) VALUES ('Khách hàng');

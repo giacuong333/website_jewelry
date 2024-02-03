@@ -139,9 +139,6 @@ main {
   color: #201f2b;
 }
 
-.dashboard-container {
-}
-
 .dashboard-header {
   margin-bottom: 1rem;
   display: flex;
@@ -240,19 +237,25 @@ main {
 }
 
 .wrapper > table tr:first-child > td > img {
-  --dimensions: 90%;
+  --dimensions: 60%;
   max-width: var(--dimensions);
   max-height: var(--dimensions);
   object-fit: cover;
+  border-radius: 500px;
+  border: 1px solid #ccc;
 }
 
 .wrapper > table tr > td {
   text-align: left;
 }
 
+.wrapper > table tr td:nth-child(3) {
+  text-align: right;
+}
+
 .wrapper > table tr td > input,
 .wrapper > table tr td > textarea {
-  width: 60%;
+  width: 80%;
   padding: 6px 16px;
   outline: none;
   border: 1px solid #ccc;

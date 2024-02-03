@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // ========================================================== SIDE BAR MENU ==========================================================
   let sidebarMenu = $(".sidebar-menu");
 
   sidebarMenu.each(function (menuIndex) {
@@ -42,43 +43,123 @@ $(document).ready(function () {
     }
   }
 
-  // Move on to the add product page
-  $("#addproduct").click((e) => {
-    e.preventDefault();
-    window.location.href = "../admin/newProduct.php";
-  });
+  // ========================================================== COMMON ==========================================================
 
-  // Move on to the add user page
-  $("#adduser").click((e) => {
-    e.preventDefault();
-    window.location.href = "../admin/newUser.php";
-  });
-
-  // Exit add a new user
-  if ($("#exituser")) {
-    $("#exituser").click((e) => {
-      e.preventDefault();
-      window.location.href = "../admin/usermanager.php";
-    });
+  // Move on to another page
+  function moveOn(element, url) {
+    if (element) {
+      $(element).click((e) => {
+        // e.preventDefault();
+        window.location.href = url;
+      });
+    }
   }
 
-  // Move on to the edit user page
-  let editBtns = $(".edit-userbtn");
-  editBtns.each(function (editBtnIndex) {
+  // ========================================================== PRODUCT ==========================================================
+  // Move on to the add product page
+  moveOn("#addproduct", "../admin/newProduct.php");
+
+  // Exit the add product page
+  moveOn("#exitproduct", "../admin/productmanager.php");
+
+  // Set img
+  $("#productinputimg").on("change", setImg);
+  function setImg() {
+    const inputFile = $("#productinputimg");
+    const productImg = $("#productimg");
+    if (inputFile[0].files && inputFile[0].files[0]) {
+      productImg.attr("src", URL.createObjectURL(inputFile[0].files[0]));
+    }
+  }
+
+  // Delete a product
+  const delBtns = $(".del-productbtn");
+  delBtns.each(function () {
     $(this).click((e) => {
-      e.preventDefault();
-      let userId = $(this).closest("tr").find("[name='user_id']").text();
-      window.location.href = "../admin/edituser.php?upduser_id=" + userId;
+      e.stopPropagation();
+      delProduct($(this));
     });
   });
 
-  // Delete an user
-  let delBtns = $(".fa-trash");
-  delBtns.each(function (delBtnIndex) {
+  function delProduct(clickedElement) {
+    const confirmation = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+    if (confirmation) {
+      const productId = clickedElement.closest("tr").data("productid");
+      window.location.href = "../includes/admin.inc.php?del-productid=" + productId;
+    }
+  }
+
+  // Update a product
+  const updBtns = $(".edit-productbtn");
+  updBtns.each(function () {
     $(this).click((e) => {
-      e.preventDefault();
-      let userId = $(this).closest("tr").find("[name='user_id']").text();
-      window.location.href = "../includes/admin.inc.php?deluser_id=" + userId;
+      e.stopPropagation();
+      updProduct($(this));
     });
+  });
+
+  function updProduct(clickedElement) {
+    const productId = clickedElement.closest("tr").data("productid");
+    window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
+  }
+
+  // ========================================================== USER ==========================================================
+  // Move on to the add user page
+  moveOn("#adduser", "../admin/newUser.php");
+
+  // Exit the add user page
+  moveOn("#exituser", "../admin/usermanager.php");
+
+  // Update
+  function updateUser() {
+    const editBtns = $(".edit-userbtn");
+    editBtns.each(function (editBtnIndex) {
+      $(this).click(function () {
+        const userId = $(this).closest("tr").data("userid");
+        window.location.href = "../admin/edituser.php?upduser_id=" + userId;
+      });
+    });
+  }
+  updateUser();
+
+  // Delete
+  function deleteUser() {
+    const delBtns = $(".del-userbtn");
+    delBtns.each(function (delBtnIndex) {
+      $(this).click(function () {
+        const confirmation = confirm("Bạn có chắc chắn muốn xóa người dùng này?");
+        if (confirmation) {
+          const userId = $(this).closest("tr").data("userid");
+          window.location.href = "../includes/admin.inc.php?deluser_id=" + userId;
+        }
+      });
+    });
+  }
+  deleteUser();
+
+  // Search
+  $("#searchinput").on("keypress", function (e) {
+    // This is the `enter` key
+    if (e.which == 13) {
+      let searchInput = $(this).val();
+      let searchValue = $("#searchvalue").val();
+
+      $.ajax({
+        type: "POST",
+        url: "../includes/admin.inc.php",
+        data: { searchValue: searchValue, searchInput: searchInput },
+        success: function (response) {
+          // Update the table with the new data
+          if (response !== null) {
+            $("#bodyuser").html(response);
+            updateUser();
+            deleteUser();
+          }
+        },
+        error: function () {
+          alert("Error fetching data");
+        },
+      });
+    }
   });
 });

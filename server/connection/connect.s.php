@@ -5,7 +5,11 @@ class Database
           private const PASSWORD = "";
           private const DTBNAME = "web_trang_suc";
 
-          protected function connect()
+          public function __construct()
+          {
+          }
+
+          public function connect()
           {
                     try {
                               $dtb = new PDO('mysql:host=localhost;dbname=' . self::DTBNAME, self::USERNAME, self::PASSWORD);
