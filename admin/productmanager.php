@@ -22,12 +22,12 @@
 	<main>
 
 		<div class="dashboard-header">
-			<input type="text" placeholder="Search" />
+			<input type="text" placeholder="Search" name="searchproductinput" id="searchproductinput" />
 
-			<select class="btn- btn--hover" name="" id="">
-				<option value="">Id</option>
-				<option value="">Category</option>
-				<option value="">Title</option>
+			<select class="btn- btn--hover" name="searchproductvalue" id="searchproductvalue">
+				<option value="id">Id</option>
+				<option value="category">Category</option>
+				<option value="title">Title</option>
 			</select>
 
 			<button id="addproduct" class="btn- btn--hover" type="button">
@@ -43,8 +43,9 @@
 					<tr>
 						<th>ID</th>
 						<th>Category</th>
-						<th>Name</th>
+						<th>Title</th>
 						<th>Image</th>
+						<th>Price</th>
 						<th>Outstanding</th>
 						<th>New</th>
 						<th>Show</th>
@@ -52,7 +53,7 @@
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody id="bodyproduct">
 					<?php
 					include("../includes/admin.inc.php");
 
@@ -60,13 +61,16 @@
 						foreach ($products as $product) {
 					?>
 							<tr data-productid="<?php echo $product["id"]; ?>">
-								<td><?php echo $product["id"]; ?></td>
+								<td> <?php echo $product["id"]; ?></td>
 								<td> <?php echo $product["name"]; ?></td>
 								<td> <?php echo $product["title"]; ?></td>
 								<td><img src="<?php echo $product["thumbnail"]; ?>" alt="" /></td>
-								<td><input type="checkbox" <?php echo $product["isOutstanding"] ? "checked" : ""; ?> name="outstanding" id="" /></td>
-								<td><input type="checkbox" <?php echo $product["isNew"] ? "checked" : ""; ?> name="isNew" id="" /></td>
-								<td><input type="checkbox" <?php echo $product["isShow"] ? "checked" : ""; ?> name="isShow" id="" /></td>
+								<td>
+									<p><?php echo $product["price"]; ?></p>
+								</td>
+								<td><input type="checkbox" disabled <?php echo $product["isOutstanding"] ? "checked" : ""; ?> name="outstanding" id="" /></td>
+								<td><input type="checkbox" disabled <?php echo $product["isNew"] ? "checked" : ""; ?> name="isNew" id="" /></td>
+								<td><input type="checkbox" disabled <?php echo $product["isShow"] ? "checked" : ""; ?> name="isShow" id="" /></td>
 								<td>
 									<span class="fa-solid fa-pen-to-square edit-productbtn"></span>
 									<span class="fa-solid fa-trash del-productbtn" name="del-product" value="del-product"></span>

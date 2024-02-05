@@ -72,7 +72,7 @@ class Admin extends Database
 	protected function getProducts()
 	{
 		try {
-			$sql = "SELECT `product`.`id`, `category`.`name`, `product`.`title`, `product`.`thumbnail`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`
+			$sql = "SELECT `product`.`id`, `category`.`name`, `product`.`title`, `product`.`thumbnail`, `product`.`price`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`
                               FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1;";
 			$stmt = $this->connect()->query($sql);
 
@@ -116,6 +116,69 @@ class Admin extends Database
 			exit();
 		}
 	}
+
+	protected function getAProductById($id)
+	{
+		$sql = "SELECT `product`.`id`, `product`.`category_id`, `product`.`price`, `product`.`discount`, `category`.`name`, `product`.`title`, `product`.`description`, `product`.`thumbnail`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`
+		FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1 AND `product`.`id` = ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			header("location: ../index.php?error=stmtfailed");
+			exit();
+		}
+	}
+
+	protected function updateAProductById($id, $imagepath, $title, $categoryid, $price, $discount, $description, $show, $outstanding, $new)
+	{
+		$sql = "UPDATE `product` SET `thumbnail` = ?, `title` = ?, `category_id` = ?,`price` = ?,`discount` = ?, `description` = ?, `isShow` = ?, `isOutstanding` = ?, `isNew` = ? 
+		WHERE `product`.`id` = ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$imagepath, $title, $categoryid, $price, $discount, $description, $show, $outstanding, $new, $id]);
+			return true;
+		} catch (Exception $e) {
+			header("location: ../index.php?error=stmtfailed");
+			exit();
+		}
+	}
+
+	protected function searchAllProducts($searchInput, $searchValue)
+	{
+		$sql = "SELECT `product`.`id`, `title`, `category`.`name`, `price`, `product`.`category_id`, `discount`, `thumbnail`, `description`, `isShow`, `isOutstanding`, `isNew`
+                FROM `product` JOIN `category` ON `product`.`category_id` = `category`.`id` WHERE `product`.`deleted` != 1 AND ";
+
+		switch ($searchValue) {
+			case "id":
+				$sql .= "`product`.`id` = ?;";
+				break;
+			case "category":
+				$sql .= "`category`.`name` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+			case "title":
+				$sql .= "`product`.`title` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $products ?? [];
+		} catch (Exception $e) {
+			// header("location: ../index.php?error=stmtfailed");
+			exit();
+		}
+	}
+
+	// ================================================ ROLE ================================================
 
 	protected function getRoles()
 	{
@@ -209,7 +272,7 @@ class Admin extends Database
 	protected function searchAllUsers($searchInput, $searchValue)
 	{
 		$sql = "SELECT `user`.`id`, `fullname`, `email`, `phone_number`, `name`, `created_at`, `updated_at`
-                    FROM `user` JOIN `role` ON `user`.`role_id` = `role`.`id` WHERE `user`.`deleted` != 1 AND ";
+		FROM `user` JOIN `role` ON `user`.`role_id` = `role`.`id` WHERE `user`.`deleted` != 1 AND ";
 
 		switch ($searchValue) {
 			case "id":

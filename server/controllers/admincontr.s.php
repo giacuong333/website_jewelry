@@ -2,6 +2,7 @@
 
 class AdminController extends Admin
 {
+    // ===================================================== USER =====================================================
 
     public function getAllProducts()
     {
@@ -13,6 +14,25 @@ class AdminController extends Admin
         return $this->setAProduct($image, $title, $categoryid, $price, $discount, $description, $show, $outstanding, $new);
     }
 
+    public function deleteProductById($id)
+    {
+        return $this->deleteAProductById($id);
+    }
+
+    public function getProductById($id)
+    {
+        return $this->getAProductById($id);
+    }
+
+    public function updateProductById($id, $imagepath, $title, $categoryid, $price, $discount, $description, $show, $outstanding, $new)
+    {
+        return $this->updateAProductById($id, $imagepath, $title, $categoryid, $price, $discount, $description, $show, $outstanding, $new);
+    }
+
+    public function searchProducts($searchInput, $searchValue)
+    {
+        return $this->searchAllProducts($searchInput, $searchValue);
+    }
 
     // ===================================================== USER =====================================================
     public function getAllUsers()
@@ -48,10 +68,5 @@ class AdminController extends Admin
     public function searchUsers($searchInput, $searchValue)
     {
         return $this->searchAllUsers($searchInput, $searchValue);
-    }
-
-    public function deleteProductById($id)
-    {
-        return $this->deleteAProductById($id);
     }
 }

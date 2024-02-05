@@ -55,6 +55,31 @@ $(document).ready(function () {
     }
   }
 
+  // Search function for keypress event
+  function handleSearch(searchType, searchInputParam, valueElement, containElement, updateCallback, deleteCallback) {
+    const searchInput = $(searchInputParam).val();
+    const searchValue = $(valueElement).val();
+
+    $.ajax({
+      type: "POST",
+      url: "../includes/admin.inc.php",
+      data: { searchValue: searchValue, searchInput: searchInput, searchType: searchType },
+      success: function (response) {
+        $(containElement).html(response);
+        if (typeof updateCallback === "function") {
+          updateCallback();
+        }
+
+        if (typeof deleteCallback === "function") {
+          deleteCallback();
+        }
+      },
+      error: function () {
+        alert("Error fetching data");
+      },
+    });
+  }
+
   // ========================================================== PRODUCT ==========================================================
   // Move on to the add product page
   moveOn("#addproduct", "../admin/newProduct.php");
@@ -72,36 +97,45 @@ $(document).ready(function () {
     }
   }
 
-  // Delete a product
-  const delBtns = $(".del-productbtn");
-  delBtns.each(function () {
-    $(this).click((e) => {
-      e.stopPropagation();
-      delProduct($(this));
+  // Delete product
+  function delProduct() {
+    const delBtns = $(".del-productbtn");
+    delBtns.each(function () {
+      $(this).click((e) => {
+        e.stopPropagation();
+        const confirmation = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+        if (confirmation) {
+          const productId = $(this).closest("tr").data("productid");
+          window.location.href = "../includes/admin.inc.php?del-productid=" + productId;
+        }
+      });
     });
-  });
+  }
+  delProduct();
 
-  function delProduct(clickedElement) {
-    const confirmation = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
-    if (confirmation) {
-      const productId = clickedElement.closest("tr").data("productid");
-      window.location.href = "../includes/admin.inc.php?del-productid=" + productId;
+  // Update product
+
+  function updProduct() {
+    const updBtns = $(".edit-productbtn");
+    updBtns.each(function () {
+      $(this).click(() => {
+        const productId = $(this).closest("tr").data("productid");
+        window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
+      });
+    });
+  }
+  updProduct();
+
+  // Search product
+  const searchProductInput = $("#searchproductinput");
+  searchProductInput.on("keypress", function (e) {
+    const searchProductValue = $("#searchproductvalue");
+    const bodyProduct = $("#bodyproduct");
+
+    if (e.which == 13) {
+      handleSearch("product", $(this), searchProductValue, bodyProduct, updProduct, delProduct);
     }
-  }
-
-  // Update a product
-  const updBtns = $(".edit-productbtn");
-  updBtns.each(function () {
-    $(this).click((e) => {
-      e.stopPropagation();
-      updProduct($(this));
-    });
   });
-
-  function updProduct(clickedElement) {
-    const productId = clickedElement.closest("tr").data("productid");
-    window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
-  }
 
   // ========================================================== USER ==========================================================
   // Move on to the add user page
@@ -137,29 +171,14 @@ $(document).ready(function () {
   }
   deleteUser();
 
-  // Search
-  $("#searchinput").on("keypress", function (e) {
+  // Search user
+  const searchUserInput = $("#searchinput");
+  searchUserInput.on("keypress", function (e) {
+    const searchUserValue = $("#searchvalue");
+    const bodyUser = $("#bodyuser");
     // This is the `enter` key
     if (e.which == 13) {
-      let searchInput = $(this).val();
-      let searchValue = $("#searchvalue").val();
-
-      $.ajax({
-        type: "POST",
-        url: "../includes/admin.inc.php",
-        data: { searchValue: searchValue, searchInput: searchInput },
-        success: function (response) {
-          // Update the table with the new data
-          if (response !== null) {
-            $("#bodyuser").html(response);
-            updateUser();
-            deleteUser();
-          }
-        },
-        error: function () {
-          alert("Error fetching data");
-        },
-      });
+      handleSearch("user", $(this), searchUserValue, bodyUser, updateUser, deleteUser);
     }
   });
 });
