@@ -2,7 +2,7 @@
 
 class AdminController extends Admin
 {
-    // ===================================================== USER =====================================================
+    // ===================================================== PRODUCT =====================================================
 
     public function getAllProducts()
     {
@@ -68,5 +68,12 @@ class AdminController extends Admin
     public function searchUsers($searchInput, $searchValue)
     {
         return $this->searchAllUsers($searchInput, $searchValue);
+    }
+
+    // ===================================================== ORDER =====================================================
+
+    public function getOrders()
+    {
+        return $this->getAllOrders();
     }
 }

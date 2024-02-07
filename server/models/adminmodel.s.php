@@ -41,30 +41,19 @@ class Admin extends Database
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	protected function getOrders()
-	{
-		$sql = "SELECT * FROM `order`;";
-		$stmt = $this->connect()->query($sql);
+	// ================================================ ORDER ================================================
 
-		if ($stmt->rowCount() == 0) {
+	protected function getAllOrders()
+	{
+		$sql = "SELECT * FROM `order` JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`;";
+
+		try {
+			$stmt = $this->connect()->query($sql);
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
 			// header("location: ../templates/login.php?error=ordersnotfound");
 			exit();
 		}
-
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	protected function getOrderDetails()
-	{
-		$sql = "SELECT * FROM `orderdetail`;";
-		$stmt = $this->connect()->query($sql);
-
-		if ($stmt->rowCount() == 0) {
-			// header("location: ../templates/login.php?error=orderdetailsnotfound");
-			exit();
-		}
-
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	// ================================================ PRODUCT ================================================

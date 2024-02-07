@@ -43,6 +43,40 @@ $(document).ready(function () {
     }
   }
 
+  // Handle the status of orders
+  // const statusOfOrders = $(".status");
+
+  // Handle the order when being clicked
+  const rowOrders = $(".row-order");
+  rowOrders.each(function () {
+    $(this).click(function (e) {
+      $(".container").css("display", "flex");
+    });
+  });
+
+  // Close the order details when clicking on the overlay
+  const overlay = $(".overlay");
+  overlay.click(function (e) {
+    $(".container").css("display", "none");
+  });
+
+  // Handle when clicking on the `xử lý` button
+  const solveBtns = $(".status > button");
+  solveBtns.each(function () {
+    if ($(this).text().toLowerCase() == "Đã xử lý".toLowerCase()) {
+      $(this).addClass("solved");
+    } else {
+      $(this).addClass("not-solve");
+    }
+
+    $(this).click(function (e) {
+      e.stopPropagation();
+      $(this).removeClass("not-solve");
+      $(this).text("Đã xử lý");
+      $(this).addClass("solved");
+    });
+  });
+
   // ========================================================== COMMON ==========================================================
 
   // Move on to another page
@@ -114,7 +148,6 @@ $(document).ready(function () {
   delProduct();
 
   // Update product
-
   function updProduct() {
     const updBtns = $(".edit-productbtn");
     updBtns.each(function () {

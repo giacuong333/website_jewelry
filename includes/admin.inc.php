@@ -8,6 +8,7 @@ $admin = new AdminController();
 
 $products = $admin->getAllProducts();
 $users = $admin->getAllUsers();
+$orders = $admin->getOrders();
 
 // =============================================== USER ===============================================
 
