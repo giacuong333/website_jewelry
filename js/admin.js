@@ -43,40 +43,6 @@ $(document).ready(function () {
     }
   }
 
-  // Handle the status of orders
-  // const statusOfOrders = $(".status");
-
-  // Handle the order when being clicked
-  const rowOrders = $(".row-order");
-  rowOrders.each(function () {
-    $(this).click(function (e) {
-      $(".container").css("display", "flex");
-    });
-  });
-
-  // Close the order details when clicking on the overlay
-  const overlay = $(".overlay");
-  overlay.click(function (e) {
-    $(".container").css("display", "none");
-  });
-
-  // Handle when clicking on the `xử lý` button
-  const solveBtns = $(".status > button");
-  solveBtns.each(function () {
-    if ($(this).text().toLowerCase() == "Đã xử lý".toLowerCase()) {
-      $(this).addClass("solved");
-    } else {
-      $(this).addClass("not-solve");
-    }
-
-    $(this).click(function (e) {
-      e.stopPropagation();
-      $(this).removeClass("not-solve");
-      $(this).text("Đã xử lý");
-      $(this).addClass("solved");
-    });
-  });
-
   // ========================================================== COMMON ==========================================================
 
   // Move on to another page
@@ -100,6 +66,12 @@ $(document).ready(function () {
       data: { searchValue: searchValue, searchInput: searchInput, searchType: searchType },
       success: function (response) {
         $(containElement).html(response);
+
+        // Used for searching orders
+        $(".status > button").each(function () {
+          isSolved($(this));
+        });
+
         if (typeof updateCallback === "function") {
           updateCallback();
         }
@@ -151,7 +123,8 @@ $(document).ready(function () {
   function updProduct() {
     const updBtns = $(".edit-productbtn");
     updBtns.each(function () {
-      $(this).click(() => {
+      $(this).click((e) => {
+        e.stopPropagation();
         const productId = $(this).closest("tr").data("productid");
         window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
       });
@@ -181,7 +154,8 @@ $(document).ready(function () {
   function updateUser() {
     const editBtns = $(".edit-userbtn");
     editBtns.each(function (editBtnIndex) {
-      $(this).click(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
         const userId = $(this).closest("tr").data("userid");
         window.location.href = "../admin/edituser.php?upduser_id=" + userId;
       });
@@ -193,7 +167,8 @@ $(document).ready(function () {
   function deleteUser() {
     const delBtns = $(".del-userbtn");
     delBtns.each(function (delBtnIndex) {
-      $(this).click(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
         const confirmation = confirm("Bạn có chắc chắn muốn xóa người dùng này?");
         if (confirmation) {
           const userId = $(this).closest("tr").data("userid");
@@ -213,5 +188,113 @@ $(document).ready(function () {
     if (e.which == 13) {
       handleSearch("user", $(this), searchUserValue, bodyUser, updateUser, deleteUser);
     }
+  });
+
+  // ========================================================== ORDER ==========================================================
+  // Search order
+  const searchOrderInput = $("#searchorderinput");
+  searchOrderInput.on("keypress", function (e) {
+    const searchOrderValue = $("#searchordervalue");
+    const bodyOrder = $("#bodyorder");
+
+    // This is the `enter` key
+    if (e.which == 13) {
+      handleSearch("order", $(this), searchOrderValue, bodyOrder, updateOrder, deleteOrder);
+    }
+  });
+
+  // Handle when clicking on the `delete` icon
+  function deleteOrder() {
+    const deleteBtns = $(".del-orderbtn");
+    deleteBtns.each(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const confirmation = confirm("Bạn có chắc chắn muốn xóa hóa đơn này?");
+        if (confirmation) {
+          const orderId = $(this).closest("tr").data("orderid");
+          window.location.href = "../includes/admin.inc.php?delorder_id=" + orderId;
+        }
+      });
+    });
+  }
+  deleteOrder();
+
+  // Handle when clicking on the `update` icon
+  function updateOrder() {}
+
+  // Handle when clicking on the `status` button
+  const statusBtns = $(".status > button");
+  statusBtns.each(function () {
+    $(this).click(function () {
+      const orderId = $(this).closest(".row-order").data("orderid");
+      const orderStatus = parseInt($(this).val());
+
+      if (orderStatus == 0) {
+        $.ajax({
+          type: "POST",
+          url: "../includes/admin.inc.php",
+          data: { orderId: orderId, orderStatus: orderStatus },
+          dataType: "dataType",
+          success: function (response) {
+            alert(response);
+            console.log(response);
+            if (response == true) {
+              alert("The order was handled");
+            }
+          },
+          // error: function () {
+          //   alert("There's something wrong when saving status into the database");
+          // },
+        });
+      }
+    });
+  });
+
+  // Handle the order when being clicked
+  const rowOrders = $(".row-order");
+  rowOrders.each(function () {
+    $(this).click(function (e) {
+      const orderId = $(this).data("orderid");
+
+      $.ajax({
+        type: "GET",
+        url: "../includes/admin.inc.php",
+        data: { orderId: orderId },
+        success: function (response) {
+          $("#bodyorder").append(response);
+          $(".container").css("display", "flex");
+
+          const overlay = $(".overlay");
+          overlay.click(function (e) {
+            $(".container").css("display", "none");
+          });
+        },
+        error: function () {
+          alert("Fetching data error");
+        },
+      });
+    });
+  });
+
+  // Check if the order status is solved
+  function isSolved(button) {
+    const statusBtn = button.text().toLowerCase();
+
+    if (statusBtn === "đã xử lý") {
+      button.addClass("solved").removeClass("not-solve").off("click");
+    } else {
+      button
+        .addClass("not-solve")
+        .removeClass("solved")
+        .click(function (e) {
+          e.stopPropagation(); // prevent going to the order details
+          $(this).removeClass("not-solve").addClass("solved").text("Đã xử lý");
+          isSolved($(this));
+        });
+    }
+  }
+
+  $(".status > button").each(function () {
+    isSolved($(this));
   });
 });

@@ -18,7 +18,7 @@
 </nav>
 
 <!-- Sidebar -->
-<input type="checkbox" name="" id="toggle" />
+<input type="checkbox" name="toggle" id="toggle" />
 <label for="toggle" class="side-toggle">
     <span class="fas fa-bars"></span>
 </label>

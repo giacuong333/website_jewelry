@@ -45,13 +45,84 @@ class Admin extends Database
 
 	protected function getAllOrders()
 	{
-		$sql = "SELECT * FROM `order` JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`;";
+		$sql = "SELECT *, `order`.`id` AS `orderid`, `product`.`id` AS `productid`, `user`.`id` AS `userid` FROM `order` 
+		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
+		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
+		JOIN `user` ON `user`.`id` = `order`.`id` WHERE `order`.`isDeleted` != 1;";
 
 		try {
 			$stmt = $this->connect()->query($sql);
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			// header("location: ../templates/login.php?error=ordersnotfound");
+			exit();
+		}
+	}
+
+	protected function saveOrderStatus($id)
+	{
+		$sql = "UPDATE `order` SET `order`.`status` = 1 WHERE `order`.`id` = ?";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function deleteAnOrderById($id)
+	{
+		$sql = "UPDATE `order` SET `order`.`isDeleted` = 1 WHERE `order`.`id` = ?";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function searchAllOrders($searchInput, $searchValue)
+	{
+		$sql = "SELECT *, `order`.`id` AS `orderid`, `product`.`id` AS `productid`, `user`.`id` AS `userid`, 
+		`order`.`phone_number` AS `orderphone`, `order`.`email` AS `orderemail`, `order`.`fullname` AS `orderfullname`, 
+		`order`.`status` AS `orderstatus` 
+		FROM `order` 
+		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
+		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
+		JOIN `user` ON `user`.`id` = `order`.`id` 
+		WHERE `order`.`isDeleted` != 1 AND ";
+
+		switch ($searchValue) {
+			case "id":
+				$sql .= "`order`.`id` = ?;";
+				break;
+			case "fullname":
+				$sql .= "`order`.`fullname` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+			case "email":
+				$sql .= "`order`.`email` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+			case "phonenumber":
+				$sql .= "`order`.`phone_number` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $orders ?? [];
+		} catch (Exception $e) {
 			exit();
 		}
 	}

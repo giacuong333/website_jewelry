@@ -65,7 +65,8 @@ CREATE TABLE `order` (
   `order_date` date,
   `status` int,
   `total_money` int,
-  `user_id` int
+  `user_id` int,
+  `isDeleted` int
 );
 
 CREATE TABLE `orderdetail` (
@@ -147,12 +148,14 @@ VALUES ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc bi�
 INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`)
 VALUES ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
 
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1);
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 1400000, 2);
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 500000, 3);
+INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
+VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0);
+INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
+VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0);
+INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
+VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 500000, 3, 0);
+INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
+VALUES ('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 500000, 4, 0);
 
 INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
 VALUES (1, 1, 350000, 2, 70000);
@@ -160,6 +163,8 @@ INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_mone
 VALUES (2, 2, 700000, 2, 1400000);
 INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
 VALUES (3, 3, 800000, 2, 1600000);
+INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
+VALUES (4, 4, 800000, 2, 1600000);
 
 INSERT INTO `gallery` (`product_id`, `thumbnail`) 
 VALUES(1, '../assets/imgs/errings/img1.png');

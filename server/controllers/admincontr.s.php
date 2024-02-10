@@ -76,4 +76,19 @@ class AdminController extends Admin
     {
         return $this->getAllOrders();
     }
+
+    public function saveStatus($id)
+    {
+        return $this->saveOrderStatus($id);
+    }
+
+    public function deleteOrder($id)
+    {
+        return $this->deleteAnOrderById($id);
+    }
+
+    public function searchOrders($searchInput, $searchValue)
+    {
+        return $this->searchAllOrders($searchInput, $searchValue);
+    }
 }
