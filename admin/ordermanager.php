@@ -11,11 +11,18 @@
 	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
 	<!-- JQuery -->
 	<script src="../assets/libs/jquery-3.7.1.min.js"></script>
+	<!-- Boostrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 
-<body>
+<body id="order-body">
 	<?php include("../admin/common.php"); ?>
+	<!-- Order details -->
 
 	<main>
 		<div class="dashboard-header">
@@ -27,6 +34,11 @@
 				<option value="email">Email</option>
 				<option value="phonenumber">Phone number</option>
 			</select>
+
+			<!-- Search for orders in a range date -->
+			<input type="datetime-local" placeholder="From date" name="searchfromdateinput" id="searchfromdateinput" />
+			<input type="datetime-local" placeholder="To date" name="searchtodateinput" id="searchtodateinput" />
+			<button type="button" class="btn- btn--hover btn-searchbydate">Search by date</button>
 		</div>
 
 		<!-- Product -->
@@ -62,12 +74,9 @@
 								</td>
 								<td><?php echo $order["total_money"]; ?></td>
 								<td>
-									<span class="fa-solid fa-pen-to-square edit-orderbtn"></span>
 									<span class="fa-solid fa-trash del-orderbtn" name="del-order" value="del-order"></span>
 								</td>
 							</tr>
-
-							<!-- Order details -->
 					<?php
 						}
 					}

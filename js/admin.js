@@ -72,6 +72,9 @@ $(document).ready(function () {
           isSolved($(this));
         });
 
+        // Used for viewing order details
+        viewOrderDetails();
+
         if (typeof updateCallback === "function") {
           updateCallback();
         }
@@ -84,6 +87,15 @@ $(document).ready(function () {
         alert("Error fetching data");
       },
     });
+  }
+
+  function formatDate(dateValue) {
+    const date = dateValue.getDate().toString().padStart(2, "0");
+    const month = (dateValue.getMonth() + 1).toString().padStart(2, "0");
+    const year = dateValue.getFullYear();
+
+    const formatted = year + "-" + month + "-" + date;
+    return formatted;
   }
 
   // ========================================================== PRODUCT ==========================================================
@@ -191,6 +203,46 @@ $(document).ready(function () {
   });
 
   // ========================================================== ORDER ==========================================================
+  // Search order by date
+  const searchDateBtn = $(".btn-searchbydate");
+  searchDateBtn.click(function (e) {
+    e.preventDefault();
+
+    const fromDate = new Date($("#searchfromdateinput").val());
+    const toDate = new Date($("#searchtodateinput").val());
+
+    if ($("#searchfromdateinput").val() == "" || $("#searchtodateinput").val() == "") {
+      alert("Date is not selected");
+      return;
+    }
+
+    if (fromDate > toDate) {
+      alert("The start date is not greater than the end day!");
+      return;
+    }
+
+    const formatFromDate = formatDate(fromDate);
+    const formatToDate = formatDate(toDate);
+
+    $.ajax({
+      type: "POST",
+      url: "../includes/admin.inc.php",
+      data: { fromDate: formatFromDate, toDate: formatToDate },
+      success: function (response) {
+        $("#bodyorder").html(response);
+
+        $(".status > button").each(function () {
+          isSolved($(this));
+        });
+        deleteOrder();
+        viewOrderDetails();
+      },
+      error: function () {
+        alert("Date is invalid");
+      },
+    });
+  });
+
   // Search order
   const searchOrderInput = $("#searchorderinput");
   searchOrderInput.on("keypress", function (e) {
@@ -199,7 +251,7 @@ $(document).ready(function () {
 
     // This is the `enter` key
     if (e.which == 13) {
-      handleSearch("order", $(this), searchOrderValue, bodyOrder, updateOrder, deleteOrder);
+      handleSearch("order", $(this), searchOrderValue, bodyOrder, null, deleteOrder);
     }
   });
 
@@ -218,9 +270,6 @@ $(document).ready(function () {
     });
   }
   deleteOrder();
-
-  // Handle when clicking on the `update` icon
-  function updateOrder() {}
 
   // Handle when clicking on the `status` button
   const statusBtns = $(".status > button");
@@ -251,30 +300,34 @@ $(document).ready(function () {
   });
 
   // Handle the order when being clicked
-  const rowOrders = $(".row-order");
-  rowOrders.each(function () {
-    $(this).click(function (e) {
-      const orderId = $(this).data("orderid");
+  function viewOrderDetails() {
+    const rowOrders = $(".row-order");
+    rowOrders.each(function () {
+      $(this).click(function (e) {
+        const orderId = $(this).data("orderid");
 
-      $.ajax({
-        type: "GET",
-        url: "../includes/admin.inc.php",
-        data: { orderId: orderId },
-        success: function (response) {
-          $("#bodyorder").append(response);
-          $(".container").css("display", "flex");
+        $.ajax({
+          type: "GET",
+          url: "../includes/admin.inc.php",
+          data: { orderId: orderId },
+          success: function (response) {
+            $("#order-body").prepend(response);
+            const container = $(".container");
+            container.css("display", "flex");
 
-          const overlay = $(".overlay");
-          overlay.click(function (e) {
-            $(".container").css("display", "none");
-          });
-        },
-        error: function () {
-          alert("Fetching data error");
-        },
+            $(".overlay").click(function (e) {
+              $(this).remove();
+              container.remove();
+            });
+          },
+          error: function () {
+            alert("Fetching data error");
+          },
+        });
       });
     });
-  });
+  }
+  viewOrderDetails();
 
   // Check if the order status is solved
   function isSolved(button) {
@@ -297,4 +350,12 @@ $(document).ready(function () {
   $(".status > button").each(function () {
     isSolved($(this));
   });
+
+  // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
+  const config = {
+    enableTime: false,
+    dateFormat: "Y-m-d",
+  };
+
+  flatpickr("input[type=datetime-local]", config);
 });

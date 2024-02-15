@@ -91,4 +91,9 @@ class AdminController extends Admin
     {
         return $this->searchAllOrders($searchInput, $searchValue);
     }
+
+    public function searchOrdersByDate($fromDate, $toDate)
+    {
+        return $this->searchAllOrdersByDate($fromDate, $toDate);
+    }
 }

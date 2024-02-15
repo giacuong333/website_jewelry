@@ -127,6 +127,28 @@ class Admin extends Database
 		}
 	}
 
+	protected function searchAllOrdersByDate($fromDate, $toDate)
+	{
+		$sql = "SELECT *, `order`.`id` AS `orderid`, `product`.`id` AS `productid`, `user`.`id` AS `userid`, 
+		`order`.`phone_number` AS `orderphone`, `order`.`email` AS `orderemail`, `order`.`fullname` AS `orderfullname`, 
+		`order`.`status` AS `orderstatus` 
+		FROM `order` 
+		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
+		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
+		JOIN `user` ON `user`.`id` = `order`.`id` 
+		WHERE `order`.`isDeleted` != 1 AND `order`.`order_date` BETWEEN ? AND ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$fromDate, $toDate]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
 	// ================================================ PRODUCT ================================================
 
 	protected function getProducts()

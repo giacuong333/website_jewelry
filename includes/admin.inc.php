@@ -227,7 +227,6 @@ if (isset($_GET["orderId"])) {
 
   $html = "
         <div class='container'>
-            <div class='overlay'></div>
             <div class='content'>
               <h2 class='content-header'>
                 Order details
@@ -237,53 +236,61 @@ if (isset($_GET["orderId"])) {
                   <div class='content-body__top-top'>
                     <div class='content-body__top-left'>
                       <h4>Date</h4>
-                      <p>{$order['order_date']}</p>
+                      <p>{$orderDetails['order_date']}</p>
                     </div>
                     <div class='content-body__top-right'>
                       <h4>Order ID</h4>
-                      <p>#{$order['id']}</p>
+                      <p>#{$orderDetails['id']}</p>
                     </div>
                   </div>
                   <div class='content-body__top-bottom'>
                     <div class='content-body__top-address'>
                       <h4>Address</h4>
-                      <p>{$order['address']}</p>
+                      <p>{$orderDetails['address']}</p>
                     </div>
                     <div class='content-body__top-fullname'>
                       <h4>Name</h4>
-                      <p>{$order['fullname']}</p>
+                      <p>{$orderDetails['fullname']}</p>
                     </div>
                     <div class='content-body__top-email'>
                       <h4>Email</h4>
-                      <p>{$order['email']}</p>
+                      <p>{$orderDetails['email']}</p>
                     </div>
                     <div class='content-body__top-phonenumber'>
                       <h4>Phone nummber</h4>
-                      <p>{$order['phone_number']}</p>
+                      <p>{$orderDetails['phone_number']}</p>
                     </div>
                   </div>
                 </div>
 
                 <div class='content-body__middle'>
                   <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                    <div class='content-body__middle-product-price'>{$order['price']}</div>
+                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
+                    <div class='content-body__middle-product-info'>
+                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
+                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
+                    </div>
                   </div>
                   <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                    <div class='content-body__middle-product-price'>{$order['price']}</div>
+                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
+                    <div class='content-body__middle-product-info'>
+                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
+                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
+                    </div>
                   </div>
                   <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                    <div class='content-body__middle-product-price'>{$order['price']}</div>
+                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
+                    <div class='content-body__middle-product-info'>
+                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
+                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
+                    </div>
                   </div>
                   <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                    <div class='content-body__middle-product-price'>{$order['price']}</div>
+                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
+                    <div class='content-body__middle-product-info'>
+                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
+                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
+                    </div>
                   </div>
 
                   <div class='content-body__middle-shipping'>
@@ -293,7 +300,7 @@ if (isset($_GET["orderId"])) {
                 </div>
 
                 <div class='content-body__bottom'>
-                  <p class='content-body__bottom-total'>{$order['total_money']}</p>
+                  <p class='content-body__bottom-total'>{$orderDetails['total_money']}</p>
                 </div>
               </div>
               <div class='content-footer'>
@@ -301,6 +308,8 @@ if (isset($_GET["orderId"])) {
               </div>
             </div>
         </div>
+        <div class='overlay'></div>
+
     ";
 
   echo $html;
@@ -320,7 +329,6 @@ if (isset($_GET["delorder_id"])) {
   $isDeleted = $admin->deleteOrder($orderId);
 
   if ($isDeleted) {
-    echo "<script>alert('Delete the order successfully')</script>";
     echo "<script>window.location.href='../admin/ordermanager.php'</script>";
   } else {
     echo "<script>alert('Delete the order failed')</script>";
@@ -350,13 +358,47 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
         </td>
         <td>{$order['total_money']}</td>
         <td>
-          <span class='fa-solid fa-pen-to-square edit-orderbtn'></span>
           <span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>
         </td>
       </tr>";
     }
   } else {
     $html .= "No order found";
+  }
+
+  echo $html;
+}
+
+// Search order by date
+if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
+  $fromDate = $_POST["fromDate"];
+  $toDate = $_POST["toDate"];
+
+  $orders = $admin->searchOrdersByDate($fromDate, $toDate);
+
+  $html = "";
+
+  if (isset($orders)) {
+    foreach ($orders as  $order) {
+      $status = $order["orderstatus"] == 1 ? "Đã xử lý" : "Đang xử lý";
+
+      $html .= "
+        <tr class='row-order' data-orderid='{$order['orderid']}'>
+          <td>{$order['orderid']}</td>
+          <td>{$order['orderfullname']}</td>
+          <td>{$order['orderemail']}</td>
+          <td>{$order['orderphone']}</td>
+          <td class='status'>
+            <button type='button' name='statusBtn' value='{$order['orderstatus']}' class='btn- btn--hover'>$status</button>
+          </td>
+          <td>{$order['total_money']}</td>
+          <td>
+            <span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>
+          </td>
+        </tr>";
+    }
+  } else {
+    $html .= "No orders found";
   }
 
   echo $html;
