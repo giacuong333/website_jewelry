@@ -44,12 +44,14 @@
 							</tr>
 							<tr>
 								<td>Category</td>
+								<?php include("../includes/admin.inc.php"); ?>
 								<td>
 									<select class="btn- btn--hover" name="categoryid" id="">
-										<option value="1">Nhẫn</option>
-										<option value="2">Vòng cổ</option>
-										<option value="3">Trâm cài</option>
-										<option value="4">Bông tai</option>
+										<?php
+										foreach ($categories as $category) {
+											echo "<option value='{$category['id']}'>{$category['name']}</option>";
+										}
+										?>
 									</select>
 								</td>
 							</tr>

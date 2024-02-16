@@ -21,7 +21,8 @@ CREATE TABLE `user` (
 
 CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `isDeleted` int
 );
 
 CREATE TABLE `product` (
@@ -114,6 +115,10 @@ CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.d
 
 CREATE TRIGGER product_delete_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.deleted = 0;
 
+CREATE TRIGGER category_delete_create BEFORE INSERT ON `category` FOR EACH ROW SET NEW.isDeleted = 0;
+
+CREATE TRIGGER order_delete_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.isDeleted = 0;
+
 INSERT INTO `role` (`name`) VALUES ('Quản lý');
 INSERT INTO `role` (`name`) VALUES ('Nhân viên');
 INSERT INTO `role` (`name`) VALUES ('Khách hàng');
@@ -127,10 +132,10 @@ VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg
 INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
 VALUES ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3);
 
-INSERT INTO `category` (`name`) VALUES ('Nhẫn');
-INSERT INTO `category` (`name`) VALUES ('Vòng Cổ');
-INSERT INTO `category` (`name`) VALUES ('Trâm Cài');
-INSERT INTO `category` (`name`) VALUES ('Bông tai');
+INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Nhẫn', 0);
+INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Vòng Cổ', 0);
+INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Trâm Cài', 0);
+INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Bông tai', 0);
 
 INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
 VALUES ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp');

@@ -351,6 +351,37 @@ $(document).ready(function () {
     isSolved($(this));
   });
 
+  // ========================================================== CATEGORY ==========================================================
+  function deleteCategory() {
+    const deleteBtns = $(".del-categorybtn");
+    deleteBtns.each(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const confirmation = confirm("Bạn có chắc chắn muốn xóa phân loại này?");
+        if (confirmation) {
+          const categoryId = $(this).closest("tr").data("categoryid");
+          window.location.href = "../includes/admin.inc.php?delcategory_id=" + categoryId;
+        }
+      });
+    });
+  }
+  deleteCategory();
+
+  // Move on to the add new category page
+  moveOn("#addcategory", "../admin/newCategory.php");
+
+  // Move on to the categorymanager page
+  moveOn("#exitcategory", "../admin/categorymanager.php");
+
+  // Move on to the edit category page
+  $(".edit-categorybtn").each(function () {
+    $(this).click(function (e) {
+      e.preventDefault();
+      const categoryId = $(this).closest("tr").data("categoryid");
+      window.location.href = "../admin/editcategory.php?editcategory_id=" + categoryId;
+    });
+  });
+
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {
     enableTime: false,

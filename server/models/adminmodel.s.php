@@ -2,9 +2,14 @@
 
 class Admin extends Database
 {
-	protected function getCategories()
+	// ================================================ CATEGORY ================================================
+	protected function getAllCategories()
 	{
-		$sql = "SELECT * FROM `category`;";
+		$sql = "SELECT *, `category`.`id` AS `categoryid`, `product`.`id` AS `product_id` 
+		FROM `category` LEFT JOIN `product` 
+		ON `category`.`id` = `product`.`category_id`
+		WHERE `category`.`isDeleted` != 1;";
+
 		$stmt = $this->connect()->query($sql);
 
 		if ($stmt->rowCount() == 0) {
@@ -13,6 +18,51 @@ class Admin extends Database
 		}
 
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	protected function addNewCategory($name)
+	{
+		$sql = "INSERT INTO `category` (`name`) VALUES (?);";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$name]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function deleteACategoryById($id)
+	{
+		$sql = "UPDATE `category` SET `category`.`isDeleted` = 1 WHERE `category`.`id` = ?";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$id]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function getACategoryById($id)
+	{
+		$sql = "SELECT * FROM `category` WHERE `category`.`isDeleted` != 1 AND `category`.`id` = ?;";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$id]);
+			$category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $category ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function updateAnCategory($id)
+	{
 	}
 
 	protected function getFeedbacks()
@@ -155,7 +205,7 @@ class Admin extends Database
 	{
 		try {
 			$sql = "SELECT `product`.`id`, `category`.`name`, `product`.`title`, `product`.`thumbnail`, `product`.`price`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`
-                              FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1;";
+			FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1;";
 			$stmt = $this->connect()->query($sql);
 
 			if ($stmt->rowCount() == 0) {

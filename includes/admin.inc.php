@@ -5,10 +5,10 @@ include("../server/models/adminmodel.s.php");
 include("../server/controllers/admincontr.s.php");
 
 $admin = new AdminController();
-
 $products = $admin->getAllProducts();
 $users = $admin->getAllUsers();
 $orders = $admin->getOrders();
+$categories = $admin->getCategories();
 
 // =============================================== USER ===============================================
 
@@ -402,4 +402,37 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
   }
 
   echo $html;
+}
+
+// =============================================== CATEGORY ===============================================
+// Delete
+if (isset($_GET["delcategory_id"])) {
+  $categoryId = $_GET["delcategory_id"];
+  $isDeleted = $admin->deleteCategoryById($categoryId);
+
+  if ($isDeleted) {
+    echo "<script>window.location.href='../admin/categorymanager.php'</script>";
+  } else {
+    echo "<script>alert('Delete the category failed')</script>";
+  }
+}
+
+// Add 
+if (isset($_POST["savecategory"])) {
+  $categoryName = trim($_POST["categoryname"]);
+
+  $isSaved = $admin->addCategory($categoryName);
+
+  if ($isSaved) {
+    echo "<script>alert('Add the category successfully')</script>";
+    echo "<script>window.location.href='../admin/categorymanager.php'</script>";
+  } else {
+    echo "<script>alert('Add the category failed')</script>";
+  }
+}
+
+// 
+if (isset($_GET["editcategory_id"])) {
+  $categoryId = $_GET["editcategory_id"];
+  $categoriesId = $admin->getCategoryById($categoryId);
 }

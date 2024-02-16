@@ -176,7 +176,8 @@ main {
 }
 
 #bodyorder > tr:nth-child(odd),
-#bodyuser > tr:nth-child(odd) {
+#bodyuser > tr:nth-child(odd),
+#bodycategory > tr:nth-child(odd) {
   background-color: #fff;
 }
 /* Product */
@@ -450,7 +451,7 @@ th {
 .content-body__middle-product,
 .content-body__bottom-total,
 .content-body__middle-shipping {
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 .content-body__top-address,
@@ -544,8 +545,4 @@ h4 {
 h4 {
   font-size: 16px;
   font-weight: 600;
-}
-
-p {
-  font-size: 14px;
 }

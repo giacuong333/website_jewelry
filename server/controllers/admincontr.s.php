@@ -96,4 +96,25 @@ class AdminController extends Admin
     {
         return $this->searchAllOrdersByDate($fromDate, $toDate);
     }
+
+    // ===================================================== CATEGORY =====================================================
+    public function getCategories()
+    {
+        return $this->getAllCategories();
+    }
+
+    public function deleteCategoryById($id)
+    {
+        return $this->deleteACategoryById($id);
+    }
+
+    public function addCategory($name)
+    {
+        return $this->addNewCategory($name);
+    }
+
+    public function getCategoryById($id)
+    {
+        return $this->getACategoryById($id);
+    }
 }

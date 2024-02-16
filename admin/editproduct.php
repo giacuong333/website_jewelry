@@ -49,10 +49,15 @@
                                 <td>Category</td>
                                 <td>
                                     <select class="btn- btn--hover" name="categoryid" id="">
-                                        <option value="1" <?php echo $product["category_id"] == 1 ? "selected='selected'" : "" ?>>Nhẫn</option>
-                                        <option value="2" <?php echo $product["category_id"] == 2 ? "selected='selected'" : ""; ?>>Vòng cổ</option>
-                                        <option value="3" <?php echo $product["category_id"] == 3 ? "selected='selected'" : ""; ?>>Trâm cài</option>
-                                        <option value="4" <?php echo $product["category_id"] == 4 ? "selected='selected'" : ""; ?>>Bông tai</option>
+                                        <?php
+                                        foreach ($categories as $category) {
+                                            if ($_GET["upd-productid"] == $category["product_id"]) {
+                                                echo "<option value='{$category['id']}' selected>{$category['name']}</option>";
+                                                continue;
+                                            }
+                                            echo "<option value='{$category['id']}'>{$category['name']}</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </td>
                             </tr>
