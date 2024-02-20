@@ -4,7 +4,8 @@ USE web_trang_suc;
 
 CREATE TABLE `role` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `isDeleted` int
 );
 
 CREATE TABLE `user` (
@@ -119,9 +120,12 @@ CREATE TRIGGER category_delete_create BEFORE INSERT ON `category` FOR EACH ROW S
 
 CREATE TRIGGER order_delete_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.isDeleted = 0;
 
+CREATE TRIGGER role_delete_create BEFORE INSERT ON `role` FOR EACH ROW SET NEW.isDeleted = 0;
+
 INSERT INTO `role` (`name`) VALUES ('Quản lý');
 INSERT INTO `role` (`name`) VALUES ('Nhân viên');
 INSERT INTO `role` (`name`) VALUES ('Khách hàng');
+INSERT INTO `role` (`name`) VALUES ('Admin');
 
 INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
 VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1);
@@ -131,6 +135,8 @@ INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`)
 VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2);
 INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
 VALUES ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
+VALUES ('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
 
 INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Nhẫn', 0);
 INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Vòng Cổ', 0);

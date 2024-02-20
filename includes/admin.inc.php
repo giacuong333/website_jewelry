@@ -9,6 +9,7 @@ $products = $admin->getAllProducts();
 $users = $admin->getAllUsers();
 $orders = $admin->getOrders();
 $categories = $admin->getCategories();
+$roles = $admin->getRoles();
 
 // =============================================== USER ===============================================
 
@@ -315,14 +316,6 @@ if (isset($_GET["orderId"])) {
   echo $html;
 }
 
-// Status 
-if (isset($_POST["orderId"]) && isset($_POST["orderStatus"])) {
-  $orderId = $_POST["orderId"];
-  $isSaved = $admin->saveStatus($orderId);
-
-  echo $isSaved ? true : false;
-}
-
 // Delete
 if (isset($_GET["delorder_id"])) {
   $orderId = $_GET["delorder_id"];
@@ -367,6 +360,14 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
   }
 
   echo $html;
+}
+
+// Status 
+if (isset($_POST["orderId"]) && isset($_POST["orderStatus"])) {
+  $orderId = $_POST["orderId"];
+  $isSaved = $admin->saveStatus($orderId);
+
+  echo $isSaved ? true : false;
 }
 
 // Search order by date
@@ -432,7 +433,50 @@ if (isset($_POST["savecategory"])) {
 }
 
 // 
-if (isset($_GET["editcategory_id"])) {
-  $categoryId = $_GET["editcategory_id"];
+if (isset($_GET["updcategory_id"])) {
+  $categoryId = $_GET["updcategory_id"];
   $categoriesId = $admin->getCategoryById($categoryId);
+}
+
+// Search
+if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "category") {
+  $searchInput = $_POST["searchInput"];
+  $searchValue = $_POST["searchValue"];
+
+  $categories = $admin->searchCategories($searchInput, $searchValue);
+
+  $html = "";
+
+  if (isset($categories)) {
+    foreach ($categories as $category) {
+      $html .= "
+        <tr data-categoryid='{$category['id']}'>
+          <td>{$category['id']}</td>
+          <td>{$category['name']}</td>
+          <td>
+              <span class='fa-solid fa-pen-to-square edit-categorybtn'></span>
+              <span class='fa-solid fa-trash del-categorybtn' name='del-category' value='del-category'></span>
+          </td>
+        </tr>";
+    }
+  } else {
+    $html .= "No category found";
+  }
+
+  echo $html;
+}
+
+// Update
+if (isset($_POST["updatecategory"])) {
+  $categoryName = trim($_POST["categoryname"]);
+  $categoryId = $_POST["categoryid"];
+
+  $isUpdated = $admin->updateCategory($categoryId, $categoryName);
+
+  if ($isUpdated) {
+    echo "<script>alert('Update the category successfully')</script>";
+    echo "<script>window.location.href='../admin/categorymanager.php'</script>";
+  } else {
+    echo "<script>alert('Update the category failed')</script>";
+  }
 }

@@ -51,8 +51,11 @@
                                 <td>Role</td>
                                 <td>
                                     <select class="btn- btn--hover" name="roleid" id="">
-                                        <option value="1" <?php echo $user["role_id"] == 1 ? "selected='selected'" : "" ?>>Admin</option>
-                                        <option value="2" <?php echo $user["role_id"] == 2 ? "selected='selected'" : "" ?>>Nhân viên</option>
+                                        <?php
+                                        foreach ($roles as $role) {
+                                            echo "<option value='{$role['roleid']}'>{$role['name']}</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </td>
                             </tr>

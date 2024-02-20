@@ -35,9 +35,12 @@ $(document).ready(function () {
         window.location.href = "../admin/authorizemanager.php";
         break;
       case 7:
-        window.location.href = "../admin/othermanager.php";
+        window.location.href = "../admin/rolemanager.php";
         break;
       case 8:
+        window.location.href = "../admin/othermanager.php";
+        break;
+      case 9:
         window.location.href = "../includes/logout.inc.php";
         break;
     }
@@ -67,14 +70,6 @@ $(document).ready(function () {
       success: function (response) {
         $(containElement).html(response);
 
-        // Used for searching orders
-        $(".status > button").each(function () {
-          isSolved($(this));
-        });
-
-        // Used for viewing order details
-        viewOrderDetails();
-
         if (typeof updateCallback === "function") {
           updateCallback();
         }
@@ -82,6 +77,13 @@ $(document).ready(function () {
         if (typeof deleteCallback === "function") {
           deleteCallback();
         }
+
+        // Used for searching orders
+        isSolved();
+        solvedStatus(); // Patch to the admin.inc.php
+
+        // Used for viewing order details
+        viewOrderDetails();
       },
       error: function () {
         alert("Error fetching data");
@@ -231,9 +233,8 @@ $(document).ready(function () {
       success: function (response) {
         $("#bodyorder").html(response);
 
-        $(".status > button").each(function () {
-          isSolved($(this));
-        });
+        isSolved();
+        solvedStatus();
         deleteOrder();
         viewOrderDetails();
       },
@@ -272,32 +273,35 @@ $(document).ready(function () {
   deleteOrder();
 
   // Handle when clicking on the `status` button
-  const statusBtns = $(".status > button");
-  statusBtns.each(function () {
-    $(this).click(function () {
-      const orderId = $(this).closest(".row-order").data("orderid");
-      const orderStatus = parseInt($(this).val());
+  function solvedStatus() {
+    const statusBtns = $(".status > button");
+    statusBtns.each(function () {
+      $(this).click(function () {
+        const orderId = $(this).closest(".row-order").data("orderid");
+        const orderStatus = parseInt($(this).val());
 
-      if (orderStatus == 0) {
-        $.ajax({
-          type: "POST",
-          url: "../includes/admin.inc.php",
-          data: { orderId: orderId, orderStatus: orderStatus },
-          dataType: "dataType",
-          success: function (response) {
-            alert(response);
-            console.log(response);
-            if (response == true) {
-              alert("The order was handled");
-            }
-          },
-          // error: function () {
-          //   alert("There's something wrong when saving status into the database");
-          // },
-        });
-      }
+        if (orderStatus == 0) {
+          $.ajax({
+            type: "POST",
+            url: "../includes/admin.inc.php",
+            data: { orderId: orderId, orderStatus: orderStatus },
+            dataType: "dataType",
+            success: function (response) {
+              alert(response);
+              console.log(response);
+              if (response == true) {
+                alert("The order was handled");
+              }
+            },
+            // error: function () {
+            //   alert("There's something wrong when saving status into the database");
+            // },
+          });
+        }
+      });
     });
-  });
+  }
+  solvedStatus();
 
   // Handle the order when being clicked
   function viewOrderDetails() {
@@ -315,6 +319,7 @@ $(document).ready(function () {
             const container = $(".container");
             container.css("display", "flex");
 
+            // Cleanup when the overlay is clicked
             $(".overlay").click(function (e) {
               $(this).remove();
               container.remove();
@@ -330,26 +335,25 @@ $(document).ready(function () {
   viewOrderDetails();
 
   // Check if the order status is solved
-  function isSolved(button) {
-    const statusBtn = button.text().toLowerCase();
+  function isSolved() {
+    $(".status > button").each(function () {
+      const statusBtn = $(this).text().toLowerCase();
 
-    if (statusBtn === "đã xử lý") {
-      button.addClass("solved").removeClass("not-solve").off("click");
-    } else {
-      button
-        .addClass("not-solve")
-        .removeClass("solved")
-        .click(function (e) {
-          e.stopPropagation(); // prevent going to the order details
-          $(this).removeClass("not-solve").addClass("solved").text("Đã xử lý");
-          isSolved($(this));
-        });
-    }
+      if (statusBtn === "đã xử lý") {
+        $(this).addClass("solved").removeClass("not-solve").off("click");
+      } else {
+        $(this)
+          .addClass("not-solve")
+          .removeClass("solved")
+          .click(function (e) {
+            e.stopPropagation(); // prevent going to the order details
+            $(this).removeClass("not-solve").addClass("solved").text("Đã xử lý");
+            isSolved();
+          });
+      }
+    });
   }
-
-  $(".status > button").each(function () {
-    isSolved($(this));
-  });
+  isSolved();
 
   // ========================================================== CATEGORY ==========================================================
   function deleteCategory() {
@@ -367,19 +371,35 @@ $(document).ready(function () {
   }
   deleteCategory();
 
+  // Update
+  function updateCategory() {
+    const editBtns = $(".edit-categorybtn");
+    editBtns.each(function (editBtnIndex) {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const categoryId = $(this).closest("tr").data("categoryid");
+        window.location.href = "../admin/editcategory.php?updcategory_id=" + categoryId;
+      });
+    });
+  }
+  updateCategory();
+
   // Move on to the add new category page
   moveOn("#addcategory", "../admin/newCategory.php");
 
   // Move on to the categorymanager page
   moveOn("#exitcategory", "../admin/categorymanager.php");
 
-  // Move on to the edit category page
-  $(".edit-categorybtn").each(function () {
-    $(this).click(function (e) {
-      e.preventDefault();
-      const categoryId = $(this).closest("tr").data("categoryid");
-      window.location.href = "../admin/editcategory.php?editcategory_id=" + categoryId;
-    });
+  // Search
+  const searchCategoryInput = $("#searchcategoryinput");
+  searchCategoryInput.on("keypress", function (e) {
+    const searchCategoryValue = $("#searchcategoryvalue");
+    const bodyCategory = $("#bodycategory");
+
+    // This is the `enter` key
+    if (e.which == 13) {
+      handleSearch("category", $(this), searchCategoryValue, bodyCategory, updateCategory, deleteCategory);
+    }
   });
 
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================

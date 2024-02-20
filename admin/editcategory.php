@@ -31,13 +31,14 @@
                             <?php include("../includes/admin.inc.php"); ?>
                             <tr>
                                 <td>Name of category</td>
+                                <input type="text" name="categoryid" value="<?php echo $categoriesId["id"]; ?>" hidden>
                                 <td><input type="text" name="categoryname" value="<?php echo $categoriesId["name"]; ?>" required /></td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="savecategory" value="savecategory" type="submit">Save</button>
+                                    <button class="btn- btn--hover" name="updatecategory" value="updatecategory" type="submit">Save</button>
                                     <button class="btn- btn--hover" id="exitcategory" name="exitcategory" value="exitcategory" type="button">Exit</button>
                                 </td>
                             </tr>

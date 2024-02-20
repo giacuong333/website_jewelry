@@ -117,4 +117,20 @@ class AdminController extends Admin
     {
         return $this->getACategoryById($id);
     }
+
+    public function searchCategories($searchInput, $searchValue)
+    {
+        return $this->searchAllCategories($searchInput, $searchValue);
+    }
+
+    public function updateCategory($id, $name)
+    {
+        return $this->updateAnCategory($id, $name);
+    }
+
+    // ===================================================== ROLES =====================================================
+    public function getRoles()
+    {
+        return $this->getAllRoles();
+    }
 }

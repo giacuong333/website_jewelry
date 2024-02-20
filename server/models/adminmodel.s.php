@@ -61,8 +61,42 @@ class Admin extends Database
 		}
 	}
 
-	protected function updateAnCategory($id)
+	protected function searchAllCategories($searchInput, $searchValue)
 	{
+		$sql = "SELECT * FROM `category` WHERE `category`.`isDeleted` != 1 AND ";
+
+		switch ($searchValue) {
+			case "id":
+				$sql .= "`category`.`id` = ?;";
+				break;
+			case "name":
+				$sql .= "`category`.`name` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $orders ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function updateAnCategory($id, $name)
+	{
+		$sql = "UPDATE `category` SET `category`.`name` = ? WHERE `category`.`id` = ?;";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$name, $id]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
 	}
 
 	protected function getFeedbacks()
@@ -312,9 +346,9 @@ class Admin extends Database
 
 	// ================================================ ROLE ================================================
 
-	protected function getRoles()
+	protected function getAllRoles()
 	{
-		$sql = "SELECT * FROM `role`;";
+		$sql = "SELECT * FROM `role` WHERE `role`.`isDeleted` != 1;";
 		$stmt = $this->connect()->query($sql);
 
 		if ($stmt->rowCount() == 0) {
@@ -330,9 +364,10 @@ class Admin extends Database
 	protected function getUsers()
 	{
 		$sql = "SELECT 
-                    `user`.`id`, `user`.`fullname`, `user`.`email`, `user`.`phone_number`, `user`.`created_at`,
-                    `user`.`updated_at`, `role`.`name`
-                    FROM `user` JOIN `role` ON `user`.`role_id` = `role`.`id` WHERE `user`.`deleted` != 1;";
+		`user`.`id`, `user`.`fullname`, `user`.`email`, `user`.`phone_number`, `user`.`created_at`,
+		`user`.`updated_at`, `role`.`name`, `role`.`id` AS `roleid`
+		FROM `user` JOIN `role` ON `user`.`role_id` = `role`.`id` WHERE `user`.`deleted` != 1;";
+
 		$stmt = $this->connect()->query($sql);
 
 		if ($stmt->rowCount() == 0) {

@@ -51,7 +51,7 @@
                     if (is_array($categories)) {
                         foreach ($categories as $category) {
                     ?>
-                            <tr data-categoryid="<?php echo $category["id"]; ?>">
+                            <tr data-categoryid="<?php echo $category["categoryid"]; ?>">
                                 <td> <?php echo $category["categoryid"]; ?></td>
                                 <td> <?php echo $category["name"]; ?></td>
                                 <td>

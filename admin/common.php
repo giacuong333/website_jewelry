@@ -56,13 +56,19 @@
 
     <div class="sidebar-menu">
         <span class="fa-solid fa-code-merge"></span>
-        <p>Authorize</p>
+        <p>Permissions</p>
+    </div>
+
+    <div class="sidebar-menu">
+        <span class="fa-solid fa-user-secret"></span>
+        <p>Roles</p>
     </div>
 
     <div class="sidebar-menu">
         <span class="fa-solid fa-circle-info"></span>
         <p>Other</p>
     </div>
+
 
     <div class="sidebar-menu">
         <span class="fa-solid fa-power-off"> </span>
