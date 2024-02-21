@@ -6,14 +6,15 @@
 <script src="../assets/libs/jquery-3.7.1.min.js"></script>
 <!-- Js -->
 <script src="../js/admin.js"></script>
+<script src="../js/login.js"></script>
+<!-- <script src="../js/logout.js"></script> -->
 
 <!-- Navbar -->
 <nav class="navbar">
     <h4>Dashboard</h4>
     <div class="profile">
-        <span class="fas fa-search"></span>
-        <img class="profile-image" src="../assets/imgs/admin/pngtree-beautiful-admin-roles-line-vector-icon-png-image_2035379.jpg" alt="" />
-        <p class="profile-name">Gia Cường</p>
+        <?php session_start(); ?>
+        <p class="profile-name" style="font-size: 18px; font-weight: 500;"><?php echo isset($_SESSION["id"]) ? $_SESSION["fullname"] : "Đăng nhập"; ?></p>
     </div>
 </nav>
 
@@ -68,7 +69,6 @@
         <span class="fa-solid fa-circle-info"></span>
         <p>Other</p>
     </div>
-
 
     <div class="sidebar-menu">
         <span class="fa-solid fa-power-off"> </span>

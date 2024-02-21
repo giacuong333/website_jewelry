@@ -2,33 +2,40 @@
 class Login extends Database
 {
 
-          protected function getUser($useremail, $password)
-          {
-                    try {
-                              $stmt = $this->connect()->prepare("SELECT `id`, `email`, `password` FROM `user` WHERE `email` = ?;");
-                              $stmt->execute([$useremail]);
+    protected function getUser($useremail, $password)
+    {
+        $sql = "SELECT `id`, `email`, `password`, `fullname`, `phone_number`, `role_id` FROM `user` WHERE `email` = ?;";
 
-                              if ($stmt->rowCount() == 0) {
-                                        header("location: ../templates/login.php?error=usernotfound");
-                                        exit();
-                              }
+        try {
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute([$useremail]);
 
-                              $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            // The account does not exist
+            if ($stmt->rowCount() == 0) {
+                echo "usernotfound";
+                exit();
+            }
 
-                              $checkPassword = password_verify($password, $user["password"]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                              if (!$checkPassword) {
-                                        $stmt = null;
-                                        header("location: ../templates/login.php?error=wrongpassword");
-                                        exit();
-                              }
+            $checkPassword = password_verify($password, $user["password"]);
 
-                              session_start();
-                              $_SESSION["id"] = $user["id"];
-                              $_SESSION["useremail"] = $user["email"];
-                    } catch (PDOException $e) {
-                              header("location: ../templates/login.php?error=stmtfailed");
-                              exit();
-                    }
-          }
+            // Wrong password
+            if (!$checkPassword) {
+                // header("location: ../templates/login.php?error=wrongpassword");
+                echo "wrongpassword";
+                exit();
+            }
+
+            // Success
+            $_SESSION["id"] = $user["id"];
+            $_SESSION["useremail"] = $user["email"];
+            $_SESSION["fullname"] = $user["fullname"];
+            $_SESSION["phone_number"] = $user["phone_number"];
+            $_SESSION["role_id"] = $user["role_id"];
+        } catch (PDOException $e) {
+            header("location: ../templates/login.php?error=stmtfailed");
+            exit();
+        }
+    }
 }
