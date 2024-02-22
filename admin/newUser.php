@@ -17,7 +17,11 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php
+    include("../admin/common.php");
+    include("../includes/admin.inc.php");
+    ?>
+
 
     <main>
         <form action="../includes/admin.inc.php" method="post">
@@ -53,8 +57,13 @@
                                 <td>Role</td>
                                 <td>
                                     <select class="btn- btn--hover" name="roleid" id="">
-                                        <option value="1">Admin</option>
-                                        <option value="2">Nhân viên</option>
+                                        <?php
+                                        foreach ($roles as $role) {
+                                            echo "<option value='{$role['id']}'>{$role['name']}</option>";
+                                        }
+                                        ?>
+                                        <!-- <option value="1">Admin</option>
+                                        <option value="2">Nhân viên</option> -->
                                     </select>
                                 </td>
                             </tr>

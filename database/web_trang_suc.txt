@@ -80,6 +80,17 @@ CREATE TABLE `orderdetail` (
   `total_money` int
 );
 
+CREATE TABLE `permission` {
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar
+}
+
+CREATE TABLE `role_permission` {
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `role_id` int,
+  `permission_id` int 
+}
+
 ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
 ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
 ALTER TABLE `product` ALTER isNew SET DEFAULT 1;

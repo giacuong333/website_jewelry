@@ -402,6 +402,40 @@ $(document).ready(function () {
     }
   });
 
+  // ========================================================== ROLE ==========================================================
+  // Move on to the add new role page
+  moveOn("#addrole", "../admin/newRole.php");
+
+  // Move on to the rolemanager page
+  moveOn("#exitrole", "../admin/rolemanager.php");
+
+  function deleteRole() {
+    const deleteBtns = $(".del-rolebtn");
+    deleteBtns.each(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const confirmation = confirm("Bạn có chắc chắn muốn xóa vai trò này?");
+        if (confirmation) {
+          const roleId = $(this).closest("tr").data("roleid");
+          window.location.href = "../includes/admin.inc.php?delrole_id=" + roleId;
+        }
+      });
+    });
+  }
+  deleteRole();
+
+  function updateRole() {
+    const editBtns = $(".edit-rolebtn");
+    editBtns.each(function (editBtnIndex) {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const roleId = $(this).closest("tr").data("roleid");
+        window.location.href = "../admin/editrole.php?updrole_id=" + roleId;
+      });
+    });
+  }
+  updateRole();
+
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {
     enableTime: false,

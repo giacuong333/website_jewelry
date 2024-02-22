@@ -12,6 +12,9 @@
 <!-- Navbar -->
 <nav class="navbar">
     <h4>Dashboard</h4>
+    <a href="../index.php" style="text-decoration: none; cursor: pointer;">
+        <img src="../assets/imgs/brand/logo.png" alt="">
+    </a>
     <div class="profile">
         <?php session_start(); ?>
         <p class="profile-name" style="font-size: 18px; font-weight: 500;"><?php echo isset($_SESSION["id"]) ? $_SESSION["fullname"] : "Đăng nhập"; ?></p>

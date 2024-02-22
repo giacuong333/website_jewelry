@@ -480,3 +480,47 @@ if (isset($_POST["updatecategory"])) {
     echo "<script>alert('Update the category failed')</script>";
   }
 }
+
+// =============================================== ROLE ===============================================
+if (isset($_POST["saverole"])) {
+  $roleName = $_POST["rolename"];
+
+  $isSaved = $admin->addRole($roleName);
+
+  if ($isSaved) {
+    echo "<script>alert('Add the role successfully')</script>";
+    echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+  } else {
+    echo "<script>alert('Add the role failed')</script>";
+  }
+}
+
+if (isset($_GET["delrole_id"])) {
+  $roleId = $_GET["delrole_id"];
+
+  $isDeleted = $admin->deleteRole($roleId);
+
+  if ($isDeleted) {
+    echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+  } else {
+    echo "<script>alert('Delete the role failed')</script>";
+  }
+}
+
+if (isset($_GET["updrole_id"])) {
+  $roleId = $_GET["updrole_id"];
+  $rolesId = $admin->getRoleById($roleId);
+}
+
+if (isset($_GET["updaterole"])) {
+  $roldId = $_GET["updrole_id"];
+
+  $isUpdated = $admin->updateRole($id, $roleName);
+
+  if ($isUpdated) {
+    echo "<script>alert('Update the role successfully')</script>";
+    echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+  } else {
+    echo "<script>alert('Update the role failed')</script>";
+  }
+}

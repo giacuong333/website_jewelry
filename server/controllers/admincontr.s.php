@@ -133,4 +133,24 @@ class AdminController extends Admin
     {
         return $this->getAllRoles();
     }
+
+    public function addRole($name)
+    {
+        return $this->addNewRole($name);
+    }
+
+    public function deleteRole($id)
+    {
+        return $this->deleteARole($id);
+    }
+
+    public function updateRole($id, $name)
+    {
+        return $this->updateARole($id, $name);
+    }
+
+    public function getRoleById($id)
+    {
+        return $this->getARoleById($id);
+    }
 }

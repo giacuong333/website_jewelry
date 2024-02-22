@@ -359,6 +359,60 @@ class Admin extends Database
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	protected function addNewRole($name)
+	{
+		$sql = "INSERT INTO `role` (`name`) VALUES (?);";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$name]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function deleteARole($id)
+	{
+		$sql = "UPDATE `role` SET `role`.`isDeleted` = 1 WHERE `role`.`id` = ?";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$id]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function updateARole($id, $name)
+	{
+		$sql = "UPDATE `role` SET `role`.`name` = ? WHERE `role`.`id` = ?;";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$name, $id]);
+			return true;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function getARoleById($id)
+	{
+		$sql = "SELECT * FROM `role` WHERE `role`.`id` = ?;";
+		$stmt = $this->connect()->prepare($sql);
+
+		try {
+			$stmt->execute([$id]);
+			$category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $category ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
 	// ================================================ USER ================================================
 
 	protected function getUsers()
