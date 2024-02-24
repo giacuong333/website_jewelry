@@ -413,6 +413,32 @@ class Admin extends Database
 		}
 	}
 
+	protected function searchAllRoles($searchInput, $searchValue)
+	{
+		$sql = "SELECT * FROM `role` WHERE `role`.`isDeleted` != 1 AND ";
+
+		switch ($searchValue) {
+			case "id":
+				$sql .= "`role`.`id` = ?;";
+				break;
+			case "name":
+				$sql .= "`role`.`name` LIKE ?;";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $roles ?? [];
+		} catch (Exception $e) {
+			// header("location: ../index.php?error=stmtfailed");
+			exit();
+		}
+	}
+
 	// ================================================ USER ================================================
 
 	protected function getUsers()

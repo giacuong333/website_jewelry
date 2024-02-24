@@ -40,6 +40,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Privilege</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -54,6 +55,7 @@
                             <tr data-roleid="<?php echo $role["id"]; ?>">
                                 <td> <?php echo $role["id"]; ?></td>
                                 <td> <?php echo $role["name"]; ?></td>
+                                <td><button type="button" class="btn- btn--hover">Phân quyền</button></td>
                                 <td>
                                     <span class="fa-solid fa-pen-to-square edit-rolebtn"></span>
                                     <span class="fa-solid fa-trash del-rolebtn" name="del-role" value="del-role"></span>

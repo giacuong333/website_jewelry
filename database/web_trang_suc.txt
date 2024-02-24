@@ -1,196 +1,214 @@
-DROP DATABASE IF EXISTS web_trang_suc;
-CREATE DATABASE web_trang_suc;
-USE web_trang_suc;
+  DROP DATABASE IF EXISTS web_trang_suc;
+  CREATE DATABASE web_trang_suc;
+  USE web_trang_suc;
 
-CREATE TABLE `role` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `isDeleted` int
-);
+  /* ------------------------------------- ROLE */
 
-CREATE TABLE `user` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `fullname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone_number` varchar(255) NOT NULL,
-  `password` varchar(255),
-  `role_id` int,
-  `created_at` date,
-  `updated_at` date,
-  `deleted` int
-);
+  CREATE TABLE `role` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `isDeleted` int
+  );
 
-CREATE TABLE `category` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `isDeleted` int
-);
+  /* ------------------------------------- USER */
 
-CREATE TABLE `product` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `price` int NOT NULL,
-  `category_id` int,
-  `discount` int,
-  `thumbnail` varchar(500),
-  `description` varchar(500),
-  `created_at` date,
-  `updated_at` date,
-  `deleted` int,
-  isShow int,
-  isOutstanding int,
-  isNew int
-);
+  CREATE TABLE `user` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `fullname` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL,
+    `phone_number` varchar(255) NOT NULL,
+    `password` varchar(255),
+    `role_id` int,
+    `created_at` date,
+    `updated_at` date,
+    `deleted` int
+  );
 
-CREATE TABLE `gallery` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `product_id` int,
-  `thumbnail` varchar(500)
-);
+  /* ------------------------------------- CATEGORY */
 
-CREATE TABLE `feedback` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `subject_name` varchar(255),
-  `note` varchar(255),
-  `thumbnail` varchar(500),
-  `user_id` int,
-  `product_id` int
-);
+  CREATE TABLE `category` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `isDeleted` int
+  );
 
-CREATE TABLE `order` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `fullname` varchar(255) NOT NULL,
-  `email` varchar(255),
-  `phone_number` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `note` varchar(255),
-  `order_date` date,
-  `status` int,
-  `total_money` int,
-  `user_id` int,
-  `isDeleted` int
-);
+  /* ------------------------------------- PRODUCT */
 
-CREATE TABLE `orderdetail` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `order_id` int,
-  `product_id` int,
-  `price` int,
-  `num` int,
-  `total_money` int
-);
+  CREATE TABLE `product` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `title` varchar(255) NOT NULL,
+    `price` int NOT NULL,
+    `category_id` int,
+    `discount` int,
+    `thumbnail` varchar(500),
+    `description` varchar(500),
+    `created_at` date,
+    `updated_at` date,
+    `deleted` int,
+    isShow int,
+    isOutstanding int,
+    isNew int
+  );
 
-CREATE TABLE `permission` {
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar
-}
+  /* ------------------------------------- GALLERY */
 
-CREATE TABLE `role_permission` {
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `role_id` int,
-  `permission_id` int 
-}
+  CREATE TABLE `gallery` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `product_id` int,
+    `thumbnail` varchar(500)
+  );
 
-ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
-ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
-ALTER TABLE `product` ALTER isNew SET DEFAULT 1;
+  /* ------------------------------------- FEEDBACK */
 
-ALTER TABLE `user` ADD FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  CREATE TABLE `feedback` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `subject_name` varchar(255),
+    `note` varchar(255),
+    `thumbnail` varchar(500),
+    `user_id` int,
+    `product_id` int
+  );
 
-ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  /* ------------------------------------- ORDER */
 
-ALTER TABLE `gallery` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  CREATE TABLE `order` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `fullname` varchar(255) NOT NULL,
+    `email` varchar(255),
+    `phone_number` varchar(255) NOT NULL,
+    `address` varchar(255) NOT NULL,
+    `note` varchar(255),
+    `order_date` date,
+    `status` int,
+    `total_money` int,
+    `user_id` int,
+    `isDeleted` int
+  );
 
-ALTER TABLE `orderdetail` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
+  /* ------------------------------------- ORDERDETAIL */
 
-ALTER TABLE `orderdetail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  CREATE TABLE `orderdetail` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `order_id` int,
+    `product_id` int,
+    `price` int,
+    `num` int,
+    `total_money` int
+  );
 
-ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  /* ------------------------------------- PERMISSION */
 
-ALTER TABLE `feedback` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  CREATE TABLE `permission` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `description` varchar(255)
+  );
 
-ALTER TABLE `feedback` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  /* ------------------------------------- ROLE PERMISSION */
 
-CREATE TRIGGER user_time_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
+  CREATE TABLE `role_permission` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `role_id` int,
+    `permission_id` int
+  );
 
-CREATE TRIGGER product_time_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
+  /* ------------------------------------- SET DEFAULT VALUES */
 
-CREATE TRIGGER order_time_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.order_date = CURRENT_DATE; 
+  ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
+  ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
+  ALTER TABLE `product` ALTER isNew SET DEFAULT 1;
 
-CREATE TRIGGER order_total_create BEFORE INSERT ON `orderdetail` FOR EACH ROW SET NEW.total_money = (NEW.total_money * NEW.num);
+  /* ------------------------------------- REFERENCES  */
 
-CREATE TRIGGER product_time_update BEFORE UPDATE ON `product` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
+  ALTER TABLE `user` ADD FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 
-CREATE TRIGGER user_time_update BEFORE UPDATE ON `user` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
+  ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 
-CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.deleted = 0;
+  ALTER TABLE `gallery` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-CREATE TRIGGER product_delete_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.deleted = 0;
+  ALTER TABLE `orderdetail` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
 
-CREATE TRIGGER category_delete_create BEFORE INSERT ON `category` FOR EACH ROW SET NEW.isDeleted = 0;
+  ALTER TABLE `orderdetail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-CREATE TRIGGER order_delete_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.isDeleted = 0;
+  ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
-CREATE TRIGGER role_delete_create BEFORE INSERT ON `role` FOR EACH ROW SET NEW.isDeleted = 0;
+  ALTER TABLE `feedback` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
-INSERT INTO `role` (`name`) VALUES ('Quản lý');
-INSERT INTO `role` (`name`) VALUES ('Nhân viên');
-INSERT INTO `role` (`name`) VALUES ('Khách hàng');
-INSERT INTO `role` (`name`) VALUES ('Admin');
+  ALTER TABLE `feedback` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3);
-INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
-VALUES ('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
+  /* ------------------------------------- TRIGGERS */
 
-INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Nhẫn', 0);
-INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Vòng Cổ', 0);
-INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Trâm Cài', 0);
-INSERT INTO `category` (`name`, `isDeleted`) VALUES ('Bông tai', 0);
+  CREATE TRIGGER user_time_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
 
-INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
-VALUES ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp');
-INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
-VALUES ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/img1.png', 'Sản phẩm hot nhất hiện nay');
-INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
-VALUES ('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu');
-INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`)
-VALUES ('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
+  CREATE TRIGGER product_time_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
 
-INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) 
-VALUES ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1);
-INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) 
-VALUES ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2);
-INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`)
-VALUES ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
+  CREATE TRIGGER order_time_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.order_date = CURRENT_DATE; 
 
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
-VALUES ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0);
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
-VALUES ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0);
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
-VALUES ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 500000, 3, 0);
-INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) 
-VALUES ('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 500000, 4, 0);
+  CREATE TRIGGER order_total_create BEFORE INSERT ON `orderdetail` FOR EACH ROW SET NEW.total_money = (NEW.total_money * NEW.num);
 
-INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
-VALUES (1, 1, 350000, 2, 70000);
-INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
-VALUES (2, 2, 700000, 2, 1400000);
-INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
-VALUES (3, 3, 800000, 2, 1600000);
-INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) 
-VALUES (4, 4, 800000, 2, 1600000);
+  CREATE TRIGGER product_time_update BEFORE UPDATE ON `product` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
 
-INSERT INTO `gallery` (`product_id`, `thumbnail`) 
-VALUES(1, '../assets/imgs/errings/img1.png');
-INSERT INTO `gallery` (`product_id`, `thumbnail`) 
-VALUES(2, '../assets/imgs/rings/img1.png');
-INSERT INTO `gallery` (`product_id`, `thumbnail`) 
-VALUES(3, '../assets/imgs/brooches/img1.png');
+  CREATE TRIGGER user_time_update BEFORE UPDATE ON `user` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
+
+  CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.deleted = 0;
+
+  CREATE TRIGGER product_delete_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.deleted = 0;
+
+  CREATE TRIGGER category_delete_create BEFORE INSERT ON `category` FOR EACH ROW SET NEW.isDeleted = 0;
+
+  CREATE TRIGGER order_delete_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.isDeleted = 0;
+
+  CREATE TRIGGER role_delete_create BEFORE INSERT ON `role` FOR EACH ROW SET NEW.isDeleted = 0;
+
+  /* ------------------------------------- INSERT VALUES */
+
+  INSERT INTO `role` (`name`) VALUES 
+  ('Quản lý'), 
+  ('Nhân viên'), 
+  ('Khách hàng'), 
+  ('Admin');
+
+  INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) VALUES
+  ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1),
+  ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3),
+  ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2),
+  ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3),
+  ('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
+
+  INSERT INTO `category` (`name`, `isDeleted`) VALUES 
+  ('Nhẫn', 0), 
+  ('Vòng Cổ', 0), 
+  ('Trâm Cài', 0),
+  ('Bông tai', 0);
+
+  INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
+  ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
+  ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/img1.png', 'Sản phẩm hot nhất hiện nay'),
+  ('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
+  ('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
+
+  INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
+  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
+  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
+  ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
+
+  INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) VALUES
+  ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0),
+  ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0),
+  ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 500000, 3, 0),
+  ('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 500000, 4, 0);
+
+  INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) VALUES
+  (1, 1, 350000, 2, 70000),
+  (2, 2, 700000, 2, 1400000),
+  (3, 3, 800000, 2, 1600000),
+  (4, 4, 800000, 2, 1600000);
+
+  INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
+  (1, '../assets/imgs/errings/img1.png'),
+  (2, '../assets/imgs/rings/img1.png'),
+  (3, '../assets/imgs/brooches/img1.png');
+
+  INSERT INTO `permission` (`description`) VALUES
+  ('Get users'),
+  ('Save users'),
+  ('Delete users');

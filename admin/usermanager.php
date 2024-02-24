@@ -49,7 +49,6 @@
 						<th>Phone number</th>
 						<th>Role</th>
 						<th>Create time</th>
-						<th>Update time</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -63,12 +62,11 @@
 					?>
 							<tr data-userid="<?php echo $user["id"]; ?>">
 								<td><?php echo $user["id"]; ?></td>
-								<td> <?php echo $user["fullname"]; ?></td>
-								<td> <?php echo $user["email"]; ?></td>
-								<td> <?php echo $user["phone_number"]; ?></td>
-								<td> <?php echo $user["name"]; ?></td>
-								<td> <?php echo $user["created_at"]; ?></td>
-								<td> <?php echo $user["updated_at"]; ?></td>
+								<td><?php echo $user["fullname"]; ?></td>
+								<td><?php echo $user["email"]; ?></td>
+								<td><?php echo $user["phone_number"]; ?></td>
+								<td><?php echo $user["name"]; ?></td>
+								<td><?php echo $user["created_at"]; ?></td>
 								<td>
 									<span class="fa-solid fa-pen-to-square edit-userbtn" name="editbtn" value="editbtn"></span>
 									<span class="fa-solid fa-trash del-userbtn" name="delbtn" value="delbtn"></span>

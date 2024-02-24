@@ -77,7 +77,6 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
                                         <td>{$user['phone_number']}</td>
                                         <td>{$user['name']}</td>
                                         <td>{$user['created_at']}</td>
-                                        <td>{$user['updated_at']}</td>
                                         <td>
                                                   <span class='fa-solid fa-pen-to-square edit-userbtn' name='editbtn' value='editbtn'></span>
                                                   <span class='fa-solid fa-trash del-userbtn' name='delbtn' value='delbtn'></span>
@@ -482,6 +481,7 @@ if (isset($_POST["updatecategory"])) {
 }
 
 // =============================================== ROLE ===============================================
+// Add
 if (isset($_POST["saverole"])) {
   $roleName = $_POST["rolename"];
 
@@ -495,6 +495,7 @@ if (isset($_POST["saverole"])) {
   }
 }
 
+// Delete
 if (isset($_GET["delrole_id"])) {
   $roleId = $_GET["delrole_id"];
 
@@ -507,6 +508,7 @@ if (isset($_GET["delrole_id"])) {
   }
 }
 
+// Update
 if (isset($_GET["updrole_id"])) {
   $roleId = $_GET["updrole_id"];
   $rolesId = $admin->getRoleById($roleId);
@@ -523,4 +525,33 @@ if (isset($_GET["updaterole"])) {
   } else {
     echo "<script>alert('Update the role failed')</script>";
   }
+}
+
+// Search 
+if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "role") {
+  $searchInput = $_POST["searchInput"];
+  $searchValue = $_POST["searchValue"];
+
+  $searchedRoles = $admin->searchRoles($searchInput, $searchValue);
+
+  $html = "";
+
+  if (isset($searchedRoles)) {
+    foreach ($searchedRoles as $role) {
+      $html .= "
+      <tr data-roleid='{$role['id']}' >
+        <td>{$role['id']}</td>
+        <td>{$role['name']}</td>
+        <td><button type='button' class='btn- btn--hover'>Phân quyền</button></td>
+        <td>
+            <span class='fa-solid fa-pen-to-square edit-rolebtn'></span>
+            <span class='fa-solid fa-trash del-rolebtn' name='del-role' value='del-role'></span>
+        </td>
+    </tr>";
+    }
+  } else {
+    $html .= "No role found";
+  }
+
+  echo $html;
 }

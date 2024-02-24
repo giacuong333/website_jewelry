@@ -153,4 +153,9 @@ class AdminController extends Admin
     {
         return $this->getARoleById($id);
     }
+
+    public function searchRoles($searchInput, $searchValue)
+    {
+        return $this->searchAllRoles($searchInput, $searchValue);
+    }
 }

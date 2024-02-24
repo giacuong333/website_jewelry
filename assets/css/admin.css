@@ -177,7 +177,9 @@ main {
 
 #bodyorder > tr:nth-child(odd),
 #bodyuser > tr:nth-child(odd),
-#bodycategory > tr:nth-child(odd) {
+#bodycategory > tr:nth-child(odd),
+#bodyrole > tr:nth-child(odd),
+#bodyprivilege > tr:nth-child(odd) {
   background-color: #fff;
 }
 /* Product */
@@ -293,7 +295,6 @@ th {
 
 .dashboard-body table tr td > a:hover {
   color: #2d2b98;
-  font-size: 20px;
 }
 
 .wrapper .content-other {
@@ -545,4 +546,9 @@ h4 {
 h4 {
   font-size: 16px;
   font-weight: 600;
+}
+
+.btn-save {
+  float: right;
+  margin: 10px 30px;
 }

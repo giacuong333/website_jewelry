@@ -32,7 +32,7 @@ $(document).ready(function () {
         window.location.href = "../admin/ordermanager.php";
         break;
       case 6:
-        window.location.href = "../admin/authorizemanager.php";
+        window.location.href = "../admin/privilegemanager.php";
         break;
       case 7:
         window.location.href = "../admin/rolemanager.php";
@@ -435,6 +435,18 @@ $(document).ready(function () {
     });
   }
   updateRole();
+
+  // Search
+  const searchRoleInput = $("#searchroleinput");
+  searchRoleInput.on("keypress", function (e) {
+    const searchRoleValue = $("#searchrolevalue");
+    const bodyRole = $("#bodyrole");
+
+    // This is the `enter` key
+    if (e.which == 13) {
+      handleSearch("role", $(this), searchRoleValue, bodyRole, updateRole, deleteRole);
+    }
+  });
 
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {
