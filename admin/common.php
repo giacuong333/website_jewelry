@@ -59,11 +59,6 @@
     </div>
 
     <div class="sidebar-menu">
-        <span class="fa-solid fa-code-merge"></span>
-        <p>Permissions</p>
-    </div>
-
-    <div class="sidebar-menu">
         <span class="fa-solid fa-user-secret"></span>
         <p>Roles</p>
     </div>

@@ -32,15 +32,12 @@ $(document).ready(function () {
         window.location.href = "../admin/ordermanager.php";
         break;
       case 6:
-        window.location.href = "../admin/privilegemanager.php";
-        break;
-      case 7:
         window.location.href = "../admin/rolemanager.php";
         break;
-      case 8:
+      case 7:
         window.location.href = "../admin/othermanager.php";
         break;
-      case 9:
+      case 8:
         window.location.href = "../includes/logout.inc.php";
         break;
     }
@@ -447,6 +444,32 @@ $(document).ready(function () {
       handleSearch("role", $(this), searchRoleValue, bodyRole, updateRole, deleteRole);
     }
   });
+
+  // ========================================================== PRIVILEGE ==========================================================
+  // Clicking on the `Phân quyền` button
+  (() => {
+    $(".btn-privilege").each(function () {
+      $(this).click(function (e) {
+        e.preventDefault();
+        const roleId = $(this).closest("tr").data("roleid");
+
+        $.ajax({
+          type: "POST",
+          url: "../includes/admin.inc.php",
+          data: { role_privilege_id: roleId },
+          success: function (response) {
+            $(".privilege-panel").html(response);
+
+            // Clicking on the overlay
+            $(".btn--exit").click(function () {
+              $(".overlay").remove();
+              $(".privilege-form").remove();
+            });
+          },
+        });
+      });
+    });
+  })();
 
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {

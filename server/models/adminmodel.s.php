@@ -560,4 +560,60 @@ class Admin extends Database
 			exit();
 		}
 	}
+
+	// ================================================ PERMISSION ================================================
+
+	protected function getAllPermissions()
+	{
+		$sql = "SELECT * FROM `permission` 
+		JOIN `role_permission` ON `role_permission`.`permission_id` = `permission`.`id` 
+		JOIN `role` ON `role`.`id` = `role_permission`.`role_id`;";
+
+		try {
+			$stmt = $this->connect()->query($sql);
+			$permissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $permissions ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function getPermissionsByRoleId($id)
+	{
+		$sql = "SELECT `permission`.`id` AS `permissionId`, `permission`.`description` FROM `permission` 
+		JOIN `role_permission` ON `role_permission`.`permission_id` = `permissionId` 
+		JOIN `role` ON `role`.`id` = `role_permission`.`role_id`
+		WHERE `role`.`id` = ? AND `role_permission`.`isAllowed` != 0;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			$permissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $permissions ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function setPrivilegeByRoleId($roleId, $permissionDescription, $isAllowed)
+	{
+		// First, check if the permission already exists for the role
+		$sql = "SELECT * FROM `permission` WHERE `description` = ?;";
+		$stmt = $this->connect()->prepare($sql);
+		$stmt->execute([$permissionDescription]);
+		$permission = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if ($permission) {
+			// Permission exists, update the recod
+			$permissionId = $permission["id"];
+			$sql = "INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `isAllowed` = VALUES (`isAllowed`);";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$roleId, $permissionId]);
+			return true; // Save the permissions successfully
+		} else {
+			return false;
+		}
+	}
 }

@@ -555,3 +555,93 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 
   echo $html;
 }
+
+// =============================================== PRIVILEGE ===============================================
+if (isset($_POST["role_privilege_id"])) {
+  $role_privilege_id = $_POST["role_privilege_id"];
+
+  // Fetch all permissions associated with the role ID
+  $permissions = $admin->getPermissionsByRoleId($role_privilege_id);
+
+  // Convert the permissions array into a more efficient format for checking existence
+  $permissionsMap = [];
+  foreach ($permissions as $permission) {
+    $permissionsMap[$permission['description']] = $permission['permissionId'];
+  }
+
+  // Define functions and actions
+  $functions = array(
+    "Category" => array("Add", "Edit", "Delete", "See"),
+    "Users" => array("Add", "Edit", "Delete", "See"),
+    "Products" => array("Add", "Edit", "Delete", "See"),
+    "Statistic" => array("Add", "Edit", "Delete", "See"),
+    "Orders" => array("Add", "Edit", "Delete", "See"),
+    "Permissions" => array("Add", "Edit", "Delete", "See"),
+    "Roles" => array("Add", "Edit", "Delete", "See")
+  );
+
+  // Start generating HTML
+  $html = '
+    <div class="overlay"></div>
+      <form action="../includes/admin.inc.php?role_privilege_id=' . $role_privilege_id . '" method="post" class="privilege-form">
+          <div class="dashboard-body">
+              <div class="header">FUNCTIONAL INFORMATION</div>
+              <table style="border: none;">
+                  <thead>
+                      <tr>
+                          <th>FUNCTION NAME</th>
+                          <th colspan="4">ACTION</th>
+                      </tr>
+                  </thead>
+                  <tbody id="bodyprivilege">';
+
+  // Generate checkboxes for each function-action combination
+  foreach ($functions as $function => $actions) {
+    $html .= '<tr style="height: 40px; text-align: center;"><td>' . $function . '</td>';
+    foreach ($actions as $action) {
+      $permissionKey = $action . ' ' . strtolower($function);
+      $checked = array_key_exists($permissionKey, $permissionsMap) ? 'checked' : '';
+      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '" id="' . $permissionKey . '" ' . $checked . '><label for="' . $permissionKey . '">' . $action . '</label></td>';
+    }
+    $html .= '</tr>';
+  }
+
+  // Close the HTML form
+  $html .= '</tbody>
+          </table>
+          <button type="button" class="btn- btn--exit">Exit</button>
+          <button type="submit" name="save-privilege" value="save-privilege" class="btn- btn--hover btn-save">Save</button>
+          </div>
+        </form>';
+
+  // Display the generated HTML form
+  echo $html;
+}
+
+// When clicking on the `save` privilege
+if (isset($_POST["save-privilege"])) {
+  if (isset($_GET["role_privilege_id"])) {
+    $role_privilege_id = $_GET["role_privilege_id"];
+  }
+
+  // Define functions and actions
+  $functions = array(
+    "Category" => array("Add", "Edit", "Delete", "See"),
+    "Users" => array("Add", "Edit", "Delete", "See"),
+    "Products" => array("Add", "Edit", "Delete", "See"),
+    "Statistic" => array("Add", "Edit", "Delete", "See"),
+    "Orders" => array("Add", "Edit", "Delete", "See"),
+    "Permissions" => array("Add", "Edit", "Delete", "See"),
+    "Roles" => array("Add", "Edit", "Delete", "See")
+  );
+
+  foreach ($functions as $function => $actions) {
+    foreach ($actions as $action) {
+      $permissionKey = $action . ' ' . strtolower($function);
+      $isChecked = isset($_POST[$permissionKey]) ? 1 : 0;
+      $admin->setPrivilegeByRoleId($role_privilege_id, $permissionKey, $isChecked);
+    }
+  }
+
+  // echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+}

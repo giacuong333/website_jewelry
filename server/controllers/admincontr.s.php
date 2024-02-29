@@ -158,4 +158,20 @@ class AdminController extends Admin
     {
         return $this->searchAllRoles($searchInput, $searchValue);
     }
+
+    // ===================================================== PERMISSION =====================================================
+    public function getPermissions()
+    {
+        return $this->getAllPermissions();
+    }
+
+    public function getPermissionsByRoleId($id)
+    {
+        return Admin::getPermissionsByRoleId($id);
+    }
+
+    public function setPrivilegeByRoleId($role_privilege_id, $permissionKey, $isChecked)
+    {
+        return Admin::setPrivilegeByRoleId($role_privilege_id, $permissionKey, $isChecked);
+    }
 }
