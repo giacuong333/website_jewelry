@@ -53,7 +53,11 @@
                                     <select class="btn- btn--hover" name="roleid" id="">
                                         <?php
                                         foreach ($roles as $role) {
-                                            echo "<option value='{$role['roleid']}'>{$role['name']}</option>";
+                                            if ($_GET["role_id"] == $role['id']) {
+                                                echo "<option value='{$role['id']}' selected>{$role['name']}</option>";
+                                                continue;
+                                            }
+                                            echo "<option value='{$role['id']}'>{$role['name']}</option>";
                                         }
                                         ?>
                                     </select>

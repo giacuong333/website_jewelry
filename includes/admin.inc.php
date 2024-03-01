@@ -59,38 +59,39 @@ if (isset($_GET["deluser_id"])) {
   echo "<script>window.location.href='../admin/usermanager.php'</script>";
 }
 
-// Handling when admin searches
+// Search
 if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "user") {
   $searchValue = trim($_POST["searchValue"]);
   $searchInput = trim($_POST["searchInput"]);
 
   $userContainer = $admin->searchUsers($searchInput, $searchValue);
 
-  $html = "";
+  $html = isset($userContainer) ? "No user found" : "";
 
-  foreach ($userContainer as $user) {
-    $html .= "
-                              <tr data-userid='{$user['id']}'>
-                                        <td>{$user['id']}</td>
-                                        <td>{$user['fullname']}</td>
-                                        <td>{$user['email']}</td>
-                                        <td>{$user['phone_number']}</td>
-                                        <td>{$user['name']}</td>
-                                        <td>{$user['created_at']}</td>
-                                        <td>
-                                                  <span class='fa-solid fa-pen-to-square edit-userbtn' name='editbtn' value='editbtn'></span>
-                                                  <span class='fa-solid fa-trash del-userbtn' name='delbtn' value='delbtn'></span>
-                                        </td>
-                              </tr>
-                    ";
+  if (isset($userContainer)) {
+    foreach ($userContainer as $user) {
+      $html .= "
+                                <tr data-userid='{$user['id']}' data-roleid='{$user['role_id']}'>
+                                          <td>{$user['id']}</td>
+                                          <td>{$user['fullname']}</td>
+                                          <td>{$user['email']}</td>
+                                          <td>{$user['phone_number']}</td>
+                                          <td>{$user['name']}</td>
+                                          <td>{$user['created_at']}</td>
+                                          <td>
+                                                    <span class='fa-solid fa-pen-to-square edit-userbtn' name='editbtn' value='editbtn'></span>
+                                                    <span class='fa-solid fa-trash del-userbtn' name='delbtn' value='delbtn'></span>
+                                          </td>
+                                </tr>
+                      ";
+    }
   }
-
   echo $html;
 }
 
 // =============================================== PRODUCT ===============================================
 
-// Save a product
+// Add a new product
 if (isset($_POST["saveproduct"])) {
   $title = $_POST["title"];
   $categoryid = $_POST["categoryid"];
@@ -100,6 +101,7 @@ if (isset($_POST["saveproduct"])) {
   $isShow = isset($_POST["show"]) ? 1 : 0;
   $isOutstanding = isset($_POST["outstanding"]) ? 1 : 0;
   $isNew = isset($_POST["new"]) ? 1 : 0;
+
   // Check if the file was uploaded without errors
   if (isset($_FILES["imagepath"]) && $_FILES["imagepath"]["error"] == 0) {
     $uploadDir = "../assets/imgs/";
@@ -143,6 +145,7 @@ if (isset($_GET["upd-productid"])) {
   $product = $admin->getProductById($productId);
 }
 
+// Update
 if (isset($_POST["updateproduct"])) {
   $productId = $_POST["productid"];
   $title = $_POST["title"];
@@ -179,6 +182,7 @@ if (isset($_POST["updateproduct"])) {
   }
 }
 
+// Search
 if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "product") {
   $searchProductInput = trim($_POST["searchInput"]);
   $searchProductValue = trim($_POST["searchValue"]);
@@ -192,7 +196,7 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
     $isNew = $product['isNew'] == 1 ? "checked" : "";
     $isShow = $product['isShow'] == 1 ? "checked" : "";
     $html .= "
-        <tr data-productid='{$product['id']}'>
+        <tr data-productid='{$product['id']}' data-categoryid='{$product['category_id']}'>
             <td>{$product['id']}</td>
             <td>{$product['name']}</td>
             <td>{$product['title']}</td>
@@ -333,7 +337,8 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
   $searchValue = trim($_POST["searchValue"]);
 
   $orders = $admin->searchOrders($searchInput, $searchValue);
-  $html = "";
+
+  $html = isset($orders) ? "No order found" : "";
 
   if (isset($orders)) {
     foreach ($orders as $order) {
@@ -376,7 +381,7 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
 
   $orders = $admin->searchOrdersByDate($fromDate, $toDate);
 
-  $html = "";
+  $html = isset($orders) ? "No order found" : "";
 
   if (isset($orders)) {
     foreach ($orders as  $order) {
@@ -397,10 +402,7 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
           </td>
         </tr>";
     }
-  } else {
-    $html .= "No orders found";
   }
-
   echo $html;
 }
 
@@ -431,7 +433,7 @@ if (isset($_POST["savecategory"])) {
   }
 }
 
-// 
+// Getting the category by id
 if (isset($_GET["updcategory_id"])) {
   $categoryId = $_GET["updcategory_id"];
   $categoriesId = $admin->getCategoryById($categoryId);
@@ -442,12 +444,12 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
   $searchInput = $_POST["searchInput"];
   $searchValue = $_POST["searchValue"];
 
-  $categories = $admin->searchCategories($searchInput, $searchValue);
+  $categoriesSearched = $admin->searchCategories($searchInput, $searchValue);
 
-  $html = "";
+  $html = isset($categoriesSearched) ? "No category found" : "";
 
-  if (isset($categories)) {
-    foreach ($categories as $category) {
+  if (isset($categoriesSearched)) {
+    foreach ($categoriesSearched as $category) {
       $html .= "
         <tr data-categoryid='{$category['id']}'>
           <td>{$category['id']}</td>
@@ -458,8 +460,6 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
           </td>
         </tr>";
     }
-  } else {
-    $html .= "No category found";
   }
 
   echo $html;
@@ -534,7 +534,7 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 
   $searchedRoles = $admin->searchRoles($searchInput, $searchValue);
 
-  $html = "";
+  $html = isset($searchedRoles) ? "No role found" : "";
 
   if (isset($searchedRoles)) {
     foreach ($searchedRoles as $role) {
@@ -549,16 +549,13 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
         </td>
     </tr>";
     }
-  } else {
-    $html .= "No role found";
   }
-
   echo $html;
 }
 
 // =============================================== PRIVILEGE ===============================================
-if (isset($_POST["role_privilege_id"])) {
-  $role_privilege_id = $_POST["role_privilege_id"];
+if (isset($_GET["role_privilege_id"])) {
+  $role_privilege_id = $_GET["role_privilege_id"];
 
   // Fetch all permissions associated with the role ID
   $permissions = $admin->getPermissionsByRoleId($role_privilege_id);
@@ -583,7 +580,7 @@ if (isset($_POST["role_privilege_id"])) {
   // Start generating HTML
   $html = '
     <div class="overlay"></div>
-      <form action="../includes/admin.inc.php?role_privilege_id=' . $role_privilege_id . '" method="post" class="privilege-form">
+      <form action="../includes/admin.inc.php? method="post" class="privilege-form">
           <div class="dashboard-body">
               <div class="header">FUNCTIONAL INFORMATION</div>
               <table style="border: none;">
@@ -601,7 +598,7 @@ if (isset($_POST["role_privilege_id"])) {
     foreach ($actions as $action) {
       $permissionKey = $action . ' ' . strtolower($function);
       $checked = array_key_exists($permissionKey, $permissionsMap) ? 'checked' : '';
-      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '" id="' . $permissionKey . '" ' . $checked . '><label for="' . $permissionKey . '">' . $action . '</label></td>';
+      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '"' . $checked . ' id="' . $permissionKey . '"><label for="' . $permissionKey . '">' . $action . '</label></td>';
     }
     $html .= '</tr>';
   }
@@ -643,5 +640,5 @@ if (isset($_POST["save-privilege"])) {
     }
   }
 
-  // echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+  echo "<script>window.location.href='../admin/rolemanager.php'</script>";
 }

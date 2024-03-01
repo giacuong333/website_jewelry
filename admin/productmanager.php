@@ -58,7 +58,7 @@
 					if (is_array($products)) {
 						foreach ($products as $product) {
 					?>
-							<tr data-productid="<?php echo $product["id"]; ?>">
+							<tr data-productid="<?php echo $product["id"]; ?>" data-categoryid="<?php echo $product["category_id"]; ?>">
 								<td> <?php echo $product["id"]; ?></td>
 								<td> <?php echo $product["name"]; ?></td>
 								<td> <?php echo $product["title"]; ?></td>

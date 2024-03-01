@@ -137,7 +137,8 @@ $(document).ready(function () {
       $(this).click((e) => {
         e.stopPropagation();
         const productId = $(this).closest("tr").data("productid");
-        window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
+        const categoryId = $(this).closest("tr").data("categoryid");
+        window.location.href = "../admin/editproduct.php?upd-productid=" + productId + "&categoryid=" + categoryId;
       });
     });
   }
@@ -168,7 +169,9 @@ $(document).ready(function () {
       $(this).click(function (e) {
         e.stopPropagation();
         const userId = $(this).closest("tr").data("userid");
-        window.location.href = "../admin/edituser.php?upduser_id=" + userId;
+        const roleId = $(this).closest("tr").data("roleid");
+        console.log(roleId);
+        window.location.href = "../admin/edituser.php?upduser_id=" + userId + "&role_id=" + roleId;
       });
     });
   }
@@ -454,7 +457,7 @@ $(document).ready(function () {
         const roleId = $(this).closest("tr").data("roleid");
 
         $.ajax({
-          type: "POST",
+          type: "GET",
           url: "../includes/admin.inc.php",
           data: { role_privilege_id: roleId },
           success: function (response) {

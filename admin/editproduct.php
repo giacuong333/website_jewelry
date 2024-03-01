@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -51,7 +49,7 @@
                                     <select class="btn- btn--hover" name="categoryid" id="">
                                         <?php
                                         foreach ($categories as $category) {
-                                            if ($_GET["upd-productid"] == $category["product_id"]) {
+                                            if ($_GET["categoryid"] == $category["id"]) {
                                                 echo "<option value='{$category['id']}' selected>{$category['name']}</option>";
                                                 continue;
                                             }
@@ -64,7 +62,7 @@
                             <tr>
                                 <td>Price</td>
                                 <td>
-                                    <input type="text" value="<?php echo $product['price']; ?>" required name="price" />
+                                    <input type="text" name="price" value="<?php echo $product['price']; ?>" required />
                                 </td>
                             </tr>
                             <tr>
@@ -86,7 +84,7 @@
                                         <input name="show" id="show" <?php echo $product['isShow'] == 1 ? "checked" : ""; ?> type="checkbox" />Show
                                     </label>
                                     <label for="outstanding">
-                                        <input name="outstanding" <?php echo $product['isOutstanding'] == 1 ? "checked" : ""; ?> id="outstanding" type="checkbox" />Outstanding
+                                        <input name="outstanding" id="outstanding" <?php echo $product['isOutstanding'] == 1 ? "checked" : ""; ?> type="checkbox" />Outstanding
                                     </label>
                                     <label for="new">
                                         <input name="new" id="new" <?php echo $product['isNew'] == 1 ? "checked" : ""; ?> type="checkbox" />New

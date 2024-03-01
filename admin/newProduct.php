@@ -11,8 +11,6 @@
 	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
 	<!-- JQuery -->
 	<script src="../assets/libs/jquery-3.7.1.min.js"></script>
-	<!-- JS -->
-	<script src="../js/admin.js"></script>
 
 </head>
 

@@ -60,7 +60,7 @@
 					if (is_array($users)) {
 						foreach ($users as $user) {
 					?>
-							<tr data-userid="<?php echo $user["id"]; ?>">
+							<tr data-userid="<?php echo $user["id"]; ?>" data-roleid="<?php echo $user["role_id"]; ?>">
 								<td><?php echo $user["id"]; ?></td>
 								<td><?php echo $user["fullname"]; ?></td>
 								<td><?php echo $user["email"]; ?></td>
