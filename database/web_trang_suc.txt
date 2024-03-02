@@ -142,29 +142,76 @@
 
   /* ------------------------------------- TRIGGERS */
 
-  CREATE TRIGGER user_time_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
+  CREATE TRIGGER user_time_create 
+  BEFORE INSERT ON `user` 
+  FOR EACH ROW 
+    SET NEW.created_at = CURRENT_DATE;
 
-  CREATE TRIGGER product_time_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.created_at = CURRENT_DATE;
+  CREATE TRIGGER product_time_create 
+  BEFORE INSERT ON `product` 
+  FOR EACH ROW 
+    SET NEW.created_at = CURRENT_DATE;
 
-  CREATE TRIGGER order_time_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.order_date = CURRENT_DATE; 
+  CREATE TRIGGER order_time_create 
+  BEFORE INSERT ON `order` 
+  FOR EACH ROW 
+    SET NEW.order_date = CURRENT_DATE; 
 
-  CREATE TRIGGER order_total_create BEFORE INSERT ON `orderdetail` FOR EACH ROW SET NEW.total_money = (NEW.total_money * NEW.num);
+  CREATE TRIGGER order_total_create 
+  BEFORE INSERT ON `orderdetail` 
+  FOR EACH ROW 
+    SET NEW.total_money = (NEW.total_money * NEW.num);
 
-  CREATE TRIGGER product_time_update BEFORE UPDATE ON `product` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
+  CREATE TRIGGER product_time_update 
+  BEFORE UPDATE ON `product` 
+  FOR EACH ROW 
+    SET NEW.updated_at = CURRENT_DATE;
 
-  CREATE TRIGGER user_time_update BEFORE UPDATE ON `user` FOR EACH ROW SET NEW.updated_at = CURRENT_DATE;
+  CREATE TRIGGER user_time_update 
+  BEFORE UPDATE ON `user` 
+  FOR EACH ROW 
+    SET NEW.updated_at = CURRENT_DATE;
 
-  CREATE TRIGGER user_delete_create BEFORE INSERT ON `user` FOR EACH ROW SET NEW.deleted = 0;
+  CREATE TRIGGER user_delete_create 
+  BEFORE INSERT ON `user` 
+  FOR EACH ROW 
+    SET NEW.deleted = 0;
 
-  CREATE TRIGGER product_delete_create BEFORE INSERT ON `product` FOR EACH ROW SET NEW.deleted = 0;
+  CREATE TRIGGER product_delete_create 
+  BEFORE INSERT ON `product` 
+  FOR EACH ROW 
+    SET NEW.deleted = 0;
 
-  CREATE TRIGGER category_delete_create BEFORE INSERT ON `category` FOR EACH ROW SET NEW.isDeleted = 0;
+  CREATE TRIGGER category_delete_create 
+  BEFORE INSERT ON `category` 
+  FOR EACH ROW 
+    SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER order_delete_create BEFORE INSERT ON `order` FOR EACH ROW SET NEW.isDeleted = 0;
+  CREATE TRIGGER order_delete_create 
+  BEFORE INSERT ON `order` 
+  FOR EACH ROW 
+    SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER role_delete_create BEFORE INSERT ON `role` FOR EACH ROW SET NEW.isDeleted = 0;
+  CREATE TRIGGER role_delete_create 
+  BEFORE INSERT ON `role` 
+  FOR EACH ROW 
+    SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER role_permission_create_allow BEFORE INSERT ON `role_permission` FOR EACH ROW SET NEW.isAllowed = 1;
+  CREATE TRIGGER role_permission_create_allow 
+  BEFORE INSERT ON `role_permission` 
+  FOR EACH ROW 
+    SET NEW.isAllowed = 1;
+
+  CREATE TRIGGER add_role_permission 
+  AFTER INSERT ON `role` 
+  FOR EACH ROW 
+  BEGIN 
+    INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES 
+    (NEW.id, 1), (NEW.id, 2), (NEW.id, 3), (NEW.id, 4), (NEW.id, 5),
+    (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
+    (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
+    (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
+    (NEW.id, 21), (NEW.id, 22);
 
   /* ------------------------------------- INSERT VALUES */
 
@@ -221,10 +268,6 @@
   ('Edit users'),
   ('Delete users'),
   ('See users'),
-  -- ORDERS
-  ('Solve orders'),
-  ('Delete orders'),
-  ('See orders'),
   -- CATEGORIES
   ('Add categories'),
   ('Edit categories'),
@@ -240,10 +283,12 @@
   ('Edit products'),
   ('Delete products'),
   ('See products'),
+  -- ORDERS
+  ('Solve orders'),
+  ('Delete orders'),
+  ('See orders'),
   -- PERMISSIONS
-  ('Add permissions'),
   ('Edit permissions'),
-  ('Delete permissions'),
   ('See permissions'),
   -- STATISTICS
   ('See statistics');
@@ -251,5 +296,14 @@
   INSERT INTO `role_permission` (`role_id`, `permission_id`, `isAllowed`) VALUES
   (1, 1, 1), (1, 2, 1), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 6, 1), (1, 7, 1), (1, 8, 1), (1, 9, 1), (1, 10, 1),
   (1, 11, 1), (1, 12, 1), (1, 13, 1), (1, 14, 1), (1, 15, 1), (1, 16, 1), (1, 17, 1), (1, 18, 1), (1, 19, 1), (1, 20, 1),
-  (1, 21, 1), (1, 22, 1), (1, 23, 1), (1, 24, 1),
-  (2, 1, 1), (2, 3, 1);
+  (1, 21, 1), (1, 22, 1),
+  (2, 1, 1), (2, 2, 1), (2, 3, 1), (2, 4, 1), (2, 5, 1), (2, 6, 1), (2, 7, 1), (2, 8, 1), (2, 9, 1), (2, 10, 1),
+  (2, 11, 1), (2, 12, 1), (2, 13, 1), (2, 14, 1), (2, 15, 1), (2, 16, 1), (2, 17, 1), (2, 18, 1), (2, 19, 1), (2, 20, 1),
+  (2, 21, 1), (2, 22, 1),
+  (3, 1, 0), (3, 2, 0), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0), (3, 9, 0), (3, 10, 0),
+  (3, 11, 0), (3, 12, 0), (3, 13, 0), (3, 14, 0), (3, 15, 0), (3, 16, 0), (3, 17, 0), (3, 18, 0), (3, 19, 0), (3, 20, 0),
+  (3, 21, 0), (3, 22, 0),
+  (4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
+  (4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
+  (4, 21, 1), (4, 22, 1);
+  

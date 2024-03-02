@@ -554,6 +554,7 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 }
 
 // =============================================== PRIVILEGE ===============================================
+// Render permissions based on the role id
 if (isset($_GET["role_privilege_id"])) {
   $role_privilege_id = $_GET["role_privilege_id"];
 
@@ -568,10 +569,10 @@ if (isset($_GET["role_privilege_id"])) {
 
   // Define functions and actions
   $functions = array(
-    "Category" => array("Add", "Edit", "Delete", "See"),
+    "Categories" => array("Add", "Edit", "Delete", "See"),
     "Users" => array("Add", "Edit", "Delete", "See"),
     "Products" => array("Add", "Edit", "Delete", "See"),
-    "Statistic" => array("Add", "Edit", "Delete", "See"),
+    "Statistics" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Add", "Edit", "Delete", "See"),
     "Permissions" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See")
@@ -580,7 +581,7 @@ if (isset($_GET["role_privilege_id"])) {
   // Start generating HTML
   $html = '
     <div class="overlay"></div>
-      <form action="../includes/admin.inc.php? method="post" class="privilege-form">
+      <form action="../includes/admin.inc.php?role_privilege_id=' . $role_privilege_id  . '" method="post" class="privilege-form">
           <div class="dashboard-body">
               <div class="header">FUNCTIONAL INFORMATION</div>
               <table style="border: none;">
@@ -596,9 +597,10 @@ if (isset($_GET["role_privilege_id"])) {
   foreach ($functions as $function => $actions) {
     $html .= '<tr style="height: 40px; text-align: center;"><td>' . $function . '</td>';
     foreach ($actions as $action) {
-      $permissionKey = $action . ' ' . strtolower($function);
-      $checked = array_key_exists($permissionKey, $permissionsMap) ? 'checked' : '';
-      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '"' . $checked . ' id="' . $permissionKey . '"><label for="' . $permissionKey . '">' . $action . '</label></td>';
+      $permissionKey = $action . '-' . strtolower($function);
+      $permissionDescription = $action . ' ' . strtolower($function);
+      $checked = array_key_exists($permissionDescription, $permissionsMap) ? 'checked' : '';
+      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '" ' . $checked . ' id="' . $permissionKey . '"> <label for="' . $permissionKey . '">' . $action . '</label></td>';
     }
     $html .= '</tr>';
   }
@@ -623,10 +625,10 @@ if (isset($_POST["save-privilege"])) {
 
   // Define functions and actions
   $functions = array(
-    "Category" => array("Add", "Edit", "Delete", "See"),
+    "Categories" => array("Add", "Edit", "Delete", "See"),
     "Users" => array("Add", "Edit", "Delete", "See"),
     "Products" => array("Add", "Edit", "Delete", "See"),
-    "Statistic" => array("Add", "Edit", "Delete", "See"),
+    "Statistics" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Add", "Edit", "Delete", "See"),
     "Permissions" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See")
@@ -634,11 +636,12 @@ if (isset($_POST["save-privilege"])) {
 
   foreach ($functions as $function => $actions) {
     foreach ($actions as $action) {
-      $permissionKey = $action . ' ' . strtolower($function);
-      $isChecked = isset($_POST[$permissionKey]) ? 1 : 0;
-      $admin->setPrivilegeByRoleId($role_privilege_id, $permissionKey, $isChecked);
+      $permissionDescription = $action . '-' . strtolower($function);
+      $checked = isset($_POST[$permissionDescription]) ? 1 : 0;
+      $permissionDescription = str_replace("-", " ", $permissionDescription);
+      $admin->setPrivilegeByRoleId($role_privilege_id, $permissionDescription, $checked);
     }
   }
 
-  echo "<script>window.location.href='../admin/rolemanager.php'</script>";
+  echo "<script>window.location.href = '../admin/rolemanager.php';</script>";
 }
