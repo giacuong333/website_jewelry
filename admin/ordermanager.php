@@ -21,7 +21,10 @@
 </head>
 
 <body id="order-body">
-	<?php include("../admin/common.php"); ?>
+	<?php
+	include("../admin/common.php");
+	include("../includes/admin.inc.php");
+	?>
 	<!-- Order details -->
 
 	<main>
@@ -58,8 +61,6 @@
 
 				<tbody id="bodyorder">
 					<?php
-					include("../includes/admin.inc.php");
-
 					if (is_array($orders)) {
 						foreach ($orders as $order) {
 							$status = $order["status"] == 1 ? "Đã xử lý" : "Đang xử lý";
@@ -67,14 +68,30 @@
 							<tr class="row-order" data-orderid="<?php echo $order["id"]; ?>">
 								<td> <?php echo $order["id"]; ?></td>
 								<td> <?php echo $order["fullname"]; ?></td>
-								<td> <?php echo $order["email"]; ?></td>
-								<td> <?php echo $order["phone_number"]; ?></td>
-								<td class="status">
-									<button type="button" name="statusBtn" value="<?php echo $order["status"]; ?>" class=" btn- btn--hover"><?php echo $status; ?></button>
-								</td>
+								<td> <?php echo $order["orderemail"]; ?></td>
+								<td> <?php echo $order["orderphonenumber"]; ?></td>
+								<?php
+								if (checkPermission("Solve orders", $admin)) {
+								?>
+									<td class="status">
+										<button type="button" name="statusBtn" value="<?php echo $order["status"]; ?>" class=" btn- btn--hover"><?php echo $status; ?></button>
+									</td>
+								<?php
+								} else {
+								?>
+									<td class="status"><?php echo $status; ?></td>
+								<?php
+								}
+								?>
 								<td><?php echo $order["total_money"]; ?></td>
 								<td>
-									<span class="fa-solid fa-trash del-orderbtn" name="del-order" value="del-order"></span>
+									<?php
+									if (checkPermission("Delete orders", $admin)) {
+									?>
+										<span class="fa-solid fa-trash del-orderbtn" name="del-order" value="del-order"></span>
+									<?php
+									}
+									?>
 								</td>
 							</tr>
 					<?php

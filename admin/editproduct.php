@@ -15,7 +15,10 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php
+    include_once("../admin/common.php");
+    include_once("../includes/admin.inc.php");
+    ?>
 
     <main>
         <!-- Add new -->
@@ -26,8 +29,6 @@
                 <div class="wrapper">
                     <table>
                         <tbody>
-                            <?php include("../includes/admin.inc.php");
-                            ?>
                             <tr>
                                 <td>Image</td>
                                 <td>

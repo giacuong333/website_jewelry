@@ -62,7 +62,8 @@ class Admin extends Database
 
 		switch ($searchValue) {
 			case "id":
-				$sql .= "`category`.`id` = ?;";
+				$sql .= "CAST(`category`.`id` AS CHAR) LIKE ?;";
+				$searchInput = "%$searchInput%";
 				break;
 			case "name":
 				$sql .= "`category`.`name` LIKE ?;";
@@ -123,14 +124,17 @@ class Admin extends Database
 
 	protected function getAllOrders()
 	{
-		$sql = "SELECT *, `order`.`id` AS `orderid`, `product`.`id` AS `productid`, `user`.`id` AS `userid` FROM `order` 
+		$sql = "SELECT *, `order`.`phone_number` AS `orderphonenumber`, `order`.`email` AS `orderemail`, `order`.`id` AS `orderid`, 
+		`product`.`id` AS `productid`, `user`.`id` AS `userid` 
+		FROM `order` 
 		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
 		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
 		JOIN `user` ON `user`.`id` = `order`.`id` WHERE `order`.`isDeleted` != 1;";
 
 		try {
 			$stmt = $this->connect()->query($sql);
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results ?? [];
 		} catch (Exception $e) {
 			// header("location: ../templates/login.php?error=ordersnotfound");
 			exit();
@@ -178,7 +182,8 @@ class Admin extends Database
 
 		switch ($searchValue) {
 			case "id":
-				$sql .= "`order`.`id` = ?;";
+				$sql .= "CAST(`order`.`id` AS CHAR) LIKE ?;";
+				$searchInput = "%$searchInput%";
 				break;
 			case "fullname":
 				$sql .= "`order`.`fullname` LIKE ?;";
@@ -208,7 +213,7 @@ class Admin extends Database
 	protected function searchAllOrdersByDate($fromDate, $toDate)
 	{
 		$sql = "SELECT *, `order`.`id` AS `orderid`, `product`.`id` AS `productid`, `user`.`id` AS `userid`, 
-		`order`.`phone_number` AS `orderphone`, `order`.`email` AS `orderemail`, `order`.`fullname` AS `orderfullname`, 
+		`order`.`phone_number` AS `orderphonenumber`, `order`.`email` AS `orderemail`, `order`.`fullname` AS `orderfullname`, 
 		`order`.`status` AS `orderstatus` 
 		FROM `order` 
 		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
@@ -220,7 +225,6 @@ class Admin extends Database
 			$stmt = $this->connect()->prepare($sql);
 			$stmt->execute([$fromDate, $toDate]);
 			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 			return $results ?? [];
 		} catch (Exception $e) {
 			exit();
@@ -314,7 +318,8 @@ class Admin extends Database
 
 		switch ($searchValue) {
 			case "id":
-				$sql .= "`product`.`id` = ?;";
+				$sql .= "CAST(`product`.`id` AS CHAR) LIKE ?;";
+				$searchInput = "%$searchInput%";
 				break;
 			case "category":
 				$sql .= "`category`.`name` LIKE ?;";
@@ -518,7 +523,8 @@ class Admin extends Database
 
 		switch ($searchValue) {
 			case "id":
-				$sql .= "`user`.`id` = ?;";
+				$sql .= "CAST(`user`.`id` AS CHAR) LIKE ?;";
+				$searchInput = "%$searchInput%";
 				break;
 			case "fullname":
 				$sql .= "`user`.`fullname` LIKE ?;";
@@ -537,10 +543,8 @@ class Admin extends Database
 				$searchInput = "%$searchInput%";
 				break;
 			case "created_at":
-				$sql .= "DATE(`user`.`created_at`) = ?;";
-				break;
-			case "updated_at":
-				$sql .= "DATE(`user`.`updated_at`) = ?;";
+				$sql .= "CAST(`user`.`created_at` AS CHAR) LIKE ?;";
+				$searchInput = "%$searchInput%";
 				break;
 		}
 
@@ -548,7 +552,6 @@ class Admin extends Database
 			$stmt = $this->connect()->prepare($sql);
 			$stmt->execute([$searchInput]);
 			$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 			return $users ?? [];
 		} catch (Exception $e) {
 			// header("location: ../index.php?error=stmtfailed");
@@ -608,6 +611,40 @@ class Admin extends Database
 				$stmt->execute([$isAllowed, $role_id, $permission_id]);
 				return true;
 			}
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function hasPermission($role_id, $permission_description)
+	{
+		try {
+			$sql = "SELECT 1 FROM `role_permission`
+			JOIN `permission` ON `permission`.`id` = `role_permission`.`permission_id`
+			JOIN `role` ON `role`.`id` = `role_permission`.`role_id` 
+			WHERE `role_permission`.`role_id` = ? 
+			AND `permission`.`description` = ? 
+			AND `role_permission`.`isAllowed` = 1 
+			LIMIT 1;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$role_id, $permission_description]);
+			return $stmt->rowCount() > 0;
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function getMenuItems($role_id)
+	{
+		try {
+			$sql = "SELECT `description` FROM `role_permission`
+			JOIN `permission` ON `role_permission`.`permission_id` = `permission`.`id`
+			JOIN `role` ON `role_permission`.`role_id` = `role`.`id`
+			WHERE `role_id` = ? AND `isAllowed` != 0";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$role_id]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results ?? [];
 		} catch (Exception $e) {
 			exit();
 		}

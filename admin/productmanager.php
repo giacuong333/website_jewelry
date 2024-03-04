@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Manage Product</title>
+	<title>Manage products</title>
 	<!-- Style -->
 	<link rel="stylesheet" href="../assets/css/admin.css" />
 	<!-- Icon -->
@@ -15,7 +15,10 @@
 </head>
 
 <body>
-	<?php include("../admin/common.php"); ?>
+	<?php
+	include("../admin/common.php");
+	include("../includes/admin.inc.php");
+	?>
 
 	<main>
 
@@ -28,10 +31,16 @@
 				<option value="title">Title</option>
 			</select>
 
-			<button id="addproduct" class="btn- btn--hover" type="button">
-				<span class="fa-solid fa-plus"></span>
-				Add new
-			</button>
+			<?php
+			if (checkPermission("Add products", $admin)) {
+			?>
+				<button id="addproduct" class="btn- btn--hover" type="button">
+					<span class="fa-solid fa-plus"></span>
+					Add new
+				</button>
+			<?php
+			}
+			?>
 		</div>
 
 		<!-- Product -->
@@ -53,8 +62,6 @@
 
 				<tbody id="bodyproduct">
 					<?php
-					include("../includes/admin.inc.php");
-
 					if (is_array($products)) {
 						foreach ($products as $product) {
 					?>
@@ -70,8 +77,18 @@
 								<td><input type="checkbox" disabled <?php echo $product["isNew"] ? "checked" : ""; ?> name="isNew" id="" /></td>
 								<td><input type="checkbox" disabled <?php echo $product["isShow"] ? "checked" : ""; ?> name="isShow" id="" /></td>
 								<td>
-									<span class="fa-solid fa-pen-to-square edit-productbtn"></span>
-									<span class="fa-solid fa-trash del-productbtn" name="del-product" value="del-product"></span>
+									<?php
+									if (checkPermission("Edit products", $admin)) {
+									?>
+										<span class="fa-solid fa-pen-to-square edit-productbtn"></span>
+									<?php
+									}
+									if (checkPermission("Delete products", $admin)) {
+									?>
+										<span class="fa-solid fa-trash del-productbtn" name="del-product" value="del-product"></span>
+									<?php
+									}
+									?>
 								</td>
 							</tr>
 					<?php

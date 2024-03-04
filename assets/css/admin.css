@@ -116,6 +116,8 @@ input[type="checkbox"] {
   width: 100%;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color: #fff;
 }
 
 .sidebar-menu > span {

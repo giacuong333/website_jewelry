@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add a new role</title>
+    <title>New role</title>
     <!-- Style -->
     <link rel="stylesheet" href="../assets/css/admin.css" />
     <!-- Icon -->
@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php include_once("../admin/common.php"); ?>
 
     <main>
         <form action="../includes/admin.inc.php" method="post">

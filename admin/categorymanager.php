@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Category</title>
+    <title>Manage Categories</title>
     <!-- Style -->
     <link rel="stylesheet" href="../assets/css/admin.css" />
     <!-- Icon -->
@@ -15,7 +15,10 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php
+    include("../admin/common.php");
+    include("../includes/admin.inc.php");
+    ?>
 
     <main>
 
@@ -27,10 +30,16 @@
                 <option value="name">Name</option>
             </select>
 
-            <button id="addcategory" class="btn- btn--hover" type="button">
-                <span class="fa-solid fa-plus"></span>
-                Add new
-            </button>
+            <?php
+            if (checkPermission("Add categories", $admin)) {
+            ?>
+                <button id="addcategory" class="btn- btn--hover" type="button">
+                    <span class="fa-solid fa-plus"></span>
+                    Add new
+                </button>
+            <?php
+            }
+            ?>
         </div>
 
         <!-- Product -->
@@ -46,8 +55,6 @@
 
                 <tbody id="bodycategory">
                     <?php
-                    include("../includes/admin.inc.php");
-
                     if (is_array($categories)) {
                         foreach ($categories as $category) {
                     ?>
@@ -55,8 +62,18 @@
                                 <td> <?php echo $category["id"]; ?></td>
                                 <td> <?php echo $category["name"]; ?></td>
                                 <td>
-                                    <span class="fa-solid fa-pen-to-square edit-categorybtn"></span>
-                                    <span class="fa-solid fa-trash del-categorybtn" name="del-category" value="del-category"></span>
+                                    <?php
+                                    if (checkPermission("Edit categories", $admin)) {
+                                    ?>
+                                        <span class="fa-solid fa-pen-to-square edit-categorybtn"></span>
+                                    <?php
+                                    }
+                                    if (checkPermission("Delete categories", $admin)) {
+                                    ?>
+                                        <span class="fa-solid fa-trash del-categorybtn" name="del-category" value="del-category"></span>
+                                    <?php
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                     <?php

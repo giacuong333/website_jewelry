@@ -1,6 +1,6 @@
-  DROP DATABASE IF EXISTS web_trang_suc;
-  CREATE DATABASE web_trang_suc;
-  USE web_trang_suc;
+  DROP DATABASE IF EXISTS `web_trang_suc`;
+  CREATE DATABASE IF NOT EXISTS `web_trang_suc`;
+  USE `web_trang_suc`;
 
   /* ------------------------------------- ROLE */
 
@@ -120,25 +120,45 @@
 
   /* ------------------------------------- REFERENCES  */
 
-  ALTER TABLE `user` ADD FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ALTER TABLE `user` 
+  ADD FOREIGN KEY (`role_id`) 
+  REFERENCES `role` (`id`);
 
-  ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ALTER TABLE `product` 
+  ADD FOREIGN KEY (`category_id`) 
+  REFERENCES `category` (`id`);
 
-  ALTER TABLE `gallery` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  ALTER TABLE `gallery` 
+  ADD FOREIGN KEY (`product_id`) 
+  REFERENCES `product` (`id`);
 
-  ALTER TABLE `orderdetail` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
+  ALTER TABLE `orderdetail` 
+  ADD FOREIGN KEY (`order_id`) 
+  REFERENCES `order` (`id`);
 
-  ALTER TABLE `orderdetail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  ALTER TABLE `orderdetail` 
+  ADD FOREIGN KEY (`product_id`) 
+  REFERENCES `product` (`id`);
 
-  ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ALTER TABLE `order` 
+  ADD FOREIGN KEY (`user_id`) 
+  REFERENCES `user` (`id`);
 
-  ALTER TABLE `feedback` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ALTER TABLE `feedback` 
+  ADD FOREIGN KEY (`user_id`) 
+  REFERENCES `user` (`id`);
 
-  ALTER TABLE `feedback` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  ALTER TABLE `feedback` 
+  ADD FOREIGN KEY (`product_id`) 
+  REFERENCES `product` (`id`);
 
-  ALTER TABLE `role_permission` ADD FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`);
+  ALTER TABLE `role_permission` 
+  ADD FOREIGN KEY (`permission_id`) 
+  REFERENCES `permission` (`id`);
 
-  ALTER TABLE `role_permission` ADD FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ALTER TABLE `role_permission` 
+  ADD FOREIGN KEY (`role_id`) 
+  REFERENCES `role` (`id`);
 
   /* ------------------------------------- TRIGGERS */
 
@@ -197,23 +217,23 @@
   FOR EACH ROW 
     SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER role_permission_create_allow 
-  BEFORE INSERT ON `role_permission` 
-  FOR EACH ROW 
-    SET NEW.isAllowed = 1;
-
-  CREATE TRIGGER add_role_permission 
-  AFTER INSERT ON `role` 
-  FOR EACH ROW 
-  BEGIN 
-    INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES 
-    (NEW.id, 1), (NEW.id, 2), (NEW.id, 3), (NEW.id, 4), (NEW.id, 5),
-    (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
-    (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
-    (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
-    (NEW.id, 21), (NEW.id, 22);
-
   /* ------------------------------------- INSERT VALUES */
+   INSERT INTO `category` (`name`, `isDeleted`) VALUES 
+  ('Nhẫn', 0), 
+  ('Vòng Cổ', 0), 
+  ('Trâm Cài', 0),
+  ('Bông tai', 0);
+
+  INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
+  ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
+  ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
+  ('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
+  ('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
+
+  INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
+  (1, '../assets/imgs/errings/img1.png'),
+  (2, '../assets/imgs/rings/img1.png'),
+  (3, '../assets/imgs/brooches/img1.png');
 
   INSERT INTO `role` (`name`) VALUES 
   ('Quản lý'), 
@@ -228,23 +248,6 @@
   ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3),
   ('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
 
-  INSERT INTO `category` (`name`, `isDeleted`) VALUES 
-  ('Nhẫn', 0), 
-  ('Vòng Cổ', 0), 
-  ('Trâm Cài', 0),
-  ('Bông tai', 0);
-
-  INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
-  ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
-  ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/img1.png', 'Sản phẩm hot nhất hiện nay'),
-  ('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
-  ('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
-
-  INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
-  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
-  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
-  ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
-
   INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) VALUES
   ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0),
   ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0),
@@ -257,10 +260,10 @@
   (3, 3, 800000, 2, 1600000),
   (4, 4, 800000, 2, 1600000);
 
-  INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
-  (1, '../assets/imgs/errings/img1.png'),
-  (2, '../assets/imgs/rings/img1.png'),
-  (3, '../assets/imgs/brooches/img1.png');
+  INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
+  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
+  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
+  ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
 
   INSERT INTO `permission` (`description`) VALUES
   -- USERS
@@ -306,4 +309,20 @@
   (4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
   (4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
   (4, 21, 1), (4, 22, 1);
+
+  /* ------------------------------------- TRIGGERS AFTER INSERTING FOR ROLE, PERMISSION*/
   
+  CREATE TRIGGER role_permission_create_allow 
+  BEFORE INSERT ON `role_permission` 
+  FOR EACH ROW 
+    SET NEW.isAllowed = 0;
+
+  CREATE TRIGGER after_insert_row 
+  AFTER INSERT ON `role` 
+  FOR EACH ROW 
+    INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES 
+    (NEW.id, 1), (NEW.id, 2), (NEW.id, 3), (NEW.id, 4), (NEW.id, 5),
+    (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
+    (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
+    (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
+    (NEW.id, 21), (NEW.id, 22);

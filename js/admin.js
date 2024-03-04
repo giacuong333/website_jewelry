@@ -1,48 +1,4 @@
 $(document).ready(function () {
-  // ========================================================== SIDE BAR MENU ==========================================================
-  let sidebarMenu = $(".sidebar-menu");
-
-  sidebarMenu.each(function (menuIndex) {
-    $(this).click((e) => {
-      e.preventDefault();
-      sidebarMenu.removeClass("is-selected"); // Remove the class from all menu items
-      $(this).addClass("is-selected");
-      move(menuIndex);
-    });
-  });
-
-  function move(index) {
-    switch (index) {
-      case 0:
-        window.location.href = "../admin/categorymanager.php";
-        break;
-      case 1:
-        window.location.href = "../admin/usermanager.php";
-        break;
-      case 2:
-        window.location.href = "../admin/productmanager.php";
-        break;
-      case 3:
-        window.location.href = "../admin/statisticmanager.php";
-        break;
-      case 4:
-        window.location.href = "../admin/contactmanager.php";
-        break;
-      case 5:
-        window.location.href = "../admin/ordermanager.php";
-        break;
-      case 6:
-        window.location.href = "../admin/rolemanager.php";
-        break;
-      case 7:
-        window.location.href = "../admin/othermanager.php";
-        break;
-      case 8:
-        window.location.href = "../includes/logout.inc.php";
-        break;
-    }
-  }
-
   // ========================================================== COMMON ==========================================================
 
   // Move on to another page
@@ -67,6 +23,8 @@ $(document).ready(function () {
       success: function (response) {
         $(containElement).html(response);
 
+        console.log(response);
+
         if (typeof updateCallback === "function") {
           updateCallback();
         }
@@ -75,12 +33,18 @@ $(document).ready(function () {
           deleteCallback();
         }
 
-        // Used for searching orders
-        isSolved();
-        solvedStatus(); // Patch to the admin.inc.php
+        // Used for privileging
+        if (searchType === "role") {
+          privilege();
+        }
 
-        // Used for viewing order details
-        viewOrderDetails();
+        // Used for searching orders
+        if (searchType === "order") {
+          isSolved();
+          solvedStatus(); // Patch to the admin.inc.php
+          // Used for viewing order details
+          viewOrderDetails();
+        }
       },
       error: function () {
         alert("Error fetching data");
@@ -450,7 +414,7 @@ $(document).ready(function () {
 
   // ========================================================== PRIVILEGE ==========================================================
   // Clicking on the `Phân quyền` button
-  (() => {
+  function privilege() {
     $(".btn-privilege").each(function () {
       $(this).click(function (e) {
         e.preventDefault();
@@ -472,7 +436,8 @@ $(document).ready(function () {
         });
       });
     });
-  })();
+  }
+  privilege();
 
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {

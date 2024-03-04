@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
+    <title>New user</title>
     <!-- Style -->
     <link rel="stylesheet" href="../assets/css/admin.css" />
     <!-- Icon -->
@@ -18,10 +18,9 @@
 
 <body>
     <?php
-    include("../admin/common.php");
-    include("../includes/admin.inc.php");
+    include_once("../admin/common.php");
+    include_once("../includes/admin.inc.php");
     ?>
-
 
     <main>
         <form action="../includes/admin.inc.php" method="post">
@@ -62,8 +61,6 @@
                                             echo "<option value='{$role['id']}'>{$role['name']}</option>";
                                         }
                                         ?>
-                                        <!-- <option value="1">Admin</option>
-                                        <option value="2">Nhân viên</option> -->
                                     </select>
                                 </td>
                             </tr>

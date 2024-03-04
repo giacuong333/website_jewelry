@@ -4,7 +4,8 @@ class Login extends Database
 
     protected function getUser($useremail, $password)
     {
-        $sql = "SELECT `id`, `email`, `password`, `fullname`, `phone_number`, `role_id` FROM `user` WHERE `email` = ?;";
+        $sql = "SELECT `id`, `email`, `password`, `fullname`, `phone_number`, `role_id` 
+        FROM `user` WHERE `email` = ?;";
 
         try {
             $stmt = $this->connect()->prepare($sql);
@@ -12,7 +13,6 @@ class Login extends Database
 
             // The account does not exist
             if ($stmt->rowCount() == 0) {
-                echo "usernotfound";
                 exit();
             }
 

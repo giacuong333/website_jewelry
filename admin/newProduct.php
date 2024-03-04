@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Manage Product</title>
+	<title>New product</title>
 	<!-- Style -->
 	<link rel="stylesheet" href="../assets/css/admin.css" />
 	<!-- Icon -->
@@ -15,7 +15,10 @@
 </head>
 
 <body>
-	<?php include("../admin/common.php"); ?>
+	<?php
+	include_once("../admin/common.php");
+	include_once("../includes/admin.inc.php");
+	?>
 
 	<main>
 		<!-- Add new -->
@@ -42,7 +45,6 @@
 							</tr>
 							<tr>
 								<td>Category</td>
-								<?php include("../includes/admin.inc.php"); ?>
 								<td>
 									<select class="btn- btn--hover" name="categoryid" id="">
 										<?php

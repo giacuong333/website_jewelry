@@ -174,4 +174,15 @@ class AdminController extends Admin
     {
         return Admin::setPrivilegeByRoleId($role_privilege_id, $permissionKey, $isChecked);
     }
+
+    public function hasPermission($role_id, $permission_description)
+    {
+        return Admin::hasPermission($role_id, $permission_description);
+    }
+
+    // ===================================================== GET MENU ITEMS =====================================================
+    public function getMenuItems($role_id)
+    {
+        return Admin::getMenuItems($role_id);
+    }
 }
