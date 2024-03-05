@@ -1,51 +1,4 @@
 $(document).ready(function () {
-  // ========================================================== SIDE BAR MENU ==========================================================
-  let sidebarMenu = $(".sidebar-menu");
-
-  sidebarMenu.each(function (menuIndex) {
-    $(this).click((e) => {
-      e.preventDefault();
-      sidebarMenu.removeClass("is-selected"); // Remove the class from all menu items
-      $(this).addClass("is-selected");
-      move(menuIndex);
-    });
-  });
-
-  function move(index) {
-    switch (index) {
-      case 0:
-        window.location.href = "../admin/categorymanager.php";
-        break;
-      case 1:
-        window.location.href = "../admin/usermanager.php";
-        break;
-      case 2:
-        window.location.href = "../admin/productmanager.php";
-        break;
-      case 3:
-        window.location.href = "../admin/statisticmanager.php";
-        break;
-      case 4:
-        window.location.href = "../admin/contactmanager.php";
-        break;
-      case 5:
-        window.location.href = "../admin/ordermanager.php";
-        break;
-      case 6:
-        window.location.href = "../admin/privilegemanager.php";
-        break;
-      case 7:
-        window.location.href = "../admin/rolemanager.php";
-        break;
-      case 8:
-        window.location.href = "../admin/othermanager.php";
-        break;
-      case 9:
-        window.location.href = "../includes/logout.inc.php";
-        break;
-    }
-  }
-
   // ========================================================== COMMON ==========================================================
 
   // Move on to another page
@@ -70,6 +23,8 @@ $(document).ready(function () {
       success: function (response) {
         $(containElement).html(response);
 
+        console.log(response);
+
         if (typeof updateCallback === "function") {
           updateCallback();
         }
@@ -78,12 +33,18 @@ $(document).ready(function () {
           deleteCallback();
         }
 
-        // Used for searching orders
-        isSolved();
-        solvedStatus(); // Patch to the admin.inc.php
+        // Used for privileging
+        if (searchType === "role") {
+          privilege();
+        }
 
-        // Used for viewing order details
-        viewOrderDetails();
+        // Used for searching orders
+        if (searchType === "order") {
+          isSolved();
+          solvedStatus(); // Patch to the admin.inc.php
+          // Used for viewing order details
+          viewOrderDetails();
+        }
       },
       error: function () {
         alert("Error fetching data");
@@ -140,7 +101,8 @@ $(document).ready(function () {
       $(this).click((e) => {
         e.stopPropagation();
         const productId = $(this).closest("tr").data("productid");
-        window.location.href = "../admin/editproduct.php?upd-productid=" + productId;
+        const categoryId = $(this).closest("tr").data("categoryid");
+        window.location.href = "../admin/editproduct.php?upd-productid=" + productId + "&categoryid=" + categoryId;
       });
     });
   }
@@ -171,7 +133,9 @@ $(document).ready(function () {
       $(this).click(function (e) {
         e.stopPropagation();
         const userId = $(this).closest("tr").data("userid");
-        window.location.href = "../admin/edituser.php?upduser_id=" + userId;
+        const roleId = $(this).closest("tr").data("roleid");
+        console.log(roleId);
+        window.location.href = "../admin/edituser.php?upduser_id=" + userId + "&role_id=" + roleId;
       });
     });
   }
@@ -447,6 +411,33 @@ $(document).ready(function () {
       handleSearch("role", $(this), searchRoleValue, bodyRole, updateRole, deleteRole);
     }
   });
+
+  // ========================================================== PRIVILEGE ==========================================================
+  // Clicking on the `Phân quyền` button
+  function privilege() {
+    $(".btn-privilege").each(function () {
+      $(this).click(function (e) {
+        e.preventDefault();
+        const roleId = $(this).closest("tr").data("roleid");
+
+        $.ajax({
+          type: "GET",
+          url: "../includes/admin.inc.php",
+          data: { role_privilege_id: roleId },
+          success: function (response) {
+            $(".privilege-panel").html(response);
+
+            // Clicking on the overlay
+            $(".btn--exit").click(function () {
+              $(".overlay").remove();
+              $(".privilege-form").remove();
+            });
+          },
+        });
+      });
+    });
+  }
+  privilege();
 
   // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
   const config = {

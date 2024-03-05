@@ -15,7 +15,9 @@
 </head>
 
 <body>
-	<?php include("../admin/common.php"); ?>
+	<?php
+	include_once("../admin/common.php");
+	include_once("../includes/admin.inc.php"); ?>
 
 	<main>
 
@@ -29,13 +31,18 @@
 				<option value="phone_number">Phone number</option>
 				<option value="role">Role</option>
 				<option value="created_at">Create time</option>
-				<option value="Updated_at">Update time</option>
 			</select>
 
-			<button id="adduser" class="btn- btn--hover" type="button">
-				<span class="fa-solid fa-plus"></span>
-				Add new
-			</button>
+			<?php
+			if (checkPermission("Add users", $admin)) {
+			?>
+				<button id="adduser" class="btn- btn--hover" type="button">
+					<span class="fa-solid fa-plus"></span>
+					Add new
+				</button>
+			<?php
+			}
+			?>
 		</div>
 
 		<!-- Product -->
@@ -55,12 +62,10 @@
 
 				<tbody id="bodyuser">
 					<?php
-					include("../includes/admin.inc.php");
-
 					if (is_array($users)) {
 						foreach ($users as $user) {
 					?>
-							<tr data-userid="<?php echo $user["id"]; ?>">
+							<tr data-userid="<?php echo $user["id"]; ?>" data-roleid="<?php echo $user["role_id"]; ?>">
 								<td><?php echo $user["id"]; ?></td>
 								<td><?php echo $user["fullname"]; ?></td>
 								<td><?php echo $user["email"]; ?></td>
@@ -68,8 +73,18 @@
 								<td><?php echo $user["name"]; ?></td>
 								<td><?php echo $user["created_at"]; ?></td>
 								<td>
-									<span class="fa-solid fa-pen-to-square edit-userbtn" name="editbtn" value="editbtn"></span>
-									<span class="fa-solid fa-trash del-userbtn" name="delbtn" value="delbtn"></span>
+									<?php
+									if (checkPermission("Edit users", $admin)) {
+									?>
+										<span class="fa-solid fa-pen-to-square edit-userbtn" name="editbtn" value="editbtn"></span>
+									<?php
+									}
+									if (checkPermission("Delete users", $admin)) {
+									?>
+										<span class="fa-solid fa-trash del-userbtn" name="delbtn" value="delbtn"></span>
+									<?php
+									}
+									?>
 								</td>
 							</tr>
 					<?php

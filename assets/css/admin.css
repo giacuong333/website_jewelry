@@ -26,6 +26,15 @@ body {
   color: #fff;
 }
 
+.btn--exit {
+  margin-right: 14px !important;
+}
+
+.btn--exit:hover {
+  background-color: brown;
+  color: #fff;
+}
+
 input[type="checkbox"] {
   ---dimensions: 18px;
   width: var(---dimensions);
@@ -107,6 +116,8 @@ input[type="checkbox"] {
   width: 100%;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color: #fff;
 }
 
 .sidebar-menu > span {
@@ -216,7 +227,7 @@ main {
 }
 
 .dashboard-body tbody {
-  max-height: 500px;
+  /* max-height: 500px; */
   overflow-y: auto;
 }
 
@@ -234,6 +245,11 @@ main {
 .dashboard-body > .header {
   font-size: 20px;
   font-weight: 500;
+}
+
+.privilege-form .dashboard-body > .header {
+  padding: 10px 0;
+  text-align: center;
 }
 
 .wrapper {
@@ -548,7 +564,20 @@ h4 {
   font-weight: 600;
 }
 
-.btn-save {
+.btn-save,
+.btn--exit {
   float: right;
-  margin: 10px 30px;
+  margin: 10px 4px;
+}
+
+.privilege-form {
+  background-color: #fff;
+  position: fixed;
+  top: 14%;
+  right: 10%;
+  /* bottom: 10%; */
+  left: 10%;
+  z-index: 5;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 4px rgba(0, 0, 0, 0.1);
 }

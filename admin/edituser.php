@@ -17,7 +17,10 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php
+    include_once("../admin/common.php");
+    include_once("../includes/admin.inc.php");
+    ?>
 
     <main>
         <form action="../includes/admin.inc.php" method="post">
@@ -28,9 +31,6 @@
                 <div class="wrapper">
                     <table>
                         <tbody>
-                            <?php include("../includes/admin.inc.php");
-                            ?>
-
                             <tr>
                                 <td>Full name</td>
                                 <td>
@@ -53,7 +53,11 @@
                                     <select class="btn- btn--hover" name="roleid" id="">
                                         <?php
                                         foreach ($roles as $role) {
-                                            echo "<option value='{$role['roleid']}'>{$role['name']}</option>";
+                                            if ($_GET["role_id"] == $role['id']) {
+                                                echo "<option value='{$role['id']}' selected>{$role['name']}</option>";
+                                                continue;
+                                            }
+                                            echo "<option value='{$role['id']}'>{$role['name']}</option>";
                                         }
                                         ?>
                                     </select>

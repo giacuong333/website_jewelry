@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit the category</title>
+    <title>Edit category</title>
     <!-- Style -->
     <link rel="stylesheet" href="../assets/css/admin.css" />
     <!-- Icon -->
@@ -17,8 +17,10 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
-
+    <?php
+    include_once("../admin/common.php");
+    include_once("../includes/admin.inc.php");
+    ?>
     <main>
         <form action="../includes/admin.inc.php" method="post">
             <!-- Add new -->
@@ -28,7 +30,6 @@
                 <div class="wrapper">
                     <table>
                         <tbody>
-                            <?php include("../includes/admin.inc.php"); ?>
                             <tr>
                                 <td>Name of category</td>
                                 <input type="text" name="categoryid" value="<?php echo $categoriesId["id"]; ?>" hidden>

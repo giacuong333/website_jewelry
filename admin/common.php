@@ -16,7 +16,7 @@
         <img src="../assets/imgs/brand/logo.png" alt="">
     </a>
     <div class="profile">
-        <?php session_start(); ?>
+        <?php include("../includes/admin.inc.php"); ?>
         <p class="profile-name" style="font-size: 18px; font-weight: 500;"><?php echo isset($_SESSION["id"]) ? $_SESSION["fullname"] : "Đăng nhập"; ?></p>
     </div>
 </nav>
@@ -27,54 +27,88 @@
     <span class="fas fa-bars"></span>
 </label>
 
+<?php
+$menuItemList = array(
+    "Categories" => '
+        <a href="../admin/categorymanager.php" class="sidebar-menu">
+            <span class="fa-solid fa-list"></span>
+            <p>Categories</p>
+        </a>',
+    "Users" => '
+        <a href="../admin/usermanager.php" class="sidebar-menu">
+            <span class="fas fa-users"></span>
+            <p>Users</p>
+        </a>
+    ',
+    "Products" => '
+        <a href="../admin/productmanager.php" class="sidebar-menu">
+            <span class="fa-brands fa-product-hunt"></span>
+            <p>Products</p>
+        </a>
+    ',
+    "Statistics" => '
+        <a href="../admin/statisticmanager.php" class="sidebar-menu">
+            <span class="fas fa-chart-line"></span>
+            <p>Statistics</p>
+        </a>
+    ',
+    "Contacts" => '
+        <a href="../admin/contactmanager.php" class="sidebar-menu">
+            <span class="fas fa-id-card"></span>
+            <p>Contacts</p>
+        </a>
+    ',
+    "Orders" => '
+        <a href="../admin/ordermanager.php" class="sidebar-menu">
+            <span class="fa-solid fa-sort"></span>
+            <p>Orders</p>
+        </a>
+    ',
+    "Roles" => '    
+        <a href="../admin/rolemanager.php" class="sidebar-menu">
+            <span class="fa-solid fa-user-secret"></span>
+            <p>Roles</p>
+        </a>
+    '
+);
+?>
+
 <div class="sidebar">
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-list"> </span>
-        <p>Category</p>
-    </div>
+    <?php
+    if (isset($_SESSION["role_id"])) {
+        $role_id = $_SESSION["role_id"];
+        $menuItemKeyList = array_keys($menuItemList);
+        $descriptionList = $admin->getMenuItems($role_id);
 
-    <div class="sidebar-menu">
-        <span class="fas fa-users"> </span>
-        <p>Users</p>
-    </div>
+        foreach ($menuItemKeyList as $menuItemKey) {
+            $isContained = false;
 
-    <div class="sidebar-menu">
-        <span class="fa-brands fa-product-hunt"> </span>
-        <p>Products</p>
-    </div>
+            foreach ($descriptionList as $description => $elements) {
+                foreach ($elements as $element) {
+                    if (str_contains($element, strtolower($menuItemKey))) {
+                        echo $menuItemList[$menuItemKey];
+                        $isContained = true;
+                        break;
+                    }
+                }
 
-    <div class="sidebar-menu">
-        <span class="fas fa-chart-line"> </span>
-        <p>Statistic</p>
-    </div>
+                if ($isContained) {
+                    break;
+                }
+            }
+        }
 
-    <div class="sidebar-menu">
-        <span class="fas fa-id-card"> </span>
-        <p>Contact</p>
-    </div>
+        echo '
+            <a href="../admin/othermanager.php" class="sidebar-menu">
+                <span class="fa-solid fa-circle-info"></span>
+                <p>Other</p>
+            </a>
 
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-sort"> </span>
-        <p>Orders</p>
-    </div>
-
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-code-merge"></span>
-        <p>Permissions</p>
-    </div>
-
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-user-secret"></span>
-        <p>Roles</p>
-    </div>
-
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-circle-info"></span>
-        <p>Other</p>
-    </div>
-
-    <div class="sidebar-menu">
-        <span class="fa-solid fa-power-off"> </span>
-        <p>Log out</p>
-    </div>
+            <a href="../includes/logout.inc.php" class="sidebar-menu">
+                <span class="fa-solid fa-power-off"></span>
+                <p>Log out</p>
+            </a>
+        ';
+    }
+    ?>
 </div>

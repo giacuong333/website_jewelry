@@ -1,8 +1,10 @@
 <?php
 
-include("../server/connection/connect.s.php");
-include("../server/models/adminmodel.s.php");
-include("../server/controllers/admincontr.s.php");
+session_start();
+
+include_once("../server/connection/connect.s.php");
+include_once("../server/models/adminmodel.s.php");
+include_once("../server/controllers/admincontr.s.php");
 
 $admin = new AdminController();
 $products = $admin->getAllProducts();
@@ -11,6 +13,20 @@ $orders = $admin->getOrders();
 $categories = $admin->getCategories();
 $roles = $admin->getRoles();
 
+// =============================================== COMMON ===============================================
+
+// Check the user's permission
+if (!function_exists("checkPermission")) {
+  function checkPermission($action_name, $admin)
+  {
+    $flag = false;
+    if (isset($_SESSION["role_id"])) {
+      $role_id = $_SESSION["role_id"];
+      $flag = $admin->hasPermission($role_id, $action_name);
+    }
+    return $flag;
+  }
+}
 // =============================================== USER ===============================================
 
 // Handling when admin clicks on the `save` button
@@ -59,30 +75,35 @@ if (isset($_GET["deluser_id"])) {
   echo "<script>window.location.href='../admin/usermanager.php'</script>";
 }
 
-// Handling when admin searches
+// Search
 if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "user") {
   $searchValue = trim($_POST["searchValue"]);
   $searchInput = trim($_POST["searchInput"]);
 
   $userContainer = $admin->searchUsers($searchInput, $searchValue);
 
-  $html = "";
+  $html = !empty($userContainer) ? "" : "No user found";
 
-  foreach ($userContainer as $user) {
-    $html .= "
-                              <tr data-userid='{$user['id']}'>
-                                        <td>{$user['id']}</td>
-                                        <td>{$user['fullname']}</td>
-                                        <td>{$user['email']}</td>
-                                        <td>{$user['phone_number']}</td>
-                                        <td>{$user['name']}</td>
-                                        <td>{$user['created_at']}</td>
-                                        <td>
-                                                  <span class='fa-solid fa-pen-to-square edit-userbtn' name='editbtn' value='editbtn'></span>
-                                                  <span class='fa-solid fa-trash del-userbtn' name='delbtn' value='delbtn'></span>
-                                        </td>
-                              </tr>
-                    ";
+  $editIcon = checkPermission("Edit users", $admin) ? "<span class='fa-solid fa-pen-to-square edit-userbtn' name='editbtn' value='editbtn'></span>" : "";
+  $deleteIcon = checkPermission("Delete users", $admin) ? "<span class='fa-solid fa-trash del-userbtn' name='delbtn' value='delbtn'></span>" : "";
+
+  if (!empty($userContainer)) {
+    foreach ($userContainer as $user) {
+      $html .= "
+            <tr data-userid='{$user['id']}' data-roleid='{$user['role_id']}'>
+              <td>{$user['id']}</td>
+              <td>{$user['fullname']}</td>
+              <td>{$user['email']}</td>
+              <td>{$user['phone_number']}</td>
+              <td>{$user['name']}</td>
+              <td>{$user['created_at']}</td>
+              <td>
+                {$editIcon} 
+                {$deleteIcon} 
+              </td>
+            </tr>
+      ";
+    }
   }
 
   echo $html;
@@ -90,7 +111,7 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 
 // =============================================== PRODUCT ===============================================
 
-// Save a product
+// Add a new product
 if (isset($_POST["saveproduct"])) {
   $title = $_POST["title"];
   $categoryid = $_POST["categoryid"];
@@ -100,6 +121,7 @@ if (isset($_POST["saveproduct"])) {
   $isShow = isset($_POST["show"]) ? 1 : 0;
   $isOutstanding = isset($_POST["outstanding"]) ? 1 : 0;
   $isNew = isset($_POST["new"]) ? 1 : 0;
+
   // Check if the file was uploaded without errors
   if (isset($_FILES["imagepath"]) && $_FILES["imagepath"]["error"] == 0) {
     $uploadDir = "../assets/imgs/";
@@ -143,6 +165,7 @@ if (isset($_GET["upd-productid"])) {
   $product = $admin->getProductById($productId);
 }
 
+// Update
 if (isset($_POST["updateproduct"])) {
   $productId = $_POST["productid"];
   $title = $_POST["title"];
@@ -179,34 +202,40 @@ if (isset($_POST["updateproduct"])) {
   }
 }
 
+// Search
 if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "product") {
   $searchProductInput = trim($_POST["searchInput"]);
   $searchProductValue = trim($_POST["searchValue"]);
 
-  $products = $admin->searchProducts($searchProductInput, $searchProductValue);
+  $searchedProducts = $admin->searchProducts($searchProductInput, $searchProductValue);
 
-  $html = isset($products) ? "No product found" : "";
+  $html = !empty($searchedProducts) ? "" : "No product found";
 
-  foreach ($products as $product) {
-    $isOutstanding = $product['isOutstanding'] == 1 ? "checked" : "";
-    $isNew = $product['isNew'] == 1 ? "checked" : "";
-    $isShow = $product['isShow'] == 1 ? "checked" : "";
-    $html .= "
-        <tr data-productid='{$product['id']}'>
-            <td>{$product['id']}</td>
-            <td>{$product['name']}</td>
-            <td>{$product['title']}</td>
-            <td><img src=' {$product['thumbnail']}' alt='Product image' /></td>
-            <td><p> {$product['price']}</p></td>
-            <td><input type='checkbox' disabled {$isOutstanding} name='outstanding'/></td>
-            <td><input type='checkbox' disabled {$isNew} name='isNew'/></td>
-            <td><input type='checkbox' disabled {$isShow} name='isShow'/></td>
-            <td>
-                <span class='fa-solid fa-pen-to-square edit-productbtn'></span>
-                <span class='fa-solid fa-trash del-productbtn' name='del-product' value='del-product'></span>
-            </td>
-        </tr>
-        ";
+  $editIcon = checkPermission("Edit products", $admin) ? "<span class='fa-solid fa-pen-to-square edit-productbtn'></span>" : "";
+  $deleteIcon = checkPermission("Delete products", $admin) ? "<span class='fa-solid fa-trash del-productbtn' name='del-product' value='del-product'></span>" : "";
+
+  if (!empty($searchedProducts)) {
+    foreach ($searchedProducts as $product) {
+      $isOutstanding = $product['isOutstanding'] == 1 ? "checked" : "";
+      $isNew = $product['isNew'] == 1 ? "checked" : "";
+      $isShow = $product['isShow'] == 1 ? "checked" : "";
+      $html .= "
+          <tr data-productid='{$product['id']}' data-categoryid='{$product['category_id']}'>
+              <td>{$product['id']}</td>
+              <td>{$product['name']}</td>
+              <td>{$product['title']}</td>
+              <td><img src=' {$product['thumbnail']}' alt='Product image' /></td>
+              <td><p> {$product['price']}</p></td>
+              <td><input type='checkbox' disabled {$isOutstanding} name='outstanding'/></td>
+              <td><input type='checkbox' disabled {$isNew} name='isNew'/></td>
+              <td><input type='checkbox' disabled {$isShow} name='isShow'/></td>
+              <td>
+                  {$editIcon}
+                  {$deleteIcon}
+              </td>
+          </tr>
+          ";
+    }
   }
 
   echo $html;
@@ -332,12 +361,18 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
   $searchInput = trim($_POST["searchInput"]);
   $searchValue = trim($_POST["searchValue"]);
 
-  $orders = $admin->searchOrders($searchInput, $searchValue);
-  $html = "";
+  $ordersSearched = $admin->searchOrders($searchInput, $searchValue);
 
-  if (isset($orders)) {
-    foreach ($orders as $order) {
+  $html = !empty($ordersSearched) ? "" : "No order found";
+
+  $deleteIcon = checkPermission("Delete orders", $admin) ? "<span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>" : "";
+
+  if (!empty($ordersSearched)) {
+    foreach ($ordersSearched as $order) {
       $status = $order["orderstatus"] == 1 ? "Đã xử lý" : "Đang xử lý";
+
+      $solveBtn = checkPermission("Solve orders", $admin) ? "
+      <button type='button' name='statusBtn' value='{$order['orderstatus']}' class='btn- btn--hover'>$status</button>" : "$status";
 
       $html .= "
       <tr class='row-order' data-orderid='{$order['orderid']}'>
@@ -345,17 +380,11 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
         <td>{$order['fullname']}</td>
         <td>{$order['orderemail']}</td>
         <td>{$order['orderphone']}</td>
-        <td class='status'>
-          <button type='button' name='statusBtn' value='{$order['orderstatus']}' class='btn- btn--hover'>$status</button>
-        </td>
+        <td class='status'>{$solveBtn}</td>
         <td>{$order['total_money']}</td>
-        <td>
-          <span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>
-        </td>
+        <td>{$deleteIcon}</td>
       </tr>";
     }
-  } else {
-    $html .= "No order found";
   }
 
   echo $html;
@@ -365,7 +394,6 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 if (isset($_POST["orderId"]) && isset($_POST["orderStatus"])) {
   $orderId = $_POST["orderId"];
   $isSaved = $admin->saveStatus($orderId);
-
   echo $isSaved ? true : false;
 }
 
@@ -374,33 +402,31 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
   $fromDate = $_POST["fromDate"];
   $toDate = $_POST["toDate"];
 
-  $orders = $admin->searchOrdersByDate($fromDate, $toDate);
+  $ordersSearchedDate = $admin->searchOrdersByDate($fromDate, $toDate);
 
-  $html = "";
+  $html = !empty($ordersSearchedDate) ? "" : "No order found";
 
-  if (isset($orders)) {
-    foreach ($orders as  $order) {
+  $deleteIcon = checkPermission("Delete orders", $admin) ? "<span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>" : "";
+
+  if (!empty($ordersSearchedDate)) {
+    foreach ($ordersSearchedDate as  $order) {
       $status = $order["orderstatus"] == 1 ? "Đã xử lý" : "Đang xử lý";
+
+      $solveBtn = checkPermission("Solve orders", $admin) ? "
+      <button type='button' name='statusBtn' value='{$order['orderstatus']}' class='btn- btn--hover'>$status</button>" : "$status";
 
       $html .= "
         <tr class='row-order' data-orderid='{$order['orderid']}'>
           <td>{$order['orderid']}</td>
           <td>{$order['orderfullname']}</td>
           <td>{$order['orderemail']}</td>
-          <td>{$order['orderphone']}</td>
-          <td class='status'>
-            <button type='button' name='statusBtn' value='{$order['orderstatus']}' class='btn- btn--hover'>$status</button>
-          </td>
+          <td>{$order['orderphonenumber']}</td>
+          <td class='status'>{$solveBtn}</td>
           <td>{$order['total_money']}</td>
-          <td>
-            <span class='fa-solid fa-trash del-orderbtn' name='del-order' value='del-order'></span>
-          </td>
+          <td>{$deleteIcon}</td>
         </tr>";
     }
-  } else {
-    $html .= "No orders found";
   }
-
   echo $html;
 }
 
@@ -431,7 +457,7 @@ if (isset($_POST["savecategory"])) {
   }
 }
 
-// 
+// Getting the category by id
 if (isset($_GET["updcategory_id"])) {
   $categoryId = $_GET["updcategory_id"];
   $categoriesId = $admin->getCategoryById($categoryId);
@@ -442,24 +468,25 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
   $searchInput = $_POST["searchInput"];
   $searchValue = $_POST["searchValue"];
 
-  $categories = $admin->searchCategories($searchInput, $searchValue);
+  $categoriesSearched = $admin->searchCategories($searchInput, $searchValue);
 
-  $html = "";
+  $html = !empty($categoriesSearched) ? "" : "No category found";
 
-  if (isset($categories)) {
-    foreach ($categories as $category) {
+  $editIcon = checkPermission("Edit categories", $admin) ? "<span class='fa-solid fa-pen-to-square edit-categorybtn'></span>" : "";
+  $deleteIcon = checkPermission("Delete categories", $admin) ? "<span class='fa-solid fa-trash del-categorybtn' name='del-category' value='del-category'></span>" : "";
+
+  if (!empty($categoriesSearched)) {
+    foreach ($categoriesSearched as $category) {
       $html .= "
         <tr data-categoryid='{$category['id']}'>
           <td>{$category['id']}</td>
           <td>{$category['name']}</td>
           <td>
-              <span class='fa-solid fa-pen-to-square edit-categorybtn'></span>
-              <span class='fa-solid fa-trash del-categorybtn' name='del-category' value='del-category'></span>
+              {$editIcon}
+              {$deleteIcon}
           </td>
         </tr>";
     }
-  } else {
-    $html .= "No category found";
   }
 
   echo $html;
@@ -534,7 +561,7 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 
   $searchedRoles = $admin->searchRoles($searchInput, $searchValue);
 
-  $html = "";
+  $html = isset($searchedRoles) ? "No role found" : "";
 
   if (isset($searchedRoles)) {
     foreach ($searchedRoles as $role) {
@@ -542,16 +569,108 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
       <tr data-roleid='{$role['id']}' >
         <td>{$role['id']}</td>
         <td>{$role['name']}</td>
-        <td><button type='button' class='btn- btn--hover'>Phân quyền</button></td>
+        <td><button type='button' class='btn- btn--hover btn-privilege'>Phân quyền</button></td>
         <td>
             <span class='fa-solid fa-pen-to-square edit-rolebtn'></span>
             <span class='fa-solid fa-trash del-rolebtn' name='del-role' value='del-role'></span>
         </td>
     </tr>";
     }
-  } else {
-    $html .= "No role found";
+  }
+  echo $html;
+}
+
+// =============================================== PRIVILEGE ===============================================
+// Render permissions based on the role id
+if (isset($_GET["role_privilege_id"])) {
+  $role_privilege_id = $_GET["role_privilege_id"];
+
+  // Fetch all permissions associated with the role ID
+  $permissions = $admin->getPermissionsByRoleId($role_privilege_id);
+
+  // Convert the permissions array into a more efficient format for checking existence
+  $permissionsMap = [];
+  foreach ($permissions as $permission) {
+    $permissionsMap[$permission['description']] = $permission['permissionId'];
   }
 
+  // Define functions and actions
+  $functions = array(
+    "Categories" => array("Add", "Edit", "Delete", "See"),
+    "Users" => array("Add", "Edit", "Delete", "See"),
+    "Products" => array("Add", "Edit", "Delete", "See"),
+    "Roles" => array("Add", "Edit", "Delete", "See"),
+    "Orders" => array("Solve", "Delete", "See"),
+    "Permissions" => array("Edit", "See"),
+    "Statistics" => array("See")
+  );
+
+  // Start generating HTML
+  $html = '
+    <div class="overlay"></div>
+      <form action="../includes/admin.inc.php?role_privilege_id=' . $role_privilege_id  . '" method="post" class="privilege-form">
+          <div class="dashboard-body">
+              <div class="header">FUNCTIONAL INFORMATION</div>
+              <table style="border: none;">
+                  <thead>
+                      <tr>
+                          <th>FUNCTION NAME</th>
+                          <th colspan="4">ACTION</th>
+                      </tr>
+                  </thead>
+                  <tbody id="bodyprivilege">';
+
+  $saveBtn = checkPermission("Edit permissions", $admin) ? '<button type="submit" name="save-privilege" value="save-privilege" class="btn- btn--hover btn-save">Save</button>' : "";
+
+  // Generate checkboxes for each function-action combination
+  foreach ($functions as $function => $actions) {
+    $html .= '<tr style="height: 40px; text-align: center;"><td>' . $function . '</td>';
+    foreach ($actions as $action) {
+      $permissionKey = $action . '-' . strtolower($function);
+      $permissionDescription = $action . ' ' . strtolower($function);
+      $checked = array_key_exists($permissionDescription, $permissionsMap) ? 'checked' : '';
+      $html .= '<td><input style="display: inline-block;" type="checkbox" name="' . $permissionKey . '" ' . $checked . ' id="' . $permissionKey . '"> <label for="' . $permissionKey . '">' . $action . '</label></td>';
+    }
+    $html .= '</tr>';
+  }
+
+  // Close the HTML form
+  $html .= '</tbody>
+          </table>
+          <button type="button" class="btn- btn--exit">Exit</button>
+          ' . $saveBtn . '
+          </div>
+        </form>';
+
+  // Display the generated HTML form
   echo $html;
+}
+
+// When clicking on the `save` privilege
+if (isset($_POST["save-privilege"])) {
+  if (isset($_GET["role_privilege_id"])) {
+    $role_privilege_id = $_GET["role_privilege_id"];
+  }
+
+  // Define functions and actions
+  $functions = array(
+    "Categories" => array("Add", "Edit", "Delete", "See"),
+    "Users" => array("Add", "Edit", "Delete", "See"),
+    "Products" => array("Add", "Edit", "Delete", "See"),
+    "Roles" => array("Add", "Edit", "Delete", "See"),
+    "Orders" => array("Solve", "Delete", "See"),
+    "Permissions" => array("Edit", "See"),
+    "Statistics" => array("See")
+  );
+
+  foreach ($functions as $function => $actions) {
+    foreach ($actions as $action) {
+      $permissionDescription = $action . '-' . strtolower($function);
+      $checked = isset($_POST[$permissionDescription]) ? 1 : 0;
+      $permissionDescription = str_replace("-", " ", $permissionDescription);
+      $admin->setPrivilegeByRoleId($role_privilege_id, $permissionDescription, $checked);
+    }
+  }
+
+  echo "<script>window.location.href = '../admin/rolemanager.php';</script>";
 }

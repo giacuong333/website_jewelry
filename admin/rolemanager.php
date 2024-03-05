@@ -15,7 +15,10 @@
 </head>
 
 <body>
-    <?php include("../admin/common.php"); ?>
+    <?php
+    include("../admin/common.php");
+    include("../includes/admin.inc.php");
+    ?>
 
     <main>
 
@@ -27,10 +30,16 @@
                 <option value="name">Name</option>
             </select>
 
-            <button id="addrole" class="btn- btn--hover" type="button">
-                <span class="fa-solid fa-plus"></span>
-                Add new
-            </button>
+            <?php
+            if (checkPermission("Add roles", $admin)) {
+            ?>
+                <button id="addrole" class="btn- btn--hover" type="button">
+                    <span class="fa-solid fa-plus"></span>
+                    Add new
+                </button>
+            <?php
+            }
+            ?>
         </div>
 
         <!-- Product -->
@@ -47,18 +56,26 @@
 
                 <tbody id="bodyrole">
                     <?php
-                    include("../includes/admin.inc.php");
-
                     if (is_array($roles)) {
                         foreach ($roles as $role) {
                     ?>
                             <tr data-roleid="<?php echo $role["id"]; ?>">
                                 <td> <?php echo $role["id"]; ?></td>
                                 <td> <?php echo $role["name"]; ?></td>
-                                <td><button type="button" class="btn- btn--hover">Phân quyền</button></td>
+                                <td><button type="button" class="btn- btn--hover btn-privilege">Phân quyền</button></td>
                                 <td>
-                                    <span class="fa-solid fa-pen-to-square edit-rolebtn"></span>
-                                    <span class="fa-solid fa-trash del-rolebtn" name="del-role" value="del-role"></span>
+                                    <?php
+                                    if (checkPermission("Edit roles", $admin)) {
+                                    ?>
+                                        <span class="fa-solid fa-pen-to-square edit-rolebtn"></span>
+                                    <?php
+                                    }
+                                    if (checkPermission("Delete roles", $admin)) {
+                                    ?>
+                                        <span class="fa-solid fa-trash del-rolebtn" name="del-role" value="del-role"></span>
+                                    <?php
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                     <?php
@@ -68,6 +85,8 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="privilege-panel"></div>
     </main>
 </body>
 
