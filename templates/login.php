@@ -16,8 +16,10 @@
 </head>
 
 <body>
-    <?php include("../includes/login.inc.php"); ?>
-    <?php include("../templates/header.php"); ?>
+    <?php
+    include_once("../includes/login.inc.php");
+    include_once("../templates/header.php");
+    ?>
 
     <main>
         <div class="header">
@@ -63,15 +65,24 @@
             <div class="content-right">
                 <div class="top">
                     <p>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email</p>
-                    <form action="" method="post">
+                    <form action="../includes/forgetpassword.inc.php" method="post">
                         <div class="form-group">
                             <label for="useremail" style="font-weight: 600;">Email
                                 <span style="color:red;">*</span>
                             </label>
-                            <input type="email" id="useremail" name="useremail" placeholder="Email" required />
+                            <input type="email" id="forgotuseremail" name="useremail" placeholder="Email" />
+                            <?php
+                            if (isset($_GET["error"]) && $_GET["error"] == "wrongemail") {
+                                echo '<span class="error-message">Email không tồn tại</span>';
+                            } else if (isset($_GET["error"]) && $_GET["error"] == "emptyinput") {
+                                echo '<span class="error-message">Vui lòng nhập email đã đăng ký</span>';
+                            } else {
+                                echo '<span class="error-message"></span>';
+                            }
+                            ?>
                         </div>
 
-                        <button type="submit" class="btn btn--active" name="getpassword" value="getpassword">LẤY LẠI MẬT KHẨU</button>
+                        <button type="submit" class="btn btn--active" name="getformerpassword" value="getformerpassword">LẤY LẠI MẬT KHẨU</button>
                     </form>
                 </div>
             </div>

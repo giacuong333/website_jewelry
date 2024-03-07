@@ -243,9 +243,10 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
 
 // =============================================== ORDER ===============================================
 // Order details
-if (isset($_GET["orderId"])) {
+if (isset($_GET["orderId"]) && isset($_GET["userId"])) {
   $orderDetails = [];
   $orderId = $_GET["orderId"];
+  $userId = $_GET["userId"];
 
   foreach ($orders as $order) {
     if ($order["id"] == $orderId) {
@@ -291,54 +292,36 @@ if (isset($_GET["orderId"])) {
                     </div>
                   </div>
                 </div>
+                <div class='content-body__middle'>";
 
-                <div class='content-body__middle'>
-                  <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-info'>
-                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
-                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
-                    </div>
-                  </div>
-                  <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-info'>
-                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
-                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
-                    </div>
-                  </div>
-                  <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-info'>
-                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
-                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
-                    </div>
-                  </div>
-                  <div class='content-body__middle-product'>
-                    <div class='content-body__middle-product-image'><img src='{$orderDetails['thumbnail']}' alt='Product Image'></div>
-                    <div class='content-body__middle-product-info'>
-                      <div class='content-body__middle-product-name'>{$orderDetails['title']} <span>({$orderDetails['num']})</span></div>
-                      <div class='content-body__middle-product-price'>{$orderDetails['price']}</div>
-                    </div>
-                  </div>
-
-                  <div class='content-body__middle-shipping'>
-                    <p class='content-body__middle-shipping-name'>Shipping</p>
-                    <p class='content-body__middle-shipping-price'>40000</p>
-                  </div>
-                </div>
-
-                <div class='content-body__bottom'>
-                  <p class='content-body__bottom-total'>{$orderDetails['total_money']}</p>
-                </div>
+  $orderOfUser = $admin->getOrderByUserId($userId);
+  if (!empty($orderOfUser)) {
+    foreach ($orderOfUser as $order) {
+      $orderPrice = $order["price"] * $order["num"];
+      $html .= "
+            <div class='content-body__middle-product' id={$order['productId']}>
+              <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
+              <div class='content-body__middle-product-info'>
+                <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
+                <div class='content-body__middle-product-price'>{$orderPrice}</div>
               </div>
-              <div class='content-footer'>
-                <p class='content-footer__help'>Want any help? Please contact us.</p>
-              </div>
-            </div>
+            </div>";
+    }
+  }
+
+  $totalOfOrder = $admin->calculateTotalMoneyByUerId($userId);
+  $html .= "</div>
+        <div class='content-body__bottom'>
+          <p style='display:inline-block; color: #1f7a77;'>Total</p>
+          <p class='content-body__bottom-total'>{$totalOfOrder["total_of_order"]}</p>
         </div>
-        <div class='overlay'></div>
-
+        </div>
+          <div class='content-footer'>
+          <p class='content-footer__help'>Want any help? Please contact us.</p>
+        </div>
+      </div>
+    </div>
+    <div class='overlay'></div>
     ";
 
   echo $html;

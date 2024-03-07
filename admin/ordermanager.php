@@ -22,8 +22,8 @@
 
 <body id="order-body">
 	<?php
-	include("../admin/common.php");
-	include("../includes/admin.inc.php");
+	include_once("../admin/common.php");
+	include_once("../includes/admin.inc.php");
 	?>
 	<!-- Order details -->
 
@@ -65,8 +65,8 @@
 						foreach ($orders as $order) {
 							$status = $order["status"] == 1 ? "Đã xử lý" : "Đang xử lý";
 					?>
-							<tr class="row-order" data-orderid="<?php echo $order["id"]; ?>">
-								<td> <?php echo $order["id"]; ?></td>
+							<tr class="row-order" data-orderid="<?php echo $order["id"]; ?>" data-userid="<?php echo $order["userid"] ?>">
+								<td> <?php echo $order["orderid"]; ?></td>
 								<td> <?php echo $order["fullname"]; ?></td>
 								<td> <?php echo $order["orderemail"]; ?></td>
 								<td> <?php echo $order["orderphonenumber"]; ?></td>

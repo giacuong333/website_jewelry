@@ -273,11 +273,12 @@ $(document).ready(function () {
     rowOrders.each(function () {
       $(this).click(function (e) {
         const orderId = $(this).data("orderid");
+        const userId = $(this).data("userid");
 
         $.ajax({
           type: "GET",
           url: "../includes/admin.inc.php",
-          data: { orderId: orderId },
+          data: { orderId: orderId, userId: userId },
           success: function (response) {
             $("#order-body").prepend(response);
             const container = $(".container");

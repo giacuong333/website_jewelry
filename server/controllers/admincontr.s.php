@@ -97,6 +97,16 @@ class AdminController extends Admin
         return $this->searchAllOrdersByDate($fromDate, $toDate);
     }
 
+    public function getOrderByUserId($user_id)
+    {
+        return Admin::getOrdersByUserId($user_id);
+    }
+
+    public function calculateTotalMoneyByUerId($user_id)
+    {
+        return Admin::calculateTotalMoneyByUerId($user_id);
+    }
+
     // ===================================================== CATEGORY =====================================================
     public function getCategories()
     {

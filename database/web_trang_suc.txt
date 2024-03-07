@@ -1,328 +1,335 @@
-  DROP DATABASE IF EXISTS `web_trang_suc`;
-  CREATE DATABASE IF NOT EXISTS `web_trang_suc`;
-  USE `web_trang_suc`;
+DROP DATABASE IF EXISTS `web_trang_suc`;
+CREATE DATABASE IF NOT EXISTS `web_trang_suc`;
+USE `web_trang_suc`;
 
-  /* ------------------------------------- ROLE */
+/* ------------------------------------- ROLE */
 
-  CREATE TABLE `role` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
-    `isDeleted` int
-  );
+CREATE TABLE `role` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `isDeleted` int
+);
 
-  /* ------------------------------------- USER */
+/* ------------------------------------- USER */
 
-  CREATE TABLE `user` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `fullname` varchar(255) NOT NULL,
-    `email` varchar(255) NOT NULL,
-    `phone_number` varchar(255) NOT NULL,
-    `password` varchar(255),
-    `role_id` int,
-    `created_at` date,
-    `updated_at` date,
-    `deleted` int
-  );
+CREATE TABLE `user` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `password` varchar(255),
+  `role_id` int,
+  `created_at` date,
+  `updated_at` date,
+  `deleted` int
+);
 
-  /* ------------------------------------- CATEGORY */
+/* ------------------------------------- CATEGORY */
 
-  CREATE TABLE `category` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `name` varchar(255) NOT NULL,
-    `isDeleted` int
-  );
+CREATE TABLE `category` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `isDeleted` int
+);
 
-  /* ------------------------------------- PRODUCT */
+/* ------------------------------------- PRODUCT */
 
-  CREATE TABLE `product` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `title` varchar(255) NOT NULL,
-    `price` int NOT NULL,
-    `category_id` int,
-    `discount` int,
-    `thumbnail` varchar(500),
-    `description` varchar(500),
-    `created_at` date,
-    `updated_at` date,
-    `deleted` int,
-    isShow int,
-    isOutstanding int,
-    isNew int
-  );
+CREATE TABLE `product` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `price` int NOT NULL,
+  `category_id` int,
+  `discount` int,
+  `thumbnail` varchar(500),
+  `description` varchar(500),
+  `created_at` date,
+  `updated_at` date,
+  `deleted` int,
+  isShow int,
+  isOutstanding int,
+  isNew int
+);
 
-  /* ------------------------------------- GALLERY */
+/* ------------------------------------- GALLERY */
 
-  CREATE TABLE `gallery` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `product_id` int,
-    `thumbnail` varchar(500)
-  );
+CREATE TABLE `gallery` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `product_id` int,
+  `thumbnail` varchar(500)
+);
 
-  /* ------------------------------------- FEEDBACK */
+/* ------------------------------------- FEEDBACK */
 
-  CREATE TABLE `feedback` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `subject_name` varchar(255),
-    `note` varchar(255),
-    `thumbnail` varchar(500),
-    `user_id` int,
-    `product_id` int
-  );
+CREATE TABLE `feedback` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `subject_name` varchar(255),
+  `note` varchar(255),
+  `thumbnail` varchar(500),
+  `user_id` int,
+  `product_id` int
+);
 
-  /* ------------------------------------- ORDER */
+/* ------------------------------------- ORDER */
 
-  CREATE TABLE `order` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `fullname` varchar(255) NOT NULL,
-    `email` varchar(255),
-    `phone_number` varchar(255) NOT NULL,
-    `address` varchar(255) NOT NULL,
-    `note` varchar(255),
-    `order_date` date,
-    `status` int,
-    `total_money` int,
-    `user_id` int,
-    `isDeleted` int
-  );
+CREATE TABLE `order` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `email` varchar(255),
+  `phone_number` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `note` varchar(255),
+  `order_date` date,
+  `status` int,
+  `total_money` int,
+  `user_id` int,
+  `isDeleted` int
+);
 
-  /* ------------------------------------- ORDERDETAIL */
+/* ------------------------------------- ORDERDETAIL */
 
-  CREATE TABLE `orderdetail` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `order_id` int,
-    `product_id` int,
-    `price` int,
-    `num` int,
-    `total_money` int
-  );
+CREATE TABLE `orderdetail` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `order_id` int,
+  `product_id` int,
+  `price` int,
+  `num` int,
+  `total_money` int
+);
 
-  /* ------------------------------------- ROLE_PERMISSION */
+/* ------------------------------------- ROLE_PERMISSION */
 
-  CREATE TABLE `role_permission` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `role_id` int,
-    `permission_id` int,
-    `isAllowed` int
-  );
+CREATE TABLE `role_permission` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `role_id` int,
+  `permission_id` int,
+  `isAllowed` int
+);
 
-  /* ------------------------------------- PERMISSION */
+/* ------------------------------------- PERMISSION */
 
-  CREATE TABLE `permission` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `description` varchar(255)
-  );
+CREATE TABLE `permission` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `description` varchar(255)
+);
 
-  /* ------------------------------------- SET DEFAULT VALUES */
+/* ------------------------------------- SET DEFAULT VALUES */
 
-  ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
-  ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
-  ALTER TABLE `product` ALTER isNew SET DEFAULT 1;
+ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
+ALTER TABLE `product` ALTER isOutstanding SET DEFAULT 1;
+ALTER TABLE `product` ALTER isNew SET DEFAULT 1;
 
-  /* ------------------------------------- REFERENCES  */
+/* ------------------------------------- REFERENCES  */
 
-  ALTER TABLE `user` 
-  ADD FOREIGN KEY (`role_id`) 
-  REFERENCES `role` (`id`);
+ALTER TABLE `user` 
+ADD FOREIGN KEY (`role_id`) 
+REFERENCES `role` (`id`);
 
-  ALTER TABLE `product` 
-  ADD FOREIGN KEY (`category_id`) 
-  REFERENCES `category` (`id`);
+ALTER TABLE `product` 
+ADD FOREIGN KEY (`category_id`) 
+REFERENCES `category` (`id`);
 
-  ALTER TABLE `gallery` 
-  ADD FOREIGN KEY (`product_id`) 
-  REFERENCES `product` (`id`);
+ALTER TABLE `gallery` 
+ADD FOREIGN KEY (`product_id`) 
+REFERENCES `product` (`id`);
 
-  ALTER TABLE `orderdetail` 
-  ADD FOREIGN KEY (`order_id`) 
-  REFERENCES `order` (`id`);
+ALTER TABLE `orderdetail` 
+ADD FOREIGN KEY (`order_id`) 
+REFERENCES `order` (`id`);
 
-  ALTER TABLE `orderdetail` 
-  ADD FOREIGN KEY (`product_id`) 
-  REFERENCES `product` (`id`);
+ALTER TABLE `orderdetail` 
+ADD FOREIGN KEY (`product_id`) 
+REFERENCES `product` (`id`);
 
-  ALTER TABLE `order` 
-  ADD FOREIGN KEY (`user_id`) 
-  REFERENCES `user` (`id`);
+ALTER TABLE `order` 
+ADD FOREIGN KEY (`user_id`) 
+REFERENCES `user` (`id`);
 
-  ALTER TABLE `feedback` 
-  ADD FOREIGN KEY (`user_id`) 
-  REFERENCES `user` (`id`);
+ALTER TABLE `feedback` 
+ADD FOREIGN KEY (`user_id`) 
+REFERENCES `user` (`id`);
 
-  ALTER TABLE `feedback` 
-  ADD FOREIGN KEY (`product_id`) 
-  REFERENCES `product` (`id`);
+ALTER TABLE `feedback` 
+ADD FOREIGN KEY (`product_id`) 
+REFERENCES `product` (`id`);
 
-  ALTER TABLE `role_permission` 
-  ADD FOREIGN KEY (`permission_id`) 
-  REFERENCES `permission` (`id`);
+ALTER TABLE `role_permission` 
+ADD FOREIGN KEY (`permission_id`) 
+REFERENCES `permission` (`id`);
 
-  ALTER TABLE `role_permission` 
-  ADD FOREIGN KEY (`role_id`) 
-  REFERENCES `role` (`id`);
+ALTER TABLE `role_permission` 
+ADD FOREIGN KEY (`role_id`) 
+REFERENCES `role` (`id`);
 
-  /* ------------------------------------- TRIGGERS */
+/* ------------------------------------- TRIGGERS */
 
-  CREATE TRIGGER user_time_create 
-  BEFORE INSERT ON `user` 
-  FOR EACH ROW 
-    SET NEW.created_at = CURRENT_DATE;
+CREATE TRIGGER user_time_create 
+BEFORE INSERT ON `user` 
+FOR EACH ROW 
+  SET NEW.created_at = CURRENT_DATE;
 
-  CREATE TRIGGER product_time_create 
-  BEFORE INSERT ON `product` 
-  FOR EACH ROW 
-    SET NEW.created_at = CURRENT_DATE;
+CREATE TRIGGER product_time_create 
+BEFORE INSERT ON `product` 
+FOR EACH ROW 
+  SET NEW.created_at = CURRENT_DATE;
 
-  CREATE TRIGGER order_time_create 
-  BEFORE INSERT ON `order` 
-  FOR EACH ROW 
-    SET NEW.order_date = CURRENT_DATE; 
+CREATE TRIGGER order_time_create 
+BEFORE INSERT ON `order` 
+FOR EACH ROW 
+  SET NEW.order_date = CURRENT_DATE; 
 
-  CREATE TRIGGER order_total_create 
-  BEFORE INSERT ON `orderdetail` 
-  FOR EACH ROW 
-    SET NEW.total_money = (NEW.total_money * NEW.num);
+-- CREATE TRIGGER order_total_create 
+-- AFTER INSERT ON `order` 
+-- FOR EACH ROW 
+  -- UPDATE `orderdetail`
+  -- SET 
+    -- `total_money` = NEW.`total_money`, 
+    -- `price` = (SELECT `price` FROM `product` WHERE `),
+    -- `num` = `total_money` / `price` 
+  -- WHERE `order_id` = NEW.`id`;
 
-  CREATE TRIGGER product_time_update 
-  BEFORE UPDATE ON `product` 
-  FOR EACH ROW 
-    SET NEW.updated_at = CURRENT_DATE;
+CREATE TRIGGER product_time_update 
+BEFORE UPDATE ON `product` 
+FOR EACH ROW 
+  SET NEW.updated_at = CURRENT_DATE;
 
-  CREATE TRIGGER user_time_update 
-  BEFORE UPDATE ON `user` 
-  FOR EACH ROW 
-    SET NEW.updated_at = CURRENT_DATE;
+CREATE TRIGGER user_time_update 
+BEFORE UPDATE ON `user` 
+FOR EACH ROW 
+  SET NEW.updated_at = CURRENT_DATE;
 
-  CREATE TRIGGER user_delete_create 
-  BEFORE INSERT ON `user` 
-  FOR EACH ROW 
-    SET NEW.deleted = 0;
+CREATE TRIGGER user_delete_create 
+BEFORE INSERT ON `user` 
+FOR EACH ROW 
+  SET NEW.deleted = 0;
 
-  CREATE TRIGGER product_delete_create 
-  BEFORE INSERT ON `product` 
-  FOR EACH ROW 
-    SET NEW.deleted = 0;
+CREATE TRIGGER product_delete_create 
+BEFORE INSERT ON `product` 
+FOR EACH ROW 
+  SET NEW.deleted = 0;
 
-  CREATE TRIGGER category_delete_create 
-  BEFORE INSERT ON `category` 
-  FOR EACH ROW 
-    SET NEW.isDeleted = 0;
+CREATE TRIGGER category_delete_create 
+BEFORE INSERT ON `category` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER order_delete_create 
-  BEFORE INSERT ON `order` 
-  FOR EACH ROW 
-    SET NEW.isDeleted = 0;
+CREATE TRIGGER order_delete_create 
+BEFORE INSERT ON `order` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
 
-  CREATE TRIGGER role_delete_create 
-  BEFORE INSERT ON `role` 
-  FOR EACH ROW 
-    SET NEW.isDeleted = 0;
+CREATE TRIGGER role_delete_create 
+BEFORE INSERT ON `role` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
 
-  /* ------------------------------------- INSERT VALUES */
-   INSERT INTO `category` (`name`, `isDeleted`) VALUES 
-  ('Nhẫn', 0), 
-  ('Vòng Cổ', 0), 
-  ('Trâm Cài', 0),
-  ('Bông tai', 0);
+/* ------------------------------------- INSERT VALUES */
+INSERT INTO `category` (`name`, `isDeleted`) VALUES 
+('Nhẫn', 0), 
+('Vòng Cổ', 0), 
+('Trâm Cài', 0),
+('Bông tai', 0);
 
-  INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
-  ('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
-  ('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
-  ('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
-  ('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
+INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
+('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
+('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
+('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
+('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
 
-  INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
-  (1, '../assets/imgs/errings/img1.png'),
-  (2, '../assets/imgs/rings/img1.png'),
-  (3, '../assets/imgs/brooches/img1.png');
+INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
+(1, '../assets/imgs/errings/img1.png'),
+(2, '../assets/imgs/rings/img1.png'),
+(3, '../assets/imgs/brooches/img1.png');
 
-  INSERT INTO `role` (`name`) VALUES 
-  ('Quản lý'), 
-  ('Nhân viên'), 
-  ('Khách hàng'), 
-  ('Admin');
+INSERT INTO `role` (`name`) VALUES 
+('Quản lý'), 
+('Nhân viên'), 
+('Khách hàng'), 
+('Admin');
 
-  INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) VALUES
-  ('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1),
-  ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3),
-  ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2),
-  ('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3),
-  ('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
+INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) VALUES
+('Gia Cường', 'lgcuong@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1),
+('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3),
+('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2),
+('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3),
+('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
 
-  INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) VALUES
-  ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0),
-  ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0),
-  ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 500000, 3, 0),
-  ('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 500000, 4, 0);
+INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `total_money`, `user_id`, `isDeleted`) VALUES
+('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 700000, 1, 0),
+('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 1400000, 2, 0),
+('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 1600000, 3, 0),
+('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 1200000, 4, 0),
+('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Tự đem vào sân nhà giúp người nhận', 0, 1200000, 3, 0);
 
-  INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) VALUES
-  (1, 1, 350000, 2, 70000),
-  (2, 2, 700000, 2, 1400000),
-  (3, 3, 800000, 2, 1600000),
-  (4, 4, 800000, 2, 1600000);
+INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) VALUES
+(1, 1, 350000, 2, 700000),
+(2, 2, 700000, 2, 1400000),
+(3, 3, 800000, 2, 1600000),
+(3, 4, 600000, 2, 1200000),
+(4, 4, 600000, 2, 1200000);
 
-  INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
-  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
-  ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
-  ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
+INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
+('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
+('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
+('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
 
-  INSERT INTO `permission` (`description`) VALUES
-  -- USERS
-  ('Add users'),
-  ('Edit users'),
-  ('Delete users'),
-  ('See users'),
-  -- CATEGORIES
-  ('Add categories'),
-  ('Edit categories'),
-  ('Delete categories'),
-  ('See categories'),
-  -- ROLES
-  ('Add roles'),
-  ('Edit roles'),
-  ('Delete roles'),
-  ('See roles'),
-  -- PRODUCTS
-  ('Add products'),
-  ('Edit products'),
-  ('Delete products'),
-  ('See products'),
-  -- ORDERS
-  ('Solve orders'),
-  ('Delete orders'),
-  ('See orders'),
-  -- PERMISSIONS
-  ('Edit permissions'),
-  ('See permissions'),
-  -- STATISTICS
-  ('See statistics');
+INSERT INTO `permission` (`description`) VALUES
+-- USERS
+('Add users'),
+('Edit users'),
+('Delete users'),
+('See users'),
+-- CATEGORIES
+('Add categories'),
+('Edit categories'),
+('Delete categories'),
+('See categories'),
+-- ROLES
+('Add roles'),
+('Edit roles'),
+('Delete roles'),
+('See roles'),
+-- PRODUCTS
+('Add products'),
+('Edit products'),
+('Delete products'),
+('See products'),
+-- ORDERS
+('Solve orders'),
+('Delete orders'),
+('See orders'),
+-- PERMISSIONS
+('Edit permissions'),
+('See permissions'),
+-- STATISTICS
+('See statistics');
 
-  INSERT INTO `role_permission` (`role_id`, `permission_id`, `isAllowed`) VALUES
-  (1, 1, 1), (1, 2, 1), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 6, 1), (1, 7, 1), (1, 8, 1), (1, 9, 1), (1, 10, 1),
-  (1, 11, 1), (1, 12, 1), (1, 13, 1), (1, 14, 1), (1, 15, 1), (1, 16, 1), (1, 17, 1), (1, 18, 1), (1, 19, 1), (1, 20, 1),
-  (1, 21, 1), (1, 22, 1),
-  (2, 1, 1), (2, 2, 1), (2, 3, 1), (2, 4, 1), (2, 5, 1), (2, 6, 1), (2, 7, 1), (2, 8, 1), (2, 9, 1), (2, 10, 1),
-  (2, 11, 1), (2, 12, 1), (2, 13, 1), (2, 14, 1), (2, 15, 1), (2, 16, 1), (2, 17, 1), (2, 18, 1), (2, 19, 1), (2, 20, 1),
-  (2, 21, 1), (2, 22, 1),
-  (3, 1, 0), (3, 2, 0), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0), (3, 9, 0), (3, 10, 0),
-  (3, 11, 0), (3, 12, 0), (3, 13, 0), (3, 14, 0), (3, 15, 0), (3, 16, 0), (3, 17, 0), (3, 18, 0), (3, 19, 0), (3, 20, 0),
-  (3, 21, 0), (3, 22, 0),
-  (4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
-  (4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
-  (4, 21, 1), (4, 22, 1);
+INSERT INTO `role_permission` (`role_id`, `permission_id`, `isAllowed`) VALUES
+(1, 1, 1), (1, 2, 1), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 6, 1), (1, 7, 1), (1, 8, 1), (1, 9, 1), (1, 10, 1),
+(1, 11, 1), (1, 12, 1), (1, 13, 1), (1, 14, 1), (1, 15, 1), (1, 16, 1), (1, 17, 1), (1, 18, 1), (1, 19, 1), (1, 20, 1),
+(1, 21, 1), (1, 22, 1),
+(2, 1, 1), (2, 2, 1), (2, 3, 1), (2, 4, 1), (2, 5, 1), (2, 6, 1), (2, 7, 1), (2, 8, 1), (2, 9, 1), (2, 10, 1),
+(2, 11, 1), (2, 12, 1), (2, 13, 1), (2, 14, 1), (2, 15, 1), (2, 16, 1), (2, 17, 1), (2, 18, 1), (2, 19, 1), (2, 20, 1),
+(2, 21, 1), (2, 22, 1),
+(3, 1, 0), (3, 2, 0), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0), (3, 9, 0), (3, 10, 0),
+(3, 11, 0), (3, 12, 0), (3, 13, 0), (3, 14, 0), (3, 15, 0), (3, 16, 0), (3, 17, 0), (3, 18, 0), (3, 19, 0), (3, 20, 0),
+(3, 21, 0), (3, 22, 0),
+(4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
+(4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
+(4, 21, 1), (4, 22, 1);
 
-  /* ------------------------------------- TRIGGERS AFTER INSERTING FOR ROLE, PERMISSION*/
-  
-  CREATE TRIGGER role_permission_create_allow 
-  BEFORE INSERT ON `role_permission` 
-  FOR EACH ROW 
-    SET NEW.isAllowed = 0;
+/* ------------------------------------- TRIGGERS AFTER INSERTING FOR ROLE, PERMISSION*/
 
-  CREATE TRIGGER after_insert_row 
-  AFTER INSERT ON `role` 
-  FOR EACH ROW 
-    INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES 
-    (NEW.id, 1), (NEW.id, 2), (NEW.id, 3), (NEW.id, 4), (NEW.id, 5),
-    (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
-    (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
-    (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
-    (NEW.id, 21), (NEW.id, 22);
+CREATE TRIGGER role_permission_create_allow 
+BEFORE INSERT ON `role_permission` 
+FOR EACH ROW 
+  SET NEW.isAllowed = 0;
+
+CREATE TRIGGER after_insert_row 
+AFTER INSERT ON `role` 
+FOR EACH ROW 
+  INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES 
+  (NEW.id, 1), (NEW.id, 2), (NEW.id, 3), (NEW.id, 4), (NEW.id, 5),
+  (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
+  (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
+  (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
+  (NEW.id, 21), (NEW.id, 22);

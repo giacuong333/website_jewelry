@@ -127,9 +127,10 @@ class Admin extends Database
 		$sql = "SELECT *, `order`.`phone_number` AS `orderphonenumber`, `order`.`email` AS `orderemail`, `order`.`id` AS `orderid`, 
 		`product`.`id` AS `productid`, `user`.`id` AS `userid` 
 		FROM `order` 
-		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id`
-		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
-		JOIN `user` ON `user`.`id` = `order`.`id` WHERE `order`.`isDeleted` != 1;";
+		JOIN `orderdetail` ON `orderdetail`.`order_id` = `order`.`id` 
+		JOIN `product` ON `orderdetail`.`product_id` = `product`.`id` 
+		JOIN `user` ON `user`.`id` = `order`.`user_id` WHERE `order`.`isDeleted` != 1
+		GROUP BY `order`.`id`;";
 
 		try {
 			$stmt = $this->connect()->query($sql);
@@ -182,22 +183,24 @@ class Admin extends Database
 
 		switch ($searchValue) {
 			case "id":
-				$sql .= "CAST(`order`.`id` AS CHAR) LIKE ?;";
+				$sql .= "CAST(`order`.`id` AS CHAR) LIKE ? ";
 				$searchInput = "%$searchInput%";
 				break;
 			case "fullname":
-				$sql .= "`order`.`fullname` LIKE ?;";
+				$sql .= "`order`.`fullname` LIKE ? ";
 				$searchInput = "%$searchInput%";
 				break;
 			case "email":
-				$sql .= "`order`.`email` LIKE ?;";
+				$sql .= "`order`.`email` LIKE ? ";
 				$searchInput = "%$searchInput%";
 				break;
 			case "phonenumber":
-				$sql .= "`order`.`phone_number` LIKE ?;";
+				$sql .= "`order`.`phone_number` LIKE ? ";
 				$searchInput = "%$searchInput%";
 				break;
 		}
+
+		$sql .= "GROUP BY `order`.`id`;";
 
 		try {
 			$stmt = $this->connect()->prepare($sql);
@@ -226,6 +229,38 @@ class Admin extends Database
 			$stmt->execute([$fromDate, $toDate]);
 			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $results ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function getOrdersByUserId($user_id)
+	{
+		try {
+			$sql = "SELECT *, `product`.`id` AS `productId` 
+			FROM `order`
+			JOIN `orderdetail` ON `order`.`id` = `orderdetail`.`order_id`
+			JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
+			WHERE `order`.`user_id` = ? AND `order`.`isDeleted` != 1";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$user_id]);
+			$order = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $order ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	protected function calculateTotalMoneyByUerId($user_id)
+	{
+		try {
+			$sql = "SELECT SUM(`total_money`) as `total_of_order`
+			FROM `order` 
+			WHERE `order`.`user_id` = ? AND `order`.`isDeleted` != 1 
+			GROUP BY `order`.`user_id`;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$user_id]);
+			return $stmt->fetch(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			exit();
 		}
