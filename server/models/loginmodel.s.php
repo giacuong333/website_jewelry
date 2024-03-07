@@ -13,6 +13,7 @@ class Login extends Database
 
             // The account does not exist
             if ($stmt->rowCount() == 0) {
+                echo "usernotfound";
                 exit();
             }
 

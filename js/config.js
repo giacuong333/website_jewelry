@@ -23,10 +23,24 @@ export function isEmail(email, errorElement) {
   return true;
 }
 
-export function isCorrectVerifyPassword(password, verify_password) {
-  return verify_password === password;
+export function isCorrectVerifyPassword(password, verify_password, errorElement) {
+  $(errorElement).text("");
+
+  if (verify_password !== password) {
+    $(errorElement).text("Mật khẩu khác nhận không đúng");
+    return false;
+  }
+  return true;
 }
 
-export function isPhoneNumber(phone_number) {
-  return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(phone_number);
+export function isPhoneNumber(phone_number, errorElement) {
+  $(errorElement).text("");
+
+  const regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+  if (!regex.test(phone_number)) {
+    $(errorElement).text("Số điện thoại không hợp lệ");
+    return false;
+  }
+
+  return true;
 }

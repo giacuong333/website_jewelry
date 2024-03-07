@@ -21,7 +21,6 @@ $(document).ready(function () {
       url: "../includes/login.inc.php",
       data: { useremail: userEmail, password: userPassword, login: "login" },
       success: function (response) {
-        alert(response);
         if (response == "1") {
           window.location.href = "../admin/admin.php";
         } else if (response == "2") {

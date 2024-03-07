@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/config.css">
     <link rel="stylesheet" href="../assets/css/signup.css">
+    <script src="../js/signup.js" type="module"></script>
     <title>Sign up</title>
 </head>
 
@@ -39,6 +40,7 @@
                                 <span style="color:red;">*</span>
                             </label>
                             <input type="text" id="fullname" name="fullname" placeholder="Fullname" required />
+                            <span class="error-message"></span>
                         </div>
 
                         <div class="form-group">
@@ -46,6 +48,7 @@
                                 <span style="color:red;">*</span>
                             </label>
                             <input type="email" id="email" name="email" placeholder="Email" required />
+                            <span class="error-message"></span>
                         </div>
 
                         <div class="form-group">
@@ -53,9 +56,10 @@
                                 <span style="color:red;">*</span>
                             </label>
                             <input type="text" id="phone_number" name="phone_number" placeholder="Phone number" required />
+                            <span class="error-message"></span>
                         </div>
 
-                        <button type="submit" class="btn btn--active" name="signup" value="signup">ĐĂNG KÝ</button>
+                        <button type="button" class="btn btn--active btn-signup" name="signup" value="signup">ĐĂNG KÝ</button>
                         <a style="margin-left: 12px;" href="./login.php">Đăng nhập</a>
                     </div>
 
@@ -66,6 +70,7 @@
                                 <span style="color:red;">*</span>
                             </label>
                             <input type="password" id="password" name="password" placeholder="Password" required />
+                            <span class="error-message"></span>
                         </div>
 
                         <div class="form-group">
@@ -73,6 +78,7 @@
                                 <span style="color:red;">*</span>
                             </label>
                             <input type="password" id="verifyPass" name="verifyPass" placeholder="Verify password" required />
+                            <span class="error-message"></span>
                         </div>
 
                     </div>
@@ -80,7 +86,7 @@
             </div>
         </div>
     </main>
-    <?php include("../templates/footer.php") ?>
+    <?php include_once("../templates/footer.php") ?>
 </body>
 
 </html>

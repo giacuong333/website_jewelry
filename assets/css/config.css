@@ -288,4 +288,6 @@ footer {
   display: inline-block;
 }
 
-/* admin */
+.error-message {
+  color: #e14b33;
+}
