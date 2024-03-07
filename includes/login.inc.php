@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 // Instatiate LoginController class
 include("../server/connection/connect.s.php");
 include("../server/models/loginmodel.s.php");

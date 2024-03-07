@@ -16,7 +16,9 @@
             <label for="userpanel" class="fa-solid fa-user"></label>
             <input type="checkbox" name="" id="userpanel" style="display: none;">
             <div class="login-options">
-                <?php if (isset($_SESSION["id"])) {
+                <?php
+                session_start();
+                if (isset($_SESSION["id"])) {
                     echo "
                     <a href='../includes/logout.inc.php'>
                         <i class='fa-solid fa-power-off'> </i>

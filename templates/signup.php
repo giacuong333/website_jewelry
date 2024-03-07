@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/config.css">
     <link rel="stylesheet" href="../assets/css/signup.css">
     <script src="../js/signup.js" type="module"></script>
     <title>Sign up</title>
