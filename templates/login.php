@@ -12,7 +12,7 @@
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <!-- Js -->
-    <script src="../js/login.js"></script>
+    <script src="../js/login.js" type="module"></script>
 </head>
 
 <body>
@@ -90,7 +90,6 @@
     </main>
 
     <?php include("../templates/footer.php") ?>
-    <!-- <script src="./js/login.js"></script> -->
 </body>
 
 </html>

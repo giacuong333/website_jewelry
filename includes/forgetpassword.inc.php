@@ -12,6 +12,10 @@ if (isset($_POST["getformerpassword"])) {
 
         $user = $password_object->getPasswordByEmail($user_email);
 
+        ini_set('SMTP', "server.com");
+        ini_set('smtp_port', "25");
+        ini_set('sendmail_from', "webtrangsuc@gmail.com");
+
         if (!empty($user)) {
             $new_password = $password_object->generateRandomPassword();
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -28,7 +32,7 @@ if (isset($_POST["getformerpassword"])) {
                 header("Location: ../templates/login.php");
                 exit();
             } else {
-                echo "<script>alert('Failed to send email')</script>";
+                echo "<script>alert('Failed to send to the $user_email')</script>";
             }
         } else {
             header("Location: ../templates/login.php?error=wrongemail");
