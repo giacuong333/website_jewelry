@@ -18,7 +18,6 @@
   <form action="./templates/signup.php">
     <input type="submit" value="sign up page">
   </form>
-  <!-- <script src="./js/login.js"></script> -->
 </body>
 
 </html>

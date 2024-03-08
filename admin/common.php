@@ -6,8 +6,7 @@
 <script src="../assets/libs/jquery-3.7.1.min.js"></script>
 <!-- Js -->
 <script src="../js/admin.js"></script>
-<script src="../js/login.js"></script>
-<!-- <script src="../js/logout.js"></script> -->
+<script src="../js/login.js" type="module"></script>
 
 <!-- Navbar -->
 <nav class="navbar">
@@ -16,7 +15,7 @@
         <img src="../assets/imgs/brand/logo.png" alt="">
     </a>
     <div class="profile">
-        <?php include("../includes/admin.inc.php"); ?>
+        <?php include_once("../includes/admin.inc.php"); ?>
         <p class="profile-name" style="font-size: 18px; font-weight: 500;"><?php echo isset($_SESSION["id"]) ? $_SESSION["fullname"] : "Đăng nhập"; ?></p>
     </div>
 </nav>

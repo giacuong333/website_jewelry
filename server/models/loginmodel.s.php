@@ -23,7 +23,6 @@ class Login extends Database
 
             // Wrong password
             if (!$checkPassword) {
-                // header("location: ../templates/login.php?error=wrongpassword");
                 echo "wrongpassword";
                 exit();
             }

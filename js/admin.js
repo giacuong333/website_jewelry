@@ -1,5 +1,28 @@
 $(document).ready(function () {
   // ========================================================== COMMON ==========================================================
+  // Query the valu of an url
+  function queryValue(value) {
+    const query_string = window.location.search;
+    const url_params = new URLSearchParams(query_string);
+    return url_params.get(value);
+  }
+
+  // Selected menu item
+  function setSelectedMenuItem() {
+    // Selected menu item
+    let active_page = window.location.pathname;
+    active_page = active_page.replace("/website_jewelry/", "../");
+
+    $(".sidebar-menu").each(function () {
+      const link = $(this).attr("href");
+      console.log(link);
+
+      if (link == active_page) {
+        $(this).addClass("is-selected");
+      }
+    });
+  }
+  setSelectedMenuItem();
 
   // Move on to another page
   function moveOn(element, url) {
