@@ -9,13 +9,13 @@ $(document).ready(function () {
 
   // Selected menu item
   function setSelectedMenuItem() {
-    // Selected menu item
-    let active_page = window.location.pathname;
+    let active_page = window.location.pathname; // Get the current path of the url
     active_page = active_page.replace("/website_jewelry/", "../");
 
     $(".sidebar-menu").each(function () {
-      const link = $(this).attr("href");
-      console.log(link);
+      const link = $(this).attr("href"); // Get the path of the selected item
+
+      $(this).removeClass("is-selected"); // Refresh before adding
 
       if (link == active_page) {
         $(this).addClass("is-selected");
@@ -462,12 +462,4 @@ $(document).ready(function () {
     });
   }
   privilege();
-
-  // ========================================================== CUSTOMIZE DATE PICKER ==========================================================
-  const config = {
-    enableTime: false,
-    dateFormat: "Y-m-d",
-  };
-
-  flatpickr("input[type=datetime-local]", config);
 });

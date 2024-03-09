@@ -58,9 +58,9 @@ CREATE TABLE `gallery` (
   `thumbnail` varchar(500)
 );
 
-/* ------------------------------------- FEEDBACK */
+/* ------------------------------------- CONTACT */
 
-CREATE TABLE `feedback` (
+CREATE TABLE `contact` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `subject_name` varchar(255),
   `note` varchar(255),
@@ -144,11 +144,11 @@ ALTER TABLE `order`
 ADD FOREIGN KEY (`user_id`) 
 REFERENCES `user` (`id`);
 
-ALTER TABLE `feedback` 
+ALTER TABLE `contact` 
 ADD FOREIGN KEY (`user_id`) 
 REFERENCES `user` (`id`);
 
-ALTER TABLE `feedback` 
+ALTER TABLE `contact` 
 ADD FOREIGN KEY (`product_id`) 
 REFERENCES `product` (`id`);
 
@@ -230,15 +230,19 @@ INSERT INTO `category` (`name`, `isDeleted`) VALUES
 ('Bông tai', 0);
 
 INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
-('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/earrings/img1.png', 'Sản phẩm này rất đẹp'),
-('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/rings/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
-('Trâm cài', 800000, 3, 0, '../assets/imgs/brooches/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
-('Dây chuyền số 8', 600000, 2, 0, '../assets/imgs/necklaces/img1.png', 'Đây là một sợi dây chuyền có giá trị cao');
+('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/img1.png', 'Sản phẩm này rất đẹp'),
+('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
+('Nhẫn vàng cao cấp', 700000, 1, 0, '../assets/imgs/Nhẫn vàng cao cấp.png', 'Sản phẩm hot nhất hiện nay'),
+('Nhẫn hồng khắc tê', 700000, 1, 0, '../assets/imgs/Nhẫn hồng khắc tê.png', 'Sản phẩm hot nhất hiện nay'),
+('Nhẫn tình yêu', 700000, 1, 0, '../assets/imgs/Nhẫn tình yêu.png', 'Sản phẩm hot nhất hiện nay'),
+('Trâm cài', 800000, 3, 0, '../assets/imgs/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
+('Dây chuyền bạc Moments mạ vàng 14K vô cực', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Moments Mạ Vàng 14K Vô Cực.png', 'Đây là một sợi dây chuyền có giá trị cao'),
+('Dây chuyền bạc mặt trái tim', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Mặt Trái Tim.png', 'Đây là một sợi dây chuyền có giá trị cao');
 
 INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
-(1, '../assets/imgs/errings/img1.png'),
-(2, '../assets/imgs/rings/img1.png'),
-(3, '../assets/imgs/brooches/img1.png');
+(1, '../assets/imgs/img1.png'),
+(2, '../assets/imgs/img1.png'),
+(3, '../assets/imgs/img1.png');
 
 INSERT INTO `role` (`name`) VALUES 
 ('Quản lý'), 
@@ -267,7 +271,7 @@ INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_mone
 (3, 4, 600000, 2, 1200000),
 (4, 4, 600000, 2, 1200000);
 
-INSERT INTO `feedback` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
+INSERT INTO `contact` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
 ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
 ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
 ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
@@ -297,6 +301,15 @@ INSERT INTO `permission` (`description`) VALUES
 ('Solve orders'),
 ('Delete orders'),
 ('See orders'),
+-- GALLERY
+('Add galleries'),
+('Edit galleries'),
+('Delete galleries'),
+('See galleries'),
+-- CONTACT
+('Solve contacts'),
+('Delete contacts'),
+('See contacts'),
 -- PERMISSIONS
 ('Edit permissions'),
 ('See permissions'),
@@ -306,16 +319,16 @@ INSERT INTO `permission` (`description`) VALUES
 INSERT INTO `role_permission` (`role_id`, `permission_id`, `isAllowed`) VALUES
 (1, 1, 1), (1, 2, 1), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 6, 1), (1, 7, 1), (1, 8, 1), (1, 9, 1), (1, 10, 1),
 (1, 11, 1), (1, 12, 1), (1, 13, 1), (1, 14, 1), (1, 15, 1), (1, 16, 1), (1, 17, 1), (1, 18, 1), (1, 19, 1), (1, 20, 1),
-(1, 21, 1), (1, 22, 1),
+(1, 21, 1), (1, 22, 1), (1, 23, 1), (1, 24, 1), (1, 25, 1), (1, 26, 1),(1, 27, 1),(1, 28, 1),(1, 29, 1),
 (2, 1, 1), (2, 2, 1), (2, 3, 1), (2, 4, 1), (2, 5, 1), (2, 6, 1), (2, 7, 1), (2, 8, 1), (2, 9, 1), (2, 10, 1),
 (2, 11, 1), (2, 12, 1), (2, 13, 1), (2, 14, 1), (2, 15, 1), (2, 16, 1), (2, 17, 1), (2, 18, 1), (2, 19, 1), (2, 20, 1),
-(2, 21, 1), (2, 22, 1),
+(2, 21, 1), (2, 22, 1), (2, 23, 1), (2, 24, 1), (2, 25, 1), (2, 26, 1),(2, 27, 1),(2, 28, 1),(2, 29, 1),
 (3, 1, 0), (3, 2, 0), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0), (3, 9, 0), (3, 10, 0),
 (3, 11, 0), (3, 12, 0), (3, 13, 0), (3, 14, 0), (3, 15, 0), (3, 16, 0), (3, 17, 0), (3, 18, 0), (3, 19, 0), (3, 20, 0),
-(3, 21, 0), (3, 22, 0),
+(3, 21, 0), (3, 22, 0), (3, 23, 1), (3, 24, 1), (3, 25, 1), (3, 26, 1),(3, 27, 1),(3, 28, 1),(3, 29, 1),
 (4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
 (4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
-(4, 21, 1), (4, 22, 1);
+(4, 21, 1), (4, 22, 1), (4, 23, 1), (4, 24, 1), (4, 25, 1), (4, 26, 1),(4, 27, 1),(4, 28, 1),(4, 29, 1);
 
 /* ------------------------------------- TRIGGERS AFTER INSERTING FOR ROLE, PERMISSION*/
 
@@ -332,4 +345,5 @@ FOR EACH ROW
   (NEW.id, 6), (NEW.id, 7), (NEW.id, 8), (NEW.id, 9), (NEW.id, 10),
   (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
   (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
-  (NEW.id, 21), (NEW.id, 22);
+  (NEW.id, 21), (NEW.id, 22), (NEW.id, 23), (NEW.id, 24), (NEW.id, 25), 
+  (NEW.id, 26), (NEW.id, 27), (NEW.id, 28), (NEW.id, 29);

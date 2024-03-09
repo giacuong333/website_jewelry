@@ -124,17 +124,42 @@ if (isset($_POST["saveproduct"])) {
 
   // Check if the file was uploaded without errors
   if (isset($_FILES["imagepath"]) && $_FILES["imagepath"]["error"] == 0) {
-    $uploadDir = "../assets/imgs/";
-    if ($categoryid == 1) {
-      $uploadDir .= "rings/";
-    } else if ($categoryid == 2) {
-      $uploadDir .= "necklaces/";
-    } else if ($categoryid == 3) {
-      $uploadDir .= "brooches/";
-    } else if ($categoryid == 4) {
-      $uploadDir .= "earrings/";
+    $target_dir = "../assets/imgs/";
+    $target_file = $target_dir . basename($_FILES["imagepath"]["name"]); // e.g. ../assets/imgs/img1.png
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    $check = getimagesize($_FILES["imagepath"]["tmp_name"]);
+    if ($check !== false) {
+      echo "File is an image - " . $check["mime"] . ".";
+      $uploadOk = 1;
+    } else {
+      echo "File is not an image.";
+      $uploadOk = 0;
     }
-    $imagepath = $uploadDir . basename($_FILES["imagepath"]["name"]);
+
+    // Kiểm tra nếu file đã tồn tại
+    if (file_exists($target_file)) {
+      echo "Sorry, file already exists.";
+      $uploadOk = 0;
+    }
+
+    // Kiểm tra kích thước file
+    if ($_FILES["imagepath"]["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+    }
+
+    // Cho phép chỉ tải lên các loại file hình ảnh nhất định
+    if (
+      $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+      && $imageFileType != "gif"
+    ) {
+      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+    }
+
+    $imagepath = $target_file;
   }
 
   $isSaved = $admin->setProduct($imagepath, $title, $categoryid, $price, $discount, $description, $isShow, $isOutstanding, $isNew);
@@ -177,19 +202,45 @@ if (isset($_POST["updateproduct"])) {
   $isOutstanding = isset($_POST["outstanding"]) ? 1 : 0;
   $isNew = isset($_POST["new"]) ? 1 : 0;
   $imagepath = $_POST["thumbnail"];
+
   // Check if the file was uploaded without errors
   if (isset($_FILES["imagepath"]) && $_FILES["imagepath"]["error"] == 0) {
-    $uploadDir = "../assets/imgs/";
-    if ($categoryid == 1) {
-      $uploadDir .= "rings/";
-    } else if ($categoryid == 2) {
-      $uploadDir .= "necklaces/";
-    } else if ($categoryid == 3) {
-      $uploadDir .= "brooches/";
-    } else if ($categoryid == 4) {
-      $uploadDir .= "earrings/";
+    $target_dir = "../assets/imgs/";
+    $target_file = $target_dir . basename($_FILES["imagepath"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    $check = getimagesize($_FILES["imagepath"]["tmp_name"]);
+    if ($check !== false) {
+      echo "File is an image - " . $check["mime"] . ".";
+      $uploadOk = 1;
+    } else {
+      echo "File is not an image.";
+      $uploadOk = 0;
     }
-    $imagepath = $uploadDir . basename($_FILES["imagepath"]["name"]);
+
+    // Kiểm tra nếu file đã tồn tại
+    if (file_exists($target_file)) {
+      echo "Sorry, file already exists.";
+      $uploadOk = 0;
+    }
+
+    // Kiểm tra kích thước file
+    if ($_FILES["imagepath"]["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+    }
+
+    // Cho phép chỉ tải lên các loại file hình ảnh nhất định
+    if (
+      $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+      && $imageFileType != "gif"
+    ) {
+      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+    }
+
+    $imagepath = $target_file;
   }
 
   $isUpdated = $admin->updateProductById($productId, $imagepath, $title, $categoryid, $price, $discount, $description, $isShow, $isOutstanding, $isNew);
@@ -583,7 +634,9 @@ if (isset($_GET["role_privilege_id"])) {
     "Users" => array("Add", "Edit", "Delete", "See"),
     "Products" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See"),
+    "Galleries" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Solve", "Delete", "See"),
+    "Contacts" => array("Solve", "Delete", "See"),
     "Permissions" => array("Edit", "See"),
     "Statistics" => array("See")
   );
@@ -641,7 +694,9 @@ if (isset($_POST["save-privilege"])) {
     "Users" => array("Add", "Edit", "Delete", "See"),
     "Products" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See"),
+    "Galleries" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Solve", "Delete", "See"),
+    "Contacts" => array("Solve", "Delete", "See"),
     "Permissions" => array("Edit", "See"),
     "Statistics" => array("See")
   );

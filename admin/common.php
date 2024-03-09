@@ -68,6 +68,12 @@ $menuItemList = array(
             <span class="fa-solid fa-user-secret"></span>
             <p>Roles</p>
         </a>
+    ',
+    "Galleries" => '    
+        <a href="../admin/gallerymanager.php" class="sidebar-menu">
+            <span class="fa-solid fa-image"></span>
+            <p>Galleries</p>
+        </a>
     '
 );
 ?>

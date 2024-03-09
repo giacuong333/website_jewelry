@@ -17,12 +17,11 @@ if (isset($_POST["login"])) {
         $login = new LoginController($useremail, $password);
         $login->loginUser();
 
-        // Staff
-        if ($_SESSION["role_id"] == 1 || $_SESSION["role_id"] == 2 || $_SESSION["role_id"] == 4) {
-            echo 1;
-            exit();
-        } elseif ($_SESSION["role_id"] == 3) { // Customer
+        if ($_SESSION["role_id"] == 3) { // Customer
             echo 2;
+            exit();
+        } else { // Staff
+            echo 1;
             exit();
         }
     } else {
