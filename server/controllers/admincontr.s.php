@@ -195,4 +195,15 @@ class AdminController extends Admin
     {
         return Admin::getMenuItems($role_id);
     }
+
+    // ===================================================== GALLERY =====================================================
+    public function getGalleries()
+    {
+        return Admin::getGalleries();
+    }
+
+    public function getGalleryById($id)
+    {
+        return Admin::getGalleryById($id);
+    }
 }

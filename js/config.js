@@ -44,3 +44,10 @@ export function isPhoneNumber(phone_number, errorElement) {
 
   return true;
 }
+
+// Query the valu of an url
+export function queryValue(value) {
+  const query_string = window.location.search;
+  const url_params = new URLSearchParams(query_string);
+  return url_params.get(value);
+}

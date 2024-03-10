@@ -5,7 +5,7 @@
 <!-- JQuery -->
 <script src="../assets/libs/jquery-3.7.1.min.js"></script>
 <!-- Js -->
-<script src="../js/admin.js"></script>
+<script src="../js/admin.js" type="module"></script>
 <script src="../js/login.js" type="module"></script>
 
 <!-- Navbar -->

@@ -712,3 +712,24 @@ if (isset($_POST["save-privilege"])) {
 
   echo "<script>window.location.href = '../admin/rolemanager.php';</script>";
 }
+
+// =============================================== GALLERY ===============================================
+
+if (isset($_GET["img_id"]) && isset($_GET["type"]) && $_GET["type"] == "get_img") {
+  $img_id = $_GET["img_id"];
+
+  $img = $admin->getGalleryById($img_id);
+
+  $html = '
+      <div class="overlay"></div>
+      <div class="image-details">
+            <div class="image-details__title">' . $img["title"] . '</div>
+            <div class="image-details__img">
+                  <img src="' . $img["thumbnail"] . '" alt="' . $img["title"] . '">
+            </div>
+            <i class="fa-solid fa-trash"></i>
+      </div>
+  ';
+
+  echo $html;
+}

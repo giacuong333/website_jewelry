@@ -1,11 +1,14 @@
+import { queryValue } from "./config.js";
+
 $(document).ready(function () {
   // ========================================================== COMMON ==========================================================
-  // Query the valu of an url
-  function queryValue(value) {
-    const query_string = window.location.search;
-    const url_params = new URLSearchParams(query_string);
-    return url_params.get(value);
+  // Set current selected page
+  function setSelectedPage() {
+    let id = parseInt(document.body.id) - 1;
+    const pages = $(".pagination-container__pages-num");
+    $(pages[id]).addClass("pagination-container__pages--current");
   }
+  setSelectedPage();
 
   // Selected menu item
   function setSelectedMenuItem() {
@@ -462,4 +465,31 @@ $(document).ready(function () {
     });
   }
   privilege();
+
+  // =========================================================== GALLERY ============================================================
+  function show_image_details() {
+    const image_item_list = $(".gallery-container__item");
+
+    image_item_list.each(function () {
+      $(this).click(function () {
+        const img_id = $(this).attr("id");
+
+        $.ajax({
+          type: "GET",
+          url: "../includes/admin.inc.php",
+          data: { img_id: img_id, type: "get_img" },
+          success: function (response) {
+            $("body").append(response);
+
+            // Cleanup when the overlay is clicked
+            $(".overlay").click(function (e) {
+              $(this).remove();
+              $(".image-details").remove();
+            });
+          },
+        });
+      });
+    });
+  }
+  show_image_details();
 });

@@ -54,7 +54,7 @@ CREATE TABLE `product` (
 
 CREATE TABLE `gallery` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `product_id` int,
+  `title` text,
   `thumbnail` varchar(500)
 );
 
@@ -127,10 +127,6 @@ REFERENCES `role` (`id`);
 ALTER TABLE `product` 
 ADD FOREIGN KEY (`category_id`) 
 REFERENCES `category` (`id`);
-
-ALTER TABLE `gallery` 
-ADD FOREIGN KEY (`product_id`) 
-REFERENCES `product` (`id`);
 
 ALTER TABLE `orderdetail` 
 ADD FOREIGN KEY (`order_id`) 
@@ -239,10 +235,22 @@ INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`,
 ('Dây chuyền bạc Moments mạ vàng 14K vô cực', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Moments Mạ Vàng 14K Vô Cực.png', 'Đây là một sợi dây chuyền có giá trị cao'),
 ('Dây chuyền bạc mặt trái tim', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Mặt Trái Tim.png', 'Đây là một sợi dây chuyền có giá trị cao');
 
-INSERT INTO `gallery` (`product_id`, `thumbnail`) VALUES
-(1, '../assets/imgs/img1.png'),
-(2, '../assets/imgs/img1.png'),
-(3, '../assets/imgs/img1.png');
+INSERT INTO `gallery` (`title`, `thumbnail`) VALUES
+('Dây chuyền bạc ba mặt tròn đính đá', '../assets/imgs/Dây Chuyền Bạc  Ba Mặt Tròn Đính Đá.png'),
+('Dây chuyền bạc đính ngọc trai', '../assets/imgs/Dây Chuyền Bạc  Đính Ngọc Trai.png'),
+('Dây chuyền bạc mạ vàng hồng 14k mặt hình chữ 0', '../assets/imgs/Dây Chuyền Bạc  Mạ Vàng Hồng 14k Mặt Hình Chữ O.png'),
+('Dây chuyền bạc mặt trái tiêm nhiều màu', '../assets/imgs/Dây Chuyền Bạc  Mặt Trái Tim Nhiều Màu.png'),
+('Dây chuyền bạc vô cực', '../assets/imgs/Dây Chuyền Bạc  Vô Cực.png'),
+('Dây chuyền bạc Disney x mặt dây xe bí ngô', '../assets/imgs/Dây Chuyền Bạc Disney x Mặt Dây Xe Bí Ngô.png'),
+('Dây chuyền bạc Game Of Thrones x mặt hình rồng đính đá pha lê đỏ', '../assets/imgs/Dây Chuyền Bạc Game Of Thrones x Mặt Hình Rồng Đính Pha Lê Đỏ.png'),
+('Dây chuyền bạc mạ vàng 14k chuỗi đính ngọc trai', '../assets/imgs/Dây Chuyền Bạc Mạ Vàng 14K Chuỗi Đính Ngọc Trai.png'),
+('Dây chuyền bạc mạ vàng 14k mặt bông hoa đính đá', '../assets/imgs/Dây Chuyền Bạc Mạ Vàng 14k Mặt Bông Hoa Đính Đá.png'),
+('Dây chuyền bạc mạ vàng 14k mặt tròn đính đá', '../assets/imgs/Dây Chuyền Bạc Mạ Vàng 14k Mặt Tròn Đính Đá.png'),
+('Nhẫn gắn kim cương cao cấp', '../assets/imgs/Nhẫn gắn kim cương cao cấp.png'),
+('Nhẫn ngọc trai cao cấp', '../assets/imgs/Nhẫn ngọc trai cao cấp.png'),
+('Nhẫn tình yêu', '../assets/imgs/Nhẫn tình yêu.png'),
+('Nhẫn vàng cao cấp', '../assets/imgs/Nhẫn vàng cao cấp.png'),
+('Nhẫn vòng ADV', '../assets/imgs/Nhẫn vòng ADV.png');
 
 INSERT INTO `role` (`name`) VALUES 
 ('Quản lý'), 

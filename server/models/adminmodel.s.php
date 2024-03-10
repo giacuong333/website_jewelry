@@ -94,26 +94,15 @@ class Admin extends Database
 		}
 	}
 
+	// ================================================ CONTACT ================================================
+
 	protected function getFeedbacks()
 	{
-		$sql = "SELECT * FROM `feedback`;";
+		$sql = "SELECT * FROM `contact`;";
 		$stmt = $this->connect()->query($sql);
 
 		if ($stmt->rowCount() == 0) {
 			// header("location: ../templates/login.php?error=feedbacksnotfound");
-			exit();
-		}
-
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	protected function getGalleries()
-	{
-		$sql = "SELECT * FROM `gallery`;";
-		$stmt = $this->connect()->query($sql);
-
-		if ($stmt->rowCount() == 0) {
-			// header("location: ../templates/login.php?error=galleriesnotfound");
 			exit();
 		}
 
@@ -681,6 +670,91 @@ class Admin extends Database
 			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $results ?? [];
 		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	// ================================================ GALLERY ================================================
+	protected function getGalleries()
+	{
+		$start = 0;
+		$rows_per_page = 9;
+
+		$sql = "SELECT * FROM `gallery`;";
+		$stmt = $this->connect()->query($sql);
+
+		$nr_of_rows = $stmt->rowCount(); // Get the total of rows
+
+		$pages = ceil($nr_of_rows / $rows_per_page); // Calculate the total of pages
+
+		if (isset($_GET["page-nr"])) {
+			$page = (int)$_GET["page-nr"] - 1;
+			$start = $page * $rows_per_page; // Update the start
+		}
+
+		try {
+			$sql = "SELECT * FROM `gallery` LIMIT $start, $rows_per_page;";
+			$stmt = $this->connect()->query($sql);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return ['results' => $results, 'pages' => $pages];
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function getGalleryById($id)
+	{
+		try {
+			$sql = "SELECT * FROM `gallery` WHERE `id` = ?;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			return $result ?? "";
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function addGallery($title, $thumbnail)
+	{
+		try {
+			$sql = "INSERT INTO `gallery` (`title`, `thumbnail`) VALUES (?, ?);";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$title, $thumbnail]);
+
+			return true;
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function editGalleryById($title, $thumbnail)
+	{
+		try {
+			$sql = "UPDATE `gallery` SET `title` = ?, `thumbnail` = ?;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$title, $thumbnail]);
+
+			return true;
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function deleteGalleryById($id)
+	{
+		try {
+			$sql = "DELETE FROM `gallery` WHERE `id` = ?;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+
+			return true;
+		} catch (Exception $e) {
+			$e->getMessage();
 			exit();
 		}
 	}
