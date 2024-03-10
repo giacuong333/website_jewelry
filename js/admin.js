@@ -71,6 +71,25 @@ $(document).ready(function () {
           // Used for viewing order details
           viewOrderDetails();
         }
+
+        if (searchType === "gallery") {
+          // View the image details
+          show_image_details();
+
+          // Delete the image
+          const trash_icon = $(".image-details > .fa-trash");
+          if (trash_icon) {
+            trash_icon.click(function () {
+              const img_id = $(this).closest(".image-details").attr("id");
+
+              const question = confirm("Bạn có chắc chắn muốn xóa ảnh này?");
+
+              if (question) {
+                handle_delete_image(img_id);
+              }
+            });
+          }
+        }
       },
       error: function () {
         alert("Error fetching data");
@@ -477,6 +496,7 @@ $(document).ready(function () {
         $.ajax({
           type: "GET",
           url: "../includes/admin.inc.php",
+          async: false,
           data: { img_id: img_id, type: "get_img" },
           success: function (response) {
             $("body").append(response);
@@ -486,10 +506,87 @@ $(document).ready(function () {
               $(this).remove();
               $(".image-details").remove();
             });
+
+            // Delete the image
+            const trash_icon = $(".image-details > .fa-trash");
+            if (trash_icon) {
+              trash_icon.click(function () {
+                const img_id = $(this).closest(".image-details").attr("id");
+
+                const question = confirm("Bạn có chắc chắn muốn xóa ảnh này?");
+
+                if (question) {
+                  handle_delete_image(img_id);
+                }
+              });
+            }
           },
         });
       });
     });
   }
   show_image_details();
+
+  function handle_delete_image(img_id) {
+    $.ajax({
+      type: "POST",
+      url: "../includes/admin.inc.php",
+      data: { img_id: img_id, type: "del_img" },
+      success: function (response) {
+        if (response == 1) {
+          alert("Xóa ảnh thành công");
+          window.location.href = "../admin/gallerymanager.php";
+        } else {
+          alert("Xóa ảnh thất bại");
+        }
+      },
+    });
+  }
+
+  // Upload an image
+  function show_image_upload() {
+    const upload_image_btn = $("#addgallery");
+    upload_image_btn.click(function () {
+      $.ajax({
+        type: "GET",
+        url: "../includes/admin.inc.php",
+        data: { show_img_upload_panel: "show" },
+        success: function (response) {
+          $("body").append(response);
+
+          // Cleanup when the overlay is clicked
+          $(".overlay").click(function (e) {
+            $(this).remove();
+            $(".image-details").remove();
+          });
+
+          // Set img
+          $("#image_choosen").on("change", setImg);
+          function setImg() {
+            const inputFile = $("#image_choosen");
+            const img = $(".image-details__img > img");
+            if (inputFile[0].files && inputFile[0].files[0]) {
+              img.attr("src", URL.createObjectURL(inputFile[0].files[0]));
+            }
+          }
+        },
+      });
+    });
+  }
+  show_image_upload();
+
+  // Search gallery
+  const searchGalleryInput = $("#searchgalleryinput");
+  searchGalleryInput.on("keypress", function (e) {
+    const searchGalleryValue = $("#searchgalleryvalue");
+    const galleryContainer = $(".body");
+
+    if (e.which == 13) {
+      if ($(this).val().trim() !== "") {
+        handleSearch("gallery", $(this), searchGalleryValue, galleryContainer, null, null);
+      } else {
+        window.location.href = "../admin/gallerymanager.php";
+      }
+    }
+  });
 });

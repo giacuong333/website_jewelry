@@ -715,21 +715,141 @@ if (isset($_POST["save-privilege"])) {
 
 // =============================================== GALLERY ===============================================
 
+// View the image details
 if (isset($_GET["img_id"]) && isset($_GET["type"]) && $_GET["type"] == "get_img") {
   $img_id = $_GET["img_id"];
 
   $img = $admin->getGalleryById($img_id);
 
+  $trash_icon = checkPermission("Delete galleries", $admin) ? '<i class="fa-solid fa-trash"></i>' : "";
+
   $html = '
       <div class="overlay"></div>
-      <div class="image-details">
+      <div class="image-details" id="' . $img["id"] . '">
             <div class="image-details__title">' . $img["title"] . '</div>
             <div class="image-details__img">
                   <img src="' . $img["thumbnail"] . '" alt="' . $img["title"] . '">
             </div>
-            <i class="fa-solid fa-trash"></i>
+            ' . $trash_icon . '
       </div>
   ';
+
+  echo $html;
+}
+
+// Delete an image
+if (isset($_POST["img_id"]) && isset($_POST["type"]) && $_POST["type"] == "del_img") {
+  $img_id = $_POST["img_id"];
+
+  $is_deleted = $admin->deleteGalleryById($img_id);
+
+  if ($is_deleted) {
+    echo 1;
+  } else {
+    echo 0;
+  }
+}
+
+// Show upload panel
+if (isset($_GET["show_img_upload_panel"])) {
+  $html = '
+    <div class="overlay"></div>
+    <div class="image-details">
+          <form action="../includes/admin.inc.php" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="image_choosen">Choose image</label>
+              <input type="file" name="image-path" class="btn- btn--hover image-path" id="image_choosen">
+            </div>
+            <div class="form-group">
+              <label for="image_title">Title</label>
+              <input type="text" name="image-title" class="btn- image_title">
+            </div>
+            <div class="image-details__img" style="border: none;">
+              <img src="" alt="">
+            </div>
+            <button id="uploadgallery" class="btn- btn--hover" type="submit" name="upload_img" value="upload_img">Upload</button>
+          </form>
+    </div>
+  ';
+
+  echo $html;
+}
+
+// Clicking on the upload
+if (isset($_POST["upload_img"])) {
+  $target_dir = "../assets/imgs/";
+  $target_file = $target_dir . basename($_FILES["image-path"]["name"]);
+  $uploadOk = 1;
+  $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+  $check = getimagesize($_FILES["image-path"]["tmp_name"]);
+  if ($check !== false) {
+    echo "File is an image - " . $check["mime"] . ".";
+    $uploadOk = 1;
+  } else {
+    echo "File is not an image.";
+    $uploadOk = 0;
+  }
+
+  // Kiểm tra kích thước file
+  if ($_FILES["image-path"]["size"] > 500000) {
+    echo "Sorry, your file is too large.";
+    $uploadOk = 0;
+  }
+
+  // Cho phép chỉ tải lên các loại file hình ảnh nhất định
+  if (
+    $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif"
+  ) {
+    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    $uploadOk = 0;
+  }
+
+  if ($uploadOk != 0) {
+    if (move_uploaded_file($_FILES["image-path"]["tmp_name"], $target_file)) {
+      // Lưu đường dẫn vào cơ sở dữ liệu
+      $image_path = $target_dir . basename($_FILES["image-path"]["name"]);
+      $image_title = $_POST["image-title"];
+
+      $is_uploaded = $admin->addGallery($image_title, $image_path);
+
+      if ($is_uploaded) {
+        echo "<script>
+                alert('Add successfully');
+                window.location.href = '../admin/gallerymanager.php';
+              </script>";
+      } else {
+        echo "<script>
+                alert('Add failed');
+              </script>";
+      }
+    }
+  }
+}
+
+if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "gallery") {
+  $searchInput = trim($_POST["searchInput"]);
+  $searchValue = trim($_POST["searchValue"]);
+
+  $gallery_list = $admin->searchGalleries($searchInput, $searchValue);
+
+  $html = !empty($gallery_list["gallery_list"]) ? "" : "No gallery found";
+
+  if (!empty($gallery_list["gallery_list"])) {
+
+    $html .= '
+      <div class="gallery-container">
+    ';
+
+    foreach ($gallery_list["gallery_list"] as $item) {
+
+      $html .= '
+        <div class="gallery-container__item" id="' . $item["id"] . '">
+              <img src="' . $item["thumbnail"] . '" alt="' . $item["title"] . '" class="gallery-container__item-image">
+        </div>';
+    }
+  }
 
   echo $html;
 }

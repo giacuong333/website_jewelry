@@ -758,4 +758,60 @@ class Admin extends Database
 			exit();
 		}
 	}
+
+	protected function searchGalleries($searchInput, $searchValue)
+	{
+		$start = 0;
+		$rows_per_page = 9;
+
+		$sql = "SELECT * FROM `gallery` ";
+
+		switch ($searchValue) {
+			case "title":
+				$sql .= "`gallery`.`title` LIKE ? ";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		$sql .= "LIMIT $start, $rows_per_page;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+		} catch (Exception $e) {
+			$e->getMessage();
+		}
+
+		$nr_of_rows = $stmt->rowCount(); // Get the total of rows
+
+		$pages = ceil($nr_of_rows / $rows_per_page); // Calculate the total of pages
+
+		if (isset($_GET["page-nr"])) {
+			$page = (int)$_GET["page-nr"] - 1;
+			$start = $page * $rows_per_page; // Update the start
+		}
+
+		$sql = "SELECT * FROM `gallery` WHERE ";
+
+		switch ($searchValue) {
+			case "title":
+				$sql .= "`gallery`.`title` LIKE ? ";
+				$searchInput = "%$searchInput%";
+				break;
+		}
+
+		$sql .= "LIMIT $start, $rows_per_page;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$gallery_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return ["gallery_list" => $gallery_list, "pages" => $pages];
+		} catch (Exception $e) {
+			// header("location: ../index.php?error=stmtfailed");
+			$e->getMessage();
+			exit();
+		}
+	}
 }

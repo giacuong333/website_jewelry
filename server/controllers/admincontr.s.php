@@ -206,4 +206,19 @@ class AdminController extends Admin
     {
         return Admin::getGalleryById($id);
     }
+
+    public function deleteGalleryById($id)
+    {
+        return Admin::deleteGalleryById($id);
+    }
+
+    public function addGallery($title, $thumbnail)
+    {
+        return Admin::addGallery($title, $thumbnail);
+    }
+
+    public function searchGalleries($searchInput, $searchValue)
+    {
+        return Admin::searchGalleries($searchInput, $searchValue);
+    }
 }
