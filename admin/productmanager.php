@@ -52,6 +52,7 @@
 						<th>Category</th>
 						<th>Title</th>
 						<th>Image</th>
+						<th>Quantity</th>
 						<th>Price</th>
 						<th>Outstanding</th>
 						<th>New</th>
@@ -70,6 +71,7 @@
 								<td> <?php echo $product["name"]; ?></td>
 								<td> <?php echo $product["title"]; ?></td>
 								<td><img src="<?php echo $product["thumbnail"]; ?>" alt="" /></td>
+								<td> <?php echo $product["quantity"]; ?></td>
 								<td>
 									<p><?php echo $product["price"]; ?></p>
 								</td>

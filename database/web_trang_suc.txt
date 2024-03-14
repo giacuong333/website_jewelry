@@ -42,6 +42,7 @@ CREATE TABLE `product` (
   `discount` int,
   `thumbnail` varchar(500),
   `description` varchar(500),
+  `quantity` int,
   `created_at` date,
   `updated_at` date,
   `deleted` int,
@@ -112,6 +113,23 @@ CREATE TABLE `permission` (
   `description` varchar(255)
 );
 
+CREATE TABLE `import` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `total_import_order` int, 
+  `user_id` int,
+  `created_at` date,
+  `isDeleted` int
+);
+
+CREATE TABLE `importdetail` (
+  `import_id` int,
+  `product_id` int, 
+  `amount` int,
+  `price` int,
+  `total_price` int,
+  `isDeleted` int
+);
+
 /* ------------------------------------- SET DEFAULT VALUES */
 
 ALTER TABLE `product` ALTER isShow SET DEFAULT 1;
@@ -156,10 +174,27 @@ ALTER TABLE `role_permission`
 ADD FOREIGN KEY (`role_id`) 
 REFERENCES `role` (`id`);
 
+ALTER TABLE `importdetail`
+ADD FOREIGN KEY (`product_id`)
+REFERENCES `product` (`id`);
+
+ALTER TABLE `importdetail`
+ADD FOREIGN KEY (`import_id`)
+REFERENCES `import` (`id`);
+
+ALTER TABLE `import`
+ADD FOREIGN KEY (`user_id`)
+REFERENCES `user` (`id`);
+
 /* ------------------------------------- TRIGGERS */
 
 CREATE TRIGGER user_time_create 
 BEFORE INSERT ON `user` 
+FOR EACH ROW 
+  SET NEW.created_at = CURRENT_DATE;
+
+CREATE TRIGGER import_time_create 
+BEFORE INSERT ON `import` 
 FOR EACH ROW 
   SET NEW.created_at = CURRENT_DATE;
 
@@ -172,16 +207,6 @@ CREATE TRIGGER order_time_create
 BEFORE INSERT ON `order` 
 FOR EACH ROW 
   SET NEW.order_date = CURRENT_DATE; 
-
--- CREATE TRIGGER order_total_create 
--- AFTER INSERT ON `order` 
--- FOR EACH ROW 
-  -- UPDATE `orderdetail`
-  -- SET 
-    -- `total_money` = NEW.`total_money`, 
-    -- `price` = (SELECT `price` FROM `product` WHERE `),
-    -- `num` = `total_money` / `price` 
-  -- WHERE `order_id` = NEW.`id`;
 
 CREATE TRIGGER product_time_update 
 BEFORE UPDATE ON `product` 
@@ -218,6 +243,70 @@ BEFORE INSERT ON `role`
 FOR EACH ROW 
   SET NEW.isDeleted = 0;
 
+CREATE TRIGGER import_delete_create 
+BEFORE INSERT ON `import` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
+
+CREATE TRIGGER import_detail_create 
+BEFORE INSERT ON `importdetail` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
+
+-- Automatically calculates the `total_import_order`
+CREATE TRIGGER calculate_import_order
+AFTER INSERT ON `importdetail`
+FOR EACH ROW
+  UPDATE `import` 
+  SET total_import_order = (
+    SELECT SUM(total_price)
+    FROM importdetail
+    WHERE import_id = NEW.import_id
+  );
+
+-- Automatically calculates the `total_order`
+CREATE TRIGGER calculate_total_order
+AFTER INSERT ON `orderdetail`
+FOR EACH ROW
+  UPDATE `order` 
+  SET total_money = (
+    SELECT SUM(total_money)
+    FROM orderdetail
+    WHERE order_id = NEW.order_id
+  );
+
+CREATE TRIGGER get_product_price
+BEFORE INSERT ON `orderdetail`
+FOR EACH ROW 
+  SET NEW.`price` = (
+    SELECT `price` 
+    FROM `product` 
+    WHERE NEW.`product_id` = `product`.`id`
+  );
+
+CREATE TRIGGER calculate_total_money_orderdetail
+BEFORE INSERT ON `orderdetail`
+FOR EACH ROW 
+  SET NEW.`total_money` = NEW.`price` * NEW.`num`;
+
+-- Automatically add amount to product from importdetail
+CREATE TRIGGER add_amount_to_product
+AFTER INSERT ON `importdetail`
+FOR EACH ROW
+  UPDATE `product`
+  SET `quantity` = `quantity` + NEW.`amount`
+  WHERE `id` = NEW.`product_id`;
+
+CREATE TRIGGER set_default_product_quantity
+BEFORE INSERT ON `product`
+FOR EACH ROW 
+  SET NEW.`quantity` = 0;
+
+CREATE TRIGGER calculate_product_price
+BEFORE INSERT ON `product`
+FOR EACH ROW 
+  SET NEW.`price` = NEW.`price` - ((NEW.`price` * NEW.`discount`) / 100);
+
 /* ------------------------------------- INSERT VALUES */
 INSERT INTO `category` (`name`, `isDeleted`) VALUES 
 ('Nhẫn', 0), 
@@ -225,15 +314,15 @@ INSERT INTO `category` (`name`, `isDeleted`) VALUES
 ('Trâm Cài', 0),
 ('Bông tai', 0);
 
-INSERT INTO `product` (`title`, `price`, `category_id`, `discount`, `thumbnail`, `description`) VALUES
-('Bông tai cao cấp Biz', 350000, 4, 0, '../assets/imgs/img1.png', 'Sản phẩm này rất đẹp'),
-('Nhẫn vòng ADV', 700000, 1, 0, '../assets/imgs/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay'),
-('Nhẫn vàng cao cấp', 700000, 1, 0, '../assets/imgs/Nhẫn vàng cao cấp.png', 'Sản phẩm hot nhất hiện nay'),
-('Nhẫn hồng khắc tê', 700000, 1, 0, '../assets/imgs/Nhẫn hồng khắc tê.png', 'Sản phẩm hot nhất hiện nay'),
-('Nhẫn tình yêu', 700000, 1, 0, '../assets/imgs/Nhẫn tình yêu.png', 'Sản phẩm hot nhất hiện nay'),
-('Trâm cài', 800000, 3, 0, '../assets/imgs/img1.png', 'Sản phẩm tốt nhất cho người giàu'),
-('Dây chuyền bạc Moments mạ vàng 14K vô cực', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Moments Mạ Vàng 14K Vô Cực.png', 'Đây là một sợi dây chuyền có giá trị cao'),
-('Dây chuyền bạc mặt trái tim', 600000, 2, 0, '../assets/imgs/Dây Chuyền Bạc Mặt Trái Tim.png', 'Đây là một sợi dây chuyền có giá trị cao');
+INSERT INTO `product` (`title`, `price`, `category_id`, `thumbnail`, `description`, `quantity`, `discount`) VALUES
+('Bông tai cao cấp Biz', 350000, 4, '../assets/imgs/img1.png', 'Sản phẩm này rất đẹp', 100, 10),
+('Nhẫn vòng ADV', 700000, 1, '../assets/imgs/Nhẫn vòng ADV.png', 'Sản phẩm hot nhất hiện nay', 100, 5),
+('Nhẫn vàng cao cấp', 700000, 1, '../assets/imgs/Nhẫn vàng cao cấp.png', 'Sản phẩm hot nhất hiện nay', 100, 13),
+('Nhẫn hồng khắc tê', 700000, 1, '../assets/imgs/Nhẫn hồng khắc tê.png', 'Sản phẩm hot nhất hiện nay', 100, 10),
+('Nhẫn tình yêu', 700000, 1, '../assets/imgs/Nhẫn tình yêu.png', 'Sản phẩm hot nhất hiện nay', 100, 8),
+('Trâm cài', 800000, 3, '../assets/imgs/img1.png', 'Sản phẩm tốt nhất cho người giàu', 100, 10),
+('Dây chuyền bạc Moments mạ vàng 14K vô cực', 600000, 2, '../assets/imgs/Dây Chuyền Bạc Moments Mạ Vàng 14K Vô Cực.png', 'Đây là một sợi dây chuyền có giá trị cao', 100, 10),
+('Dây chuyền bạc mặt trái tim', 600000, 2, '../assets/imgs/Dây Chuyền Bạc Mặt Trái Tim.png', 'Đây là một sợi dây chuyền có giá trị cao', 100, 0);
 
 INSERT INTO `gallery` (`title`, `thumbnail`) VALUES
 ('Dây chuyền bạc ba mặt tròn đính đá', '../assets/imgs/Dây Chuyền Bạc  Ba Mặt Tròn Đính Đá.png'),
@@ -272,17 +361,25 @@ INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `st
 ('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 1200000, 4, 0),
 ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Tự đem vào sân nhà giúp người nhận', 0, 1200000, 3, 0);
 
-INSERT INTO `orderdetail` (`order_id`, `product_id`, `price`, `num`, `total_money`) VALUES
-(1, 1, 350000, 2, 700000),
-(2, 2, 700000, 2, 1400000),
-(3, 3, 800000, 2, 1600000),
-(3, 4, 600000, 2, 1200000),
-(4, 4, 600000, 2, 1200000);
+INSERT INTO `orderdetail` (`order_id`, `product_id`, `num`, `total_money`) VALUES
+(1, 1, 2, 700000),
+(2, 2, 2, 1400000),
+(3, 3, 2, 1600000),
+(3, 4, 2, 1200000),
+(4, 4, 2, 1200000);
 
 INSERT INTO `contact` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
 ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
 ('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
 ('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
+
+INSERT INTO `import` (`user_id`) VALUES 
+(3);
+
+INSERT INTO `importdetail` (`import_id`, `product_id`, `amount`, `price`, `total_price`) VALUES 
+(1, 2, 10, 700000, 7000000),
+(1, 3, 100, 700000, 70000000),
+(1, 4, 50, 700000, 35000000);
 
 INSERT INTO `permission` (`description`) VALUES
 -- USERS
@@ -318,6 +415,11 @@ INSERT INTO `permission` (`description`) VALUES
 ('Solve contacts'),
 ('Delete contacts'),
 ('See contacts'),
+-- IMPORT INVOICE
+('Add imports'),
+('Edit imports'),
+('Delete imports'),
+('See imports'),
 -- PERMISSIONS
 ('Edit permissions'),
 ('See permissions'),
@@ -327,16 +429,20 @@ INSERT INTO `permission` (`description`) VALUES
 INSERT INTO `role_permission` (`role_id`, `permission_id`, `isAllowed`) VALUES
 (1, 1, 1), (1, 2, 1), (1, 3, 1), (1, 4, 1), (1, 5, 1), (1, 6, 1), (1, 7, 1), (1, 8, 1), (1, 9, 1), (1, 10, 1),
 (1, 11, 1), (1, 12, 1), (1, 13, 1), (1, 14, 1), (1, 15, 1), (1, 16, 1), (1, 17, 1), (1, 18, 1), (1, 19, 1), (1, 20, 1),
-(1, 21, 1), (1, 22, 1), (1, 23, 1), (1, 24, 1), (1, 25, 1), (1, 26, 1),(1, 27, 1),(1, 28, 1),(1, 29, 1),
+(1, 21, 1), (1, 22, 1), (1, 23, 1), (1, 24, 1), (1, 25, 1), (1, 26, 1),(1, 27, 1),(1, 28, 1),(1, 29, 1), (1, 30, 1),
+(1, 31, 1),(1, 32, 1),(1, 33, 1),
 (2, 1, 1), (2, 2, 1), (2, 3, 1), (2, 4, 1), (2, 5, 1), (2, 6, 1), (2, 7, 1), (2, 8, 1), (2, 9, 1), (2, 10, 1),
 (2, 11, 1), (2, 12, 1), (2, 13, 1), (2, 14, 1), (2, 15, 1), (2, 16, 1), (2, 17, 1), (2, 18, 1), (2, 19, 1), (2, 20, 1),
-(2, 21, 1), (2, 22, 1), (2, 23, 1), (2, 24, 1), (2, 25, 1), (2, 26, 1),(2, 27, 1),(2, 28, 1),(2, 29, 1),
+(2, 21, 1), (2, 22, 1), (2, 23, 1), (2, 24, 1), (2, 25, 1), (2, 26, 1),(2, 27, 1),(2, 28, 1),(2, 29, 1), (2, 30, 1),
+(2, 31, 1),(2, 32, 1),(2, 33, 1),
 (3, 1, 0), (3, 2, 0), (3, 3, 0), (3, 4, 0), (3, 5, 0), (3, 6, 0), (3, 7, 0), (3, 8, 0), (3, 9, 0), (3, 10, 0),
 (3, 11, 0), (3, 12, 0), (3, 13, 0), (3, 14, 0), (3, 15, 0), (3, 16, 0), (3, 17, 0), (3, 18, 0), (3, 19, 0), (3, 20, 0),
-(3, 21, 0), (3, 22, 0), (3, 23, 1), (3, 24, 1), (3, 25, 1), (3, 26, 1),(3, 27, 1),(3, 28, 1),(3, 29, 1),
+(3, 21, 0), (3, 22, 0), (3, 23, 1), (3, 24, 1), (3, 25, 1), (3, 26, 1),(3, 27, 1),(3, 28, 1),(3, 29, 1), (3, 30, 1),
+(3, 31, 1),(3, 32, 1),(3, 33, 1),
 (4, 1, 1), (4, 2, 1), (4, 3, 1), (4, 4, 1), (4, 5, 1), (4, 6, 1), (4, 7, 1), (4, 8, 1), (4, 9, 1), (4, 10, 1),
 (4, 11, 1), (4, 12, 1), (4, 13, 1), (4, 14, 1), (4, 15, 1), (4, 16, 1), (4, 17, 1), (4, 18, 1), (4, 19, 1), (4, 20, 1),
-(4, 21, 1), (4, 22, 1), (4, 23, 1), (4, 24, 1), (4, 25, 1), (4, 26, 1),(4, 27, 1),(4, 28, 1),(4, 29, 1);
+(4, 21, 1), (4, 22, 1), (4, 23, 1), (4, 24, 1), (4, 25, 1), (4, 26, 1),(4, 27, 1),(4, 28, 1),(4, 29, 1), (4, 30, 1),
+(4, 31, 1),(4, 32, 1),(4, 33, 1);
 
 /* ------------------------------------- TRIGGERS AFTER INSERTING FOR ROLE, PERMISSION*/
 
@@ -354,4 +460,6 @@ FOR EACH ROW
   (NEW.id, 11), (NEW.id, 12), (NEW.id, 13), (NEW.id, 14), (NEW.id, 15),
   (NEW.id, 16), (NEW.id, 17), (NEW.id, 18), (NEW.id, 19), (NEW.id, 20),
   (NEW.id, 21), (NEW.id, 22), (NEW.id, 23), (NEW.id, 24), (NEW.id, 25), 
-  (NEW.id, 26), (NEW.id, 27), (NEW.id, 28), (NEW.id, 29);
+  (NEW.id, 26), (NEW.id, 27), (NEW.id, 28), (NEW.id, 29), (NEW.id, 30), 
+  (NEW.id, 31), (NEW.id, 32), (NEW.id, 33);
+

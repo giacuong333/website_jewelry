@@ -221,4 +221,25 @@ class AdminController extends Admin
     {
         return Admin::searchGalleries($searchInput, $searchValue);
     }
+
+    // ===================================================== INPUT INVOICES =====================================================
+    public function getInputInvoices()
+    {
+        return Admin::getInputInvoices();
+    }
+
+    public function getInputInvoiceById($id)
+    {
+        return Admin::getInputInvoiceById($id);
+    }
+
+    public function deleteInputInvoiceById($id)
+    {
+        return Admin::deleteInputInvoiceById($id);
+    }
+
+    public function getImportProductInvoiceById($id)
+    {
+        return Admin::getImportProductInvoiceById($id);
+    }
 }

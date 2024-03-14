@@ -1,4 +1,4 @@
-import { queryValue } from "./config.js";
+import { isEmpty, queryValue } from "./config.js";
 
 $(document).ready(function () {
   // ========================================================== COMMON ==========================================================
@@ -12,15 +12,14 @@ $(document).ready(function () {
 
   // Selected menu item
   function setSelectedMenuItem() {
-    let active_page = window.location.pathname; // Get the current path of the url
-    active_page = active_page.replace("/website_jewelry/", "../");
+    let active_page_basename = window.location.pathname.split("/"); // Get the current path of the url
 
     $(".sidebar-menu").each(function () {
-      const link = $(this).attr("href"); // Get the path of the selected item
+      const link = $(this).attr("href").split("/"); // Get the path of the selected item
 
       $(this).removeClass("is-selected"); // Refresh before adding
 
-      if (link == active_page) {
+      if (link[link.length - 1] === active_page_basename[active_page_basename.length - 1]) {
         $(this).addClass("is-selected");
       }
     });
@@ -535,7 +534,7 @@ $(document).ready(function () {
       success: function (response) {
         if (response == 1) {
           alert("Xóa ảnh thành công");
-          window.location.href = "../admin/gallerymanager.php";
+          window.location.reload();
         } else {
           alert("Xóa ảnh thất bại");
         }
@@ -546,6 +545,7 @@ $(document).ready(function () {
   // Upload an image
   function show_image_upload() {
     const upload_image_btn = $("#addgallery");
+
     upload_image_btn.click(function () {
       $.ajax({
         type: "GET",
@@ -564,16 +564,61 @@ $(document).ready(function () {
           $("#image_choosen").on("change", setImg);
           function setImg() {
             const inputFile = $("#image_choosen");
-            const img = $(".image-details__img > img");
+            const img = $(".image-details__img-up > img");
             if (inputFile[0].files && inputFile[0].files[0]) {
               img.attr("src", URL.createObjectURL(inputFile[0].files[0]));
             }
           }
+
+          // Save img
+          $("#uploadgallery").click(function () {
+            handle_upload_img();
+          });
         },
       });
     });
   }
   show_image_upload();
+
+  // Save img to datase
+
+  function handle_upload_img() {
+    const img_chosen = $("#image_choosen");
+    const img_title = $(".image_title");
+    const img_chosen_error = img_chosen.closest(".form-group").find(".error-message");
+    const img_title_error = img_title.closest(".form-group").find(".error-message");
+
+    let is_allowed = true;
+
+    if (isEmpty(img_chosen.val(), img_chosen_error)) {
+      is_allowed = false;
+    }
+
+    if (isEmpty(img_title.val(), img_title_error)) {
+      is_allowed = false;
+    }
+
+    if (is_allowed) {
+      $.ajax({
+        type: "POST",
+        url: "../includes/admin.inc.php",
+        data: {
+          image_path: img_chosen.val(),
+          image_title: img_title.val(),
+          upload_img: "upload_img",
+        },
+
+        success: function (response) {
+          if (response === "success") {
+            alert("Upload image successfully");
+            window.location.reload();
+          } else if (response == "failed") {
+            alert("Upload image failed");
+          }
+        },
+      });
+    }
+  }
 
   // Search gallery
   const searchGalleryInput = $("#searchgalleryinput");
@@ -585,8 +630,69 @@ $(document).ready(function () {
       if ($(this).val().trim() !== "") {
         handleSearch("gallery", $(this), searchGalleryValue, galleryContainer, null, null);
       } else {
-        window.location.href = "../admin/gallerymanager.php";
+        window.location.reload();
       }
     }
   });
+
+  // ========================================================== INPUT INVOICE ==========================================================
+
+  // Delete
+  function del_input_invoice() {
+    $(".del-importbtn").each(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const question = confirm("Bạn có chắc chắn muốn xóa hóa đơn này?");
+        if (question) {
+          const input_invoice_id = $(this).closest("tr").data("import_invoiceid");
+
+          $.ajax({
+            type: "POST",
+            url: "../includes/admin.inc.php",
+            data: { input_invoice_id: input_invoice_id, type: "del_input_invoice" },
+            success: function (response) {
+              if (response == 1) {
+                alert("Delete successfully");
+                window.location.reload();
+              } else {
+                alert("Delete failed");
+              }
+            },
+          });
+        }
+      });
+    });
+  }
+  del_input_invoice();
+
+  // Move on to the add new input invoice page
+  moveOn(".btn-addinputinvoice", "../admin/newinputinvoice.php");
+
+  // Exit the page
+  moveOn("#exitimportinvoice", "../admin/importmanager.php");
+
+  // View import invoice details
+  function show_import_invoice_details() {
+    $(".row-import-invoice").each(function () {
+      $(this).click(function () {
+        const import_invoice_id = $(this).data("import_invoiceid");
+
+        $.ajax({
+          type: "GET",
+          url: "../includes/admin.inc.php",
+          data: { import_invoice_id: import_invoice_id, type: "get_import_invoice_details" },
+          success: function (response) {
+            $("#import-body").prepend(response);
+
+            // Close overlay
+            $(".overlay").click(function () {
+              $(this).remove();
+              $(".import-invoice-container").remove();
+            });
+          },
+        });
+      });
+    });
+  }
+  show_import_invoice_details();
 });

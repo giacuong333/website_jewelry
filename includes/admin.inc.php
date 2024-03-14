@@ -12,6 +12,7 @@ $users = $admin->getAllUsers();
 $orders = $admin->getOrders();
 $categories = $admin->getCategories();
 $roles = $admin->getRoles();
+$import_invoices = $admin->getInputInvoices();
 
 // =============================================== COMMON ===============================================
 
@@ -348,13 +349,12 @@ if (isset($_GET["orderId"]) && isset($_GET["userId"])) {
   $orderOfUser = $admin->getOrderByUserId($userId);
   if (!empty($orderOfUser)) {
     foreach ($orderOfUser as $order) {
-      $orderPrice = $order["price"] * $order["num"];
       $html .= "
             <div class='content-body__middle-product' id={$order['productId']}>
               <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
               <div class='content-body__middle-product-info'>
                 <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                <div class='content-body__middle-product-price'>{$orderPrice}</div>
+                <div class='content-body__middle-product-price'>{$order["price"]}</div>
               </div>
             </div>";
     }
@@ -635,6 +635,7 @@ if (isset($_GET["role_privilege_id"])) {
     "Products" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See"),
     "Galleries" => array("Add", "Edit", "Delete", "See"),
+    "Imports" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Solve", "Delete", "See"),
     "Contacts" => array("Solve", "Delete", "See"),
     "Permissions" => array("Edit", "See"),
@@ -695,6 +696,7 @@ if (isset($_POST["save-privilege"])) {
     "Products" => array("Add", "Edit", "Delete", "See"),
     "Roles" => array("Add", "Edit", "Delete", "See"),
     "Galleries" => array("Add", "Edit", "Delete", "See"),
+    "Imports" => array("Add", "Edit", "Delete", "See"),
     "Orders" => array("Solve", "Delete", "See"),
     "Contacts" => array("Solve", "Delete", "See"),
     "Permissions" => array("Edit", "See"),
@@ -724,7 +726,7 @@ if (isset($_GET["img_id"]) && isset($_GET["type"]) && $_GET["type"] == "get_img"
   $trash_icon = checkPermission("Delete galleries", $admin) ? '<i class="fa-solid fa-trash"></i>' : "";
 
   $html = '
-      <div class="overlay"></div>
+      <div class="overlay overlay--bold"></div>
       <div class="image-details" id="' . $img["id"] . '">
             <div class="image-details__title">' . $img["title"] . '</div>
             <div class="image-details__img">
@@ -759,15 +761,17 @@ if (isset($_GET["show_img_upload_panel"])) {
             <div class="form-group">
               <label for="image_choosen">Choose image</label>
               <input type="file" name="image-path" class="btn- btn--hover image-path" id="image_choosen">
+              <div class="error-message"></div>
             </div>
             <div class="form-group">
               <label for="image_title">Title</label>
-              <input type="text" name="image-title" class="btn- image_title">
+              <input type="text" name="image-title" class="btn- image_title" placeholder="Image title">
+              <div class="error-message"></div>
             </div>
-            <div class="image-details__img" style="border: none;">
+            <div class="image-details__img-up" style="border: none;">
               <img src="" alt="">
             </div>
-            <button id="uploadgallery" class="btn- btn--hover" type="submit" name="upload_img" value="upload_img">Upload</button>
+            <button id="uploadgallery" class="btn- btn--hover" type="button">Upload</button>
           </form>
     </div>
   ';
@@ -778,11 +782,13 @@ if (isset($_GET["show_img_upload_panel"])) {
 // Clicking on the upload
 if (isset($_POST["upload_img"])) {
   $target_dir = "../assets/imgs/";
-  $target_file = $target_dir . basename($_FILES["image-path"]["name"]);
+  $target_file = $target_dir . basename($_FILES["image_path"]["name"]);
   $uploadOk = 1;
   $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-  $check = getimagesize($_FILES["image-path"]["tmp_name"]);
+  $image_title = $_POST["image_title"];
+
+  $check = getimagesize($_FILES["image_path"]["tmp_name"]);
   if ($check !== false) {
     echo "File is an image - " . $check["mime"] . ".";
     $uploadOk = 1;
@@ -792,7 +798,7 @@ if (isset($_POST["upload_img"])) {
   }
 
   // Kiểm tra kích thước file
-  if ($_FILES["image-path"]["size"] > 500000) {
+  if ($_FILES["image_path"]["size"] > 500000) {
     echo "Sorry, your file is too large.";
     $uploadOk = 0;
   }
@@ -807,22 +813,16 @@ if (isset($_POST["upload_img"])) {
   }
 
   if ($uploadOk != 0) {
-    if (move_uploaded_file($_FILES["image-path"]["tmp_name"], $target_file)) {
+    if (move_uploaded_file($_FILES["image_path"]["tmp_name"], $target_file)) {
       // Lưu đường dẫn vào cơ sở dữ liệu
-      $image_path = $target_dir . basename($_FILES["image-path"]["name"]);
-      $image_title = $_POST["image-title"];
+      $image_path = $target_dir . basename($_FILES["image_path"]["name"]);
 
       $is_uploaded = $admin->addGallery($image_title, $image_path);
 
       if ($is_uploaded) {
-        echo "<script>
-                alert('Add successfully');
-                window.location.href = '../admin/gallerymanager.php';
-              </script>";
+        echo "success";
       } else {
-        echo "<script>
-                alert('Add failed');
-              </script>";
+        echo "failed";
       }
     }
   }
@@ -850,6 +850,92 @@ if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST
         </div>';
     }
   }
+
+  echo $html;
+}
+
+// =============================================== INPUT INVOICE ===============================================
+// Delete
+if (isset($_POST["input_invoice_id"]) && isset($_POST["type"]) && $_POST["type"] == "del_input_invoice") {
+  $input_invoice_id = $_POST["input_invoice_id"];
+
+  $is_deleted = $admin->deleteInputInvoiceById($input_invoice_id);
+
+  if ($is_deleted) {
+    echo 1;
+  } else {
+    echo 0;
+  }
+}
+
+// Add new inport invoice
+if (isset($_POST["saveimportinvoice"])) {
+  $user_id = $_SESSION["id"];
+  $product_id = $_POST["product_selected"];
+  $product_amount = $_POST["product_amount"];
+}
+
+// Show import invoice details
+if (isset($_GET["import_invoice_id"]) && isset($_SESSION["id"]) && isset($_GET["type"]) && $_GET["type"] == "get_import_invoice_details") {
+  $import_invoice_id = $_GET["import_invoice_id"];
+
+  $import_invoice_details = $admin->getInputInvoiceById($import_invoice_id);
+  $import_products_invoice = $admin->getImportProductInvoiceById($import_invoice_id);
+
+  $html = '
+  <div class="overlay"></div>
+      <div class="import-invoice-container">
+            <div class="import-invoice-container__header">
+                  <img src="../assets/imgs/brand/logo.png"></img>
+                  <h1 class="import-invoice-container__title">INVOICE</h1>
+                  <p class="import-invoice-container__sub-title">Submission</p>
+            </div>
+
+            <div class="import-invoice-container__body">
+                  <div class="import-invoice-container__body-top">
+                        <p>Invoice to: <span>Web trang sức</span></p>
+                        <p>Employee name: <span>' . $import_invoice_details["fullname"] . '</span></p>
+                        <p><span>' . $import_invoice_details["created_at"] . '</span></p>
+                  </div>
+
+                  <div class="import-invoice-container__body-bottom">
+                        <table style="border-collapse: collapse;">
+                              <thead>
+                                    <th style="text-align: left; padding-left: 16px;">Product name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total price</th>
+                              </thead>
+                              <tbody>';
+
+  if (!empty($import_products_invoice)) {
+    foreach ($import_products_invoice as $import_product) {
+      $html .= '
+              <tr style="line-height: 3;">
+                    <td style="padding-left: 16px;">' . $import_product["title"] . '</td>
+                    <td style="text-align: center;">' . $import_product["amount"] . '</td>
+                    <td style="text-align: center;">' . $import_product["price"] . '</td>
+                    <td style="text-align: center;">' . $import_product["total_price"] . '</td>
+              </tr>';
+    }
+  }
+
+  $html .= '
+              <tr style="line-height: 3; background-color: #1f7a77; color: #fff;">
+                    <td colspan="3" style="padding-left: 16px;">Total</td>
+                    <td style="text-align: center;">' . $import_invoice_details["total_import_order"] . '</td>
+              </tr>
+            </tbody>
+      </table>
+      </div>
+      </div>
+
+      <div class="import-invoice-container__footer">
+        <p class="import-invoice-container__footer-payment">Payment Information: <span>Credit cards</span></p>
+        <p class="import-invoice-container__footer-phonenumber">Phone number: <span>0948800917</span></p>
+        <p class="import-invoice-container__footer-address">Address: <span>Đại học Sài Gòn, Quận 5, tp Hồ Chí Minh</span></p>
+      </div>
+    </div>';
 
   echo $html;
 }

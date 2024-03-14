@@ -261,7 +261,7 @@ class Admin extends Database
 	{
 		try {
 			$sql = "SELECT `product`.`id`, `product`.`category_id`, `category`.`name`, `product`.`title`, `product`.`thumbnail`, 
-			`product`.`price`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`
+			`product`.`price`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`, `product`.`quantity` 
 			FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1;";
 			$stmt = $this->connect()->query($sql);
 			$productLIst = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -810,6 +810,85 @@ class Admin extends Database
 			return ["gallery_list" => $gallery_list, "pages" => $pages];
 		} catch (Exception $e) {
 			// header("location: ../index.php?error=stmtfailed");
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	// ================================================ INPUT INVOICE ================================================
+
+	protected function getInputInvoices()
+	{
+		try {
+			$sql = "SELECT `import`.`id`, `user`.`fullname`, `import`.`total_import_order`, `import`.`created_at`
+			FROM `import` 
+			JOIN `user` ON `user`.`id` = `import`.`user_id`
+			WHERE `import`.`isDeleted` != 1;";
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute();
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return [];
+		}
+	}
+
+
+	protected function getInputInvoiceById($id)
+	{
+		try {
+			$sql = "SELECT `import`.`id`, `product`.`title`, `user`.`fullname`, `importdetail`.`amount`,
+			`importdetail`.`price`, `importdetail`.`total_price`, `import`.`total_import_order`, `import`.`created_at`   
+			FROM `import` 
+			JOIN `importdetail` ON `import`.`id` = `importdetail`.`import_id` 
+			JOIN `product` ON `importdetail`.`product_id` = `product`.`id` 
+			JOIN `user` ON `import`.`user_id` = `user`.`id`
+			WHERE `import`.`id` = ?;";
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+			return [];
+		}
+	}
+
+	protected function getImportProductInvoiceById($id)
+	{
+		try {
+			$sql = "SELECT `product`.`title`, `importdetail`.`amount`, `importdetail`.`total_price`, `import`.`total_import_order`, `importdetail`.`price`
+        FROM `import` 
+        JOIN `importdetail` ON `import`.`id` = `importdetail`.`import_id` 
+        JOIN `product` ON `importdetail`.`product_id` = `product`.`id` 
+        WHERE `import`.`id` = ?;";
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+			return [];
+		}
+	}
+
+	protected function deleteInputInvoiceById($id)
+	{
+		try {
+			$sql = "UPDATE `import` SET `import`.`isDeleted` = 1 WHERE `import`.`id` = ?;";
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+
+			return true;
+		} catch (Exception $e) {
 			$e->getMessage();
 			exit();
 		}

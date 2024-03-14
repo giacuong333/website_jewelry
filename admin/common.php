@@ -74,7 +74,14 @@ $menuItemList = array(
             <span class="fa-solid fa-image"></span>
             <p>Galleries</p>
         </a>
+    ',
+    "Imports" => '    
+        <a href="../admin/importmanager.php" class="sidebar-menu">
+            <span class="fa-solid fa-file-invoice"></span>
+            <p>Imports</p>
+        </a>
     '
+
 );
 ?>
 
