@@ -46,19 +46,20 @@
 
                                           <tr>
                                                 <td>Quantity</td>
-                                                <td><input type="text" name="product_amount" required /></td>
+                                                <td><input type="text" name="product_amount" /></td>
                                           </tr>
 
                                           <tr>
                                                 <td>Price</td>
-                                                <td><input type="text" name="product_price" required /></td>
+                                                <td><input type="text" name="product_price" /></td>
                                           </tr>
 
                                           <tr>
                                                 <td></td>
                                                 <td>
-                                                      <button class="btn- btn--hover" name="saveimportinvoice" value="saveimportinvoice" type="submit">Save</button>
-                                                      <button class="btn- btn--hover" id="exitimportinvoice" name="exitimportinvoice" value="exitimportinvoice" type="button">Exit</button>
+                                                      <button class="btn- btn--hover" name="addproduct" value="addproduct" type="submit">Add</button>
+                                                      <button class="btn- btn--hover saveproducttempo" type="button">Save</button>
+                                                      <button class="btn- btn--hover" id="exitimportinvoice" type="button">Exit</button>
                                                 </td>
                                           </tr>
                                     </tbody>

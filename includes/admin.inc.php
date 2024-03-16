@@ -432,7 +432,7 @@ if (isset($_POST["orderId"]) && isset($_POST["orderStatus"])) {
 }
 
 // Search order by date
-if (isset($_POST["fromDate"]) && isset($_POST["toDate"])) {
+if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "order_invoice") {
   $fromDate = $_POST["fromDate"];
   $toDate = $_POST["toDate"];
 
@@ -869,10 +869,44 @@ if (isset($_POST["input_invoice_id"]) && isset($_POST["type"]) && $_POST["type"]
 }
 
 // Add new inport invoice
-if (isset($_POST["saveimportinvoice"])) {
+if (isset($_POST["addproduct"])) {
   $user_id = $_SESSION["id"];
-  $product_id = $_POST["product_selected"];
+  $import_product_list = $_SESSION["import_products"];
+
+  $is_saved = $admin->addImportInvoice($user_id, $import_product_list);
+
+  if ($is_saved) {
+    echo "<script>
+            alert('Add successfully');
+            window.location.href = '../admin/importmanager.php';
+          </script>";
+
+    unset($_SESSION["import_products"]);
+  } else {
+    echo "<script>
+            alert('add failed');
+            window.location.href = '../admin/importmanager.php';
+          </script>";
+    unset($_SESSION["import_products"]);
+  }
+}
+
+
+// Save import products temporarily 
+if (isset($_POST["saveimportinvoice"])) {
+  $import_products = [];
+
+  $product_id = $_POST["product_id"];
   $product_amount = $_POST["product_amount"];
+  $import_product_price = $_POST["import_product_price"];
+
+  $import_products[] = ["product_id" => $product_id, "product_amount" => $product_amount, "import_product_price" => $import_product_price];
+
+  if (!isset($_SESSION["import_products"])) {
+    $_SESSION["import_products"] =  $import_products;
+  } else {
+    $_SESSION["import_products"] = array_merge($_SESSION["import_products"], $import_products);
+  }
 }
 
 // Show import invoice details
@@ -936,6 +970,61 @@ if (isset($_GET["import_invoice_id"]) && isset($_SESSION["id"]) && isset($_GET["
         <p class="import-invoice-container__footer-address">Address: <span>Đại học Sài Gòn, Quận 5, tp Hồ Chí Minh</span></p>
       </div>
     </div>';
+
+  echo $html;
+}
+
+// Search input invoice
+if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "import_invoice") {
+  $searchInput = trim($_POST["searchInput"]);
+  $searchValue = trim($_POST["searchValue"]);
+
+  $import_invoice_list = $admin->searchInputInvoices($searchInput, $searchValue);
+
+  $html = !empty($import_invoice_list) ? "" : "No import invoice found";
+
+  $del_icon = checkPermission("Delete imports", $admin) ? '<span class="fa-solid fa-trash del-importbtn" name="del-import" value="del-import"></span>' : "";
+
+  if (!empty($import_invoice_list)) {
+    foreach ($import_invoice_list as $import_invoice) {
+      $html .= '
+      <tr class="row-import-invoice" data-import_invoiceid="' . $import_invoice["import_id"] . '">
+        <td>' . $import_invoice["import_id"] . '</td>
+        <td>' . $import_invoice["fullname"] . '</td>
+        <td>' . $import_invoice["created_at"] . '</td>
+        <td>' . $import_invoice["total_import_order"] . '</td>
+        <td>' . $del_icon . '</td>
+      </tr>
+      ';
+    }
+  }
+
+  echo $html;
+}
+
+if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "search_input_invoice_date") {
+  $fromDate = trim($_POST["fromDate"]);
+  $toDate = trim($_POST["toDate"]);
+
+  $import_invoice_list = $admin->search_input_invoice_by_date($fromDate, $toDate);
+
+  $html = !empty($import_invoice_list) ? "" : "No import invoice found";
+
+  $del_icon = checkPermission("Delete imports", $admin) ? '<span class="fa-solid fa-trash del-importbtn" name="del-import" value="del-import"></span>' : "";
+
+  if (!empty($import_invoice_list)) {
+    foreach ($import_invoice_list as $import_invoice) {
+      $html .= '
+      <tr class="row-import-invoice" data-import_invoiceid="' . $import_invoice["import_id"] . '">
+        <td>' . $import_invoice["import_id"] . '</td>
+        <td>' . $import_invoice["fullname"] . '</td>
+        <td>' . $import_invoice["created_at"] . '</td>
+        <td>' . $import_invoice["total_import_order"] . '</td>
+        <td>' . $del_icon . '</td>
+      </tr>
+      ';
+    }
+  }
 
   echo $html;
 }

@@ -11,6 +11,12 @@
       <link rel="stylesheet" href="../assets/icons/css/all.min.css">
       <!-- JQuery -->
       <script src="../assets/libs/jquery-3.7.1.min.js"></script>
+      <!-- Date picker -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+      <!-- Date Picker -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+      <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
 <body id="import-body">
@@ -92,18 +98,18 @@
 
       <main>
             <div class="dashboard-header">
-                  <input type="text" placeholder="Search" name="searchimportinvoieinput" id="searchimportinvoieinput" />
+                  <input type="text" placeholder="Search" name="searchimportinvoiceinput" id="searchimportinvoiceinput" />
 
-                  <select class="btn- btn--hover" name="searchimportinvoievalue" id="searchimportinvoievalue">
+                  <select class="btn- btn--hover" name="searchimportinvoicevalue" id="searchimportinvoicevalue">
                         <option value="id">Id</option>
                         <option value="employee-name">Employee name</option>
                         <option value="import-create-time">Create time</option>
                   </select>
 
                   <!-- Search for orders in a range date -->
-                  <input type="datetime-local" placeholder="From date" name="searchfromdateinput" id="searchfromdateinput" />
-                  <input type="datetime-local" placeholder="To date" name="searchtodateinput" id="searchtodateinput" />
-                  <button type="button" class="btn- btn--hover btn-searchbydate">Search by date</button>
+                  <input type="datetime-local" placeholder="From date" name="searchfromdateinput" id="searchfromdateinput-inputinvoice" />
+                  <input type="datetime-local" placeholder="To date" name="searchtodateinput" id="searchtodateinput-inputinvoice" />
+                  <button type="button" class="btn- btn--hover btn-searchbydate-input-invoice">Search by date</button>
 
                   <button type="button" class="btn- btn--hover btn-addinputinvoice">
                         <span class="fa-solid fa-plus "></span>
@@ -129,6 +135,7 @@
                               if (is_array($import_invoices)) {
                                     foreach ($import_invoices as $import_invoice) {
                               ?>
+
                                           <tr class="row-import-invoice" data-import_invoiceid="<?php echo $import_invoice["id"]; ?>">
                                                 <td> <?php echo $import_invoice["id"]; ?></td>
                                                 <td> <?php echo $import_invoice["fullname"]; ?></td>
@@ -143,7 +150,6 @@
                                                       }
                                                       ?>
                                                 </td>
-
                                           </tr>
                               <?php
                                     }
@@ -153,6 +159,16 @@
                   </table>
             </div>
       </main>
+
+      <!-- Customize date picker -->
+      <script>
+            const config = {
+                  enableTime: false,
+                  dateFormat: "Y-m-d",
+            };
+
+            flatpickr("input[type=datetime-local]", config);
+      </script>
 
 </body>
 

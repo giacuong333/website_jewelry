@@ -893,4 +893,91 @@ class Admin extends Database
 			exit();
 		}
 	}
+
+	protected function addImportInvoice($user_id, $import_product_list)
+	{
+		try {
+			$pdo = $this->connect(); // to make sure that we're using the same connection instance throughout the method 
+			// Start the transaction
+			$pdo->beginTransaction();
+
+			$sql_import = "INSERT INTO `import` (`user_id`) VALUES (?);";
+			$stmt_import = $pdo->prepare($sql_import);
+			$stmt_import->execute([$user_id]);
+
+			$import_id = $pdo->lastInsertId();
+
+			foreach ($import_product_list as $product_item) {
+				$product_id = $product_item['product_id'];
+				$product_amount = $product_item['product_amount'];
+				$import_product_price = $product_item['import_product_price'];
+
+				$sql_importdetail = "INSERT INTO `importdetail` (`import_id`, `product_id`, `amount`, `price`) VALUES (?, ?, ?, ?);";
+				$stmt_importdetail = $pdo->prepare($sql_importdetail);
+				$stmt_importdetail->execute([$import_id, $product_id, $product_amount, $import_product_price]);
+			}
+
+			$pdo->commit(); // commit 
+			return true;
+		} catch (Exception $e) {
+			// Log or display the exception message
+			echo "Error: " . $e->getMessage();
+			// Roll back the transaction
+			$pdo->rollBack();
+			// Exit gracefully or handle the error as needed
+			// exit(); // Consider more graceful error handling
+			return false;
+		}
+	}
+
+	protected function searchInputInvoices($searchInput, $searchValue)
+	{
+		try {
+			$sql = "SELECT *, `import`.`id` AS `import_id` 
+			FROM `import` 
+			JOIN `user` ON `user`.`id` = `import`.`user_id` 
+			WHERE `import`.`isDeleted` != 1 AND ";
+
+			switch ($searchValue) {
+				case "id":
+					$sql .= "CAST(`import`.`id` AS CHAR) LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+				case "employee-name":
+					$sql .= "`user`.`fullname` LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+				case "import-create-time":
+					$sql .= "CAST(`import`.`created_at` AS CHAR) LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+			}
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+		}
+	}
+
+	protected function search_input_invoice_by_date($fromDate, $toDate)
+	{
+		$sql = "SELECT *, `import`.`id` AS `import_id` 
+		FROM `import` 
+		JOIN `user` ON `user`.`id` = `import`.`user_id` 
+		WHERE `import`.`isDeleted` != 1 AND `import`.`created_at` BETWEEN ? AND ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$fromDate, $toDate]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			exit();
+		}
+	}
 }

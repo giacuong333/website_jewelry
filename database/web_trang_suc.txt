@@ -218,6 +218,11 @@ BEFORE UPDATE ON `user`
 FOR EACH ROW 
   SET NEW.updated_at = CURRENT_DATE;
 
+CREATE TRIGGER update_product_price
+BEFORE UPDATE ON `product`
+FOR EACH ROW 
+  SET NEW.`price` = NEW.`price` - ((NEW.`price` * NEW.`discount`) / 100);
+
 CREATE TRIGGER user_delete_create 
 BEFORE INSERT ON `user` 
 FOR EACH ROW 
@@ -258,11 +263,12 @@ CREATE TRIGGER calculate_import_order
 AFTER INSERT ON `importdetail`
 FOR EACH ROW
   UPDATE `import` 
-  SET total_import_order = (
-    SELECT SUM(total_price)
-    FROM importdetail
-    WHERE import_id = NEW.import_id
-  );
+  SET `total_import_order` = (
+    SELECT SUM(`total_price`)
+    FROM `importdetail`
+    WHERE `import_id` = NEW.`import_id`
+  )
+  WHERE `id` = NEW.`import_id`;
 
 -- Automatically calculates the `total_order`
 CREATE TRIGGER calculate_total_order
@@ -306,6 +312,11 @@ CREATE TRIGGER calculate_product_price
 BEFORE INSERT ON `product`
 FOR EACH ROW 
   SET NEW.`price` = NEW.`price` - ((NEW.`price` * NEW.`discount`) / 100);
+
+CREATE TRIGGER calculate_import_total_price
+BEFORE INSERT ON `importdetail`
+FOR EACH ROW 
+  SET NEW.`total_price` = NEW.`amount` * NEW.`price`;
 
 /* ------------------------------------- INSERT VALUES */
 INSERT INTO `category` (`name`, `isDeleted`) VALUES 

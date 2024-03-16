@@ -559,7 +559,9 @@ th {
 }
 
 #searchfromdateinput,
-#searchtodateinput {
+#searchtodateinput,
+#searchfromdateinput-inputinvoice,
+#searchtodateinput-inputinvoice {
   width: 11%;
 }
 

@@ -89,6 +89,11 @@ $(document).ready(function () {
             });
           }
         }
+
+        // View import invoice details
+        if (searchType === "import_invoice") {
+          show_import_invoice_details();
+        }
       },
       error: function () {
         alert("Error fetching data");
@@ -237,7 +242,7 @@ $(document).ready(function () {
     $.ajax({
       type: "POST",
       url: "../includes/admin.inc.php",
-      data: { fromDate: formatFromDate, toDate: formatToDate },
+      data: { fromDate: formatFromDate, toDate: formatToDate, searchType: "order_invoice" },
       success: function (response) {
         $("#bodyorder").html(response);
 
@@ -695,4 +700,78 @@ $(document).ready(function () {
     });
   }
   show_import_invoice_details();
+
+  // Save product temporarily
+  function save_product_temp() {
+    $(".saveproducttempo").click(function () {
+      const product_id = $("#product_selected").val();
+      const product_amount = $("input[name='product_amount']").val();
+      const import_product_price = $("input[name='product_price']").val();
+
+      $.ajax({
+        type: "POST",
+        url: "../includes/admin.inc.php",
+        data: { product_id: product_id, product_amount: product_amount, import_product_price: import_product_price, saveimportinvoice: "saveimportinvoice" },
+        success: function (response) {
+          alert("Saved");
+        },
+      });
+    });
+  }
+  save_product_temp();
+
+  // Search import invoice
+  const search_import_invoice_input = $("#searchimportinvoiceinput");
+  search_import_invoice_input.on("keypress", function (e) {
+    const searchImportInvoiceValue = $("#searchimportinvoicevalue");
+    const importInvoiceContainer = $("#bodyimportinvoice");
+
+    if (e.which == 13) {
+      if ($(this).val().trim() !== "") {
+        handleSearch("import_invoice", $(this), searchImportInvoiceValue, importInvoiceContainer, null, del_input_invoice);
+      } else {
+        window.location.reload();
+      }
+    }
+  });
+
+  // Search order by date
+  const search_input_invoice_btn = $(".btn-searchbydate-input-invoice");
+  search_input_invoice_btn.click(function (e) {
+    e.preventDefault();
+
+    const fromDate = new Date($("#searchfromdateinput-inputinvoice").val());
+    const toDate = new Date($("#searchtodateinput-inputinvoice").val());
+
+    if ($("#searchfromdateinput-inputinvoice").val() == "" || $("#searchtodateinput-inputinvoice").val() == "") {
+      alert("Date is not selected");
+      return;
+    }
+
+    if (fromDate > toDate) {
+      alert("The start date is not greater than the end day!");
+      return;
+    }
+
+    const formatFromDate = formatDate(fromDate);
+    const formatToDate = formatDate(toDate);
+
+    $.ajax({
+      type: "POST",
+      url: "../includes/admin.inc.php",
+      data: { fromDate: formatFromDate, toDate: formatToDate, searchType: "search_input_invoice_date" },
+      success: function (response) {
+        $("#bodyimportinvoice").html(response);
+
+        // Delete import invoice
+        del_input_invoice();
+
+        // Show import invoice details
+        show_import_invoice_details();
+      },
+      error: function () {
+        alert("Date is invalid");
+      },
+    });
+  });
 });
