@@ -70,7 +70,8 @@
 							<label for="useremail" style="font-weight: 600;">Email
 								<span style="color:red;">*</span>
 							</label>
-							<input type="email" id="forgotuseremail" name="useremail" placeholder="Email" />
+							<input type="email" id="forgotuseremail" name="forgotuseremail" placeholder="Email" />
+
 							<?php
 							if (isset($_GET["error"]) && $_GET["error"] == "wrongemail") {
 								echo '<span class="error-message">Email không tồn tại</span>';
@@ -80,6 +81,7 @@
 								echo '<span class="error-message"></span>';
 							}
 							?>
+
 						</div>
 
 						<button type="submit" class="btn btn--active" name="getformerpassword" value="getformerpassword">LẤY LẠI MẬT KHẨU</button>

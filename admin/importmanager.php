@@ -111,10 +111,18 @@
                   <input type="datetime-local" placeholder="To date" name="searchtodateinput" id="searchtodateinput-inputinvoice" />
                   <button type="button" class="btn- btn--hover btn-searchbydate-input-invoice">Search by date</button>
 
-                  <button type="button" class="btn- btn--hover btn-addinputinvoice">
-                        <span class="fa-solid fa-plus "></span>
-                        Add new
-                  </button>
+                  <?php
+                  if (checkPermission("Add imports", $admin)) {
+                  ?>
+
+                        <button type="button" class="btn- btn--hover btn-addinputinvoice">
+                              <span class="fa-solid fa-plus "></span>
+                              Add new
+                        </button>
+
+                  <?php
+                  }
+                  ?>
             </div>
 
             <!-- Product -->
@@ -145,12 +153,15 @@
                                                       <?php
                                                       if (checkPermission("Delete imports", $admin)) {
                                                       ?>
+
                                                             <span class="fa-solid fa-trash del-importbtn" name="del-import" value="del-import"></span>
+
                                                       <?php
                                                       }
                                                       ?>
                                                 </td>
                                           </tr>
+
                               <?php
                                     }
                               }
