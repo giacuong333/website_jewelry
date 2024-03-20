@@ -36,4 +36,36 @@ class ForgetPassWordModel extends Database
             exit();
         }
     }
+
+    protected function getPassCodeAndExpiry($code, $email)
+    {
+        try {
+            $sql = "SELECT `reset_token`, `id`, `token_expiry` FROM `user` WHERE `email` = ? AND `reset_token` = ?;";
+
+            $stmt = $this->connect()->prepare($sql);
+
+            $stmt->execute([$email, $code]);
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result ?? null;
+        } catch (Exception $e) {
+            $e->getMessage();
+            exit();
+        }
+    }
+
+    protected function savePassCode($code, $email)
+    {
+        try {
+            $sql = "UPDATE `user` SET `reset_token` = ?WHERE `email` = ?;";
+
+            $stmt = $this->connect()->prepare($sql);
+
+            return $stmt->execute([$code, $email]);
+        } catch (Exception $e) {
+            $e->getMessage();
+            exit();
+        }
+    }
 }

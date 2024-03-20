@@ -20,13 +20,9 @@ if (isset($_POST["getformerpassword"])) {
         $user = $password_object->getPasswordByEmail($user_email);
 
         if (!empty($user)) {
-            $new_password = $password_object->generateRandomPassword();
-            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $pass_code = $password_object->generateRandomPassword();
 
-            // Update user's password
-            $password_object->updatePasswordByEmail($user_email, $hashed_password);
-
-            // Send email with new password
+            // Send email with the passcode
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
@@ -41,10 +37,13 @@ if (isset($_POST["getformerpassword"])) {
                 $mail->addAddress($user_email);
 
                 $mail->isHTML(true);
-                $mail->Subject = 'Your new password';
-                $mail->Body    = "Your new password is: $new_password";
+                $mail->Subject = 'Reset password';
+                $mail->Body    = "Your code is: $pass_code";
 
                 $mail->send();
+
+                // Save pass code into database
+                $password_object->savePassCode($pass_code, $user_email);
 
                 // Redirect user after sending email
                 header("Location: ../templates/login.php?success=newpasswordsent");
@@ -61,5 +60,43 @@ if (isset($_POST["getformerpassword"])) {
         // Redirect if email field is empty
         header("Location: ../templates/login.php?error=emptyinput");
         exit();
+    }
+}
+
+if (isset($_POST["forgot_email"]) && isset($_POST["pass_code"])) {
+    $email = $_POST["forgot_email"];
+    $pass_code = $_POST["pass_code"];
+
+    $check_passcode = new ForgetPassWordContr();
+
+    $id_of_passcode = $check_passcode->getPassCodeAndExpiry($pass_code, $email);
+
+    if (!empty($id_of_passcode)) {
+        $expiry = strtotime($id_of_passcode["token_expiry"]);
+        $code = $id_of_passcode["reset_token"];
+
+
+        if ($code == $pass_code) {
+            if ($expiry < time()) {
+                echo "codeexpired";
+            } else {
+                echo '
+                <div class="overlay"></div>
+                <div class="change-password-container">
+                    <form action="../includes/forgetpassword.inc.php" method="post">
+                        <div class="form-group">
+                            <label for=""></label>
+
+                            <input type="text" class="" placeholder="Enter your new password" name="newpassword">
+
+                            <button type="submit" class="btn btn--active" name="submit-newpassword" value="submit-newpassword">Change</button>
+                        </div>
+                    </form>
+                </div>
+                ';
+            }
+        }
+    } else {
+        echo "codedoesnotexist";
     }
 }

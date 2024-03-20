@@ -16,4 +16,14 @@ class ForgetPassWordContr extends ForgetPassWordModel
     {
         return ForgetPassWordModel::updatePasswordByEmail($email, $hashed_password);
     }
+
+    public function savePassCode($code, $email)
+    {
+        return ForgetPassWordModel::savePassCode($code, $email);
+    }
+
+    public function getPassCodeAndExpiry($code, $email)
+    {
+        return ForgetPassWordModel::getPassCodeAndExpiry($code, $email);
+    }
 }

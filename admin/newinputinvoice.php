@@ -59,7 +59,7 @@
                                                 <td>
                                                       <button class="btn- btn--hover" name="addproduct" value="addproduct" type="submit">Add</button>
                                                       <button class="btn- btn--hover saveproducttempo" type="button">Save</button>
-                                                      <button class="btn- btn--hover" id="exitimportinvoice" type="button">Exit</button>
+                                                      <button class="btn- btn--hover" id="exitimportinvoice" type="button" name="exitnewimport" value="exitnewimport">Exit</button>
                                                 </td>
                                           </tr>
                                     </tbody>

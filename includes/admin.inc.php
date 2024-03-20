@@ -1028,3 +1028,8 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["search
 
   echo $html;
 }
+
+// 
+if (isset($_POST["exitnewimport"]) && isset($_SESSION["import_products"])) {
+  unset($_SESSION["import_products"]);
+}

@@ -21,7 +21,9 @@ CREATE TABLE `user` (
   `role_id` int,
   `created_at` date,
   `updated_at` date,
-  `deleted` int
+  `deleted` int,
+  `reset_token` varchar(255),
+  `token_expiry` DATETIME
 );
 
 /* ------------------------------------- CATEGORY */
@@ -317,6 +319,12 @@ CREATE TRIGGER calculate_import_total_price
 BEFORE INSERT ON `importdetail`
 FOR EACH ROW 
   SET NEW.`total_price` = NEW.`amount` * NEW.`price`;
+
+CREATE TRIGGER create_expiry_time
+BEFORE UPDATE ON `user`
+FOR EACH ROW
+  SET NEW.`token_expiry` = DATE_ADD(NOW(), INTERVAL 30 MINUTE);
+
 
 /* ------------------------------------- INSERT VALUES */
 INSERT INTO `category` (`name`, `isDeleted`) VALUES 

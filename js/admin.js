@@ -714,6 +714,10 @@ $(document).ready(function () {
         data: { product_id: product_id, product_amount: product_amount, import_product_price: import_product_price, saveimportinvoice: "saveimportinvoice" },
         success: function (response) {
           alert("Saved");
+
+          // Refresh input fields
+          $("input[name='product_amount']").val("");
+          $("input[name='product_price']").val("");
         },
       });
     });
