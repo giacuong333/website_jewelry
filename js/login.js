@@ -67,6 +67,35 @@ $(document).ready(function () {
         }
 
         turnOffOverlay();
+
+        const submit_newpassword_btn = $("button[name='submit-newpassword']");
+        if (submit_newpassword_btn.length > 0) {
+          submit_newpassword_btn.click(function () {
+            const user_email = sessionStorage.getItem("forgotEmail");
+
+            const new_password = $("input[name='newpassword']").val();
+
+            $.ajax({
+              type: "POST",
+              url: "../includes/forgetpassword.inc.php",
+              data: {
+                user_email: user_email,
+                new_password: new_password,
+              },
+              success: function (response) {
+                console.log(response);
+
+                if (response == 1) {
+                  alert("Update password successfully");
+                  sessionStorage.removeItem("forgotEmail");
+                  window.location.href = "../templates/login.php";
+                } else {
+                  alert("Update password failed");
+                }
+              },
+            });
+          });
+        }
       },
     });
   });

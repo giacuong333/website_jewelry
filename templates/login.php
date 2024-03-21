@@ -64,7 +64,23 @@
 			</div>
 			<div class="content-right">
 				<div class="top">
-					<p>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email</p>
+
+					<?php
+					if (!isset($_GET["success"])) {
+					?>
+
+						<p>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email</p>
+
+					<?php
+					} else {
+					?>
+
+						<p>Nhập code để đổi mật khẩu mới</p>
+
+					<?php
+					}
+					?>
+
 					<form action="../includes/forgetpassword.inc.php" method="post">
 
 						<?php
@@ -111,7 +127,7 @@
 
 								<button type="button" style="display: inline-block;" class="btn btn--active" name="confirmpasscode" value="confirmpasscode">XÁC NHẬN</button>
 
-								<a href="">Send code again</a>
+								<button style="border:none; background-color: transparent; font-size: 16px; cursor: pointer;" type="submit" name="sendcode" value="sendcode">Send code again</button>
 							</div>
 
 						<?php

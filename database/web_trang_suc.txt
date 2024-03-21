@@ -323,7 +323,7 @@ FOR EACH ROW
 CREATE TRIGGER create_expiry_time
 BEFORE UPDATE ON `user`
 FOR EACH ROW
-  SET NEW.`token_expiry` = DATE_ADD(NOW(), INTERVAL 30 MINUTE);
+  SET NEW.`token_expiry` = DATE_ADD(NOW(), INTERVAL 2 MINUTE);
 
 
 /* ------------------------------------- INSERT VALUES */

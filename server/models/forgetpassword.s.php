@@ -29,11 +29,16 @@ class ForgetPassWordModel extends Database
     protected function updatePasswordByEmail($email, $hashed_password)
     {
         $sql = "UPDATE `user` SET `password` = ? WHERE `email` = ?;";
+
         try {
             $stmt = $this->connect()->prepare($sql);
+
             $stmt->execute([$hashed_password, $email]);
+
+            return true;
         } catch (Exception $e) {
-            exit();
+            $e->getMessage();
+            return false;
         }
     }
 
