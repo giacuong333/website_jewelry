@@ -705,13 +705,20 @@ $(document).ready(function () {
   function save_product_temp() {
     $(".saveproducttempo").click(function () {
       const product_id = $("#product_selected").val();
+      const supplier_id = $("#supplier_selected").val();
       const product_amount = $("input[name='product_amount']").val();
       const import_product_price = $("input[name='product_price']").val();
 
       $.ajax({
         type: "POST",
         url: "../includes/admin.inc.php",
-        data: { product_id: product_id, product_amount: product_amount, import_product_price: import_product_price, saveimportinvoice: "saveimportinvoice" },
+        data: {
+          product_id: product_id,
+          supplier_id: supplier_id,
+          product_amount: product_amount,
+          import_product_price: import_product_price,
+          saveimportinvoice: "saveimportinvoice",
+        },
         success: function (response) {
           alert("Saved");
 
@@ -778,4 +785,9 @@ $(document).ready(function () {
       },
     });
   });
+});
+
+// Disable when being selected a supplier
+$("select[name='supplier_selected']").change(function () {
+  $(this).attr("disabled", "disabled");
 });

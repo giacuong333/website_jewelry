@@ -243,9 +243,9 @@ class AdminController extends Admin
         return Admin::getImportProductInvoiceById($id);
     }
 
-    public function addImportInvoice($user_id, $import_product_list)
+    public function addImportInvoice($user_id, $import_product_list, $supplier_id)
     {
-        return Admin::addImportInvoice($user_id, $import_product_list);
+        return Admin::addImportInvoice($user_id, $import_product_list, $supplier_id);
     }
 
     public function searchInputInvoices($searchInput, $searchValue)
@@ -256,5 +256,12 @@ class AdminController extends Admin
     public function search_input_invoice_by_date($fromDate, $toDate)
     {
         return Admin::search_input_invoice_by_date($fromDate, $toDate);
+    }
+
+    // ================================================================= SUPPLIER ===========================================================
+
+    public function getSuppliers()
+    {
+        return Admin::getSuppliers();
     }
 }

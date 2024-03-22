@@ -13,6 +13,7 @@ $orders = $admin->getOrders();
 $categories = $admin->getCategories();
 $roles = $admin->getRoles();
 $import_invoices = $admin->getInputInvoices();
+$suppliers = $admin->getSuppliers();
 
 // =============================================== COMMON ===============================================
 
@@ -872,8 +873,9 @@ if (isset($_POST["input_invoice_id"]) && isset($_POST["type"]) && $_POST["type"]
 if (isset($_POST["addproduct"])) {
   $user_id = $_SESSION["id"];
   $import_product_list = $_SESSION["import_products"];
+  $supplier_id = $_SESSION["supplier_id"];
 
-  $is_saved = $admin->addImportInvoice($user_id, $import_product_list);
+  $is_saved = $admin->addImportInvoice($user_id, $import_product_list, $supplier_id);
 
   if ($is_saved) {
     echo "<script>
@@ -882,21 +884,26 @@ if (isset($_POST["addproduct"])) {
           </script>";
 
     unset($_SESSION["import_products"]);
+    unset($_SESSION["supplier_id"]);
   } else {
     echo "<script>
-            alert('add failed');
-            window.location.href = '../admin/importmanager.php';
-          </script>";
+    alert('add failed');
+    window.location.href = '../admin/importmanager.php';
+    </script>";
+
     unset($_SESSION["import_products"]);
+    unset($_SESSION["supplier_id"]);
   }
 }
 
-
 // Save import products temporarily 
 if (isset($_POST["saveimportinvoice"])) {
+  session_start();
+
   $import_products = [];
 
   $product_id = $_POST["product_id"];
+  $_SESSION["supplier_id"] = $_POST["supplier_id"];
   $product_amount = $_POST["product_amount"];
   $import_product_price = $_POST["import_product_price"];
 
@@ -927,7 +934,7 @@ if (isset($_GET["import_invoice_id"]) && isset($_SESSION["id"]) && isset($_GET["
 
             <div class="import-invoice-container__body">
                   <div class="import-invoice-container__body-top">
-                        <p>Invoice to: <span>Web trang sức</span></p>
+                        <p>Invoice to: <span>' . $import_invoice_details["name"] . '</span></p>
                         <p>Employee name: <span>' . $import_invoice_details["fullname"] . '</span></p>
                         <p><span>' . $import_invoice_details["created_at"] . '</span></p>
                   </div>
@@ -1031,5 +1038,6 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["search
 
 // 
 if (isset($_POST["exitnewimport"]) && isset($_SESSION["import_products"])) {
+  session_start();
   unset($_SESSION["import_products"]);
 }

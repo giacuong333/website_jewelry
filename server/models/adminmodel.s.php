@@ -262,7 +262,8 @@ class Admin extends Database
 		try {
 			$sql = "SELECT `product`.`id`, `product`.`category_id`, `category`.`name`, `product`.`title`, `product`.`thumbnail`, 
 			`product`.`price`, `product`.`isOutstanding`, `product`.`isNew`, `product`.`isShow`, `product`.`quantity` 
-			FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1;";
+			FROM `product` JOIN `category` ON `category`.`id` = `product`.`category_id` WHERE `product`.`deleted` != 1 
+			ORDER BY `product`.`id` ASC;";
 			$stmt = $this->connect()->query($sql);
 			$productLIst = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $productLIst ?? [];
@@ -841,11 +842,13 @@ class Admin extends Database
 	{
 		try {
 			$sql = "SELECT `import`.`id`, `product`.`title`, `user`.`fullname`, `importdetail`.`amount`,
-			`importdetail`.`price`, `importdetail`.`total_price`, `import`.`total_import_order`, `import`.`created_at`   
+			`importdetail`.`price`, `importdetail`.`total_price`, `import`.`total_import_order`, 
+			`import`.`created_at`, `supplier`.`name` 
 			FROM `import` 
 			JOIN `importdetail` ON `import`.`id` = `importdetail`.`import_id` 
 			JOIN `product` ON `importdetail`.`product_id` = `product`.`id` 
-			JOIN `user` ON `import`.`user_id` = `user`.`id`
+			JOIN `user` ON `import`.`user_id` = `user`.`id` 
+			JOIN `supplier` ON `import`.`supplier_id` = `supplier`.`id` 
 			WHERE `import`.`id` = ?;";
 
 			$stmt = $this->connect()->prepare($sql);
@@ -894,16 +897,16 @@ class Admin extends Database
 		}
 	}
 
-	protected function addImportInvoice($user_id, $import_product_list)
+	protected function addImportInvoice($user_id, $import_product_list, $supplier_id)
 	{
 		try {
 			$pdo = $this->connect(); // to make sure that we're using the same connection instance throughout the method 
 			// Start the transaction
 			$pdo->beginTransaction();
 
-			$sql_import = "INSERT INTO `import` (`user_id`) VALUES (?);";
+			$sql_import = "INSERT INTO `import` (`user_id`, `supplier_id`) VALUES (?, ?);";
 			$stmt_import = $pdo->prepare($sql_import);
-			$stmt_import->execute([$user_id]);
+			$stmt_import->execute([$user_id, $supplier_id]);
 
 			$import_id = $pdo->lastInsertId();
 
@@ -977,6 +980,22 @@ class Admin extends Database
 
 			return $results ?? [];
 		} catch (Exception $e) {
+			exit();
+		}
+	}
+
+	// ======================================================================= SUPPLIER =======================================================
+
+	protected function getSuppliers()
+	{
+		$sql = "SELECT * FROM `supplier`;";
+
+		try {
+			$stmt = $this->connect()->query($sql);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
 			exit();
 		}
 	}

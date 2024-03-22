@@ -12,7 +12,7 @@
       <!-- JQuery -->
       <script src="../assets/libs/jquery-3.7.1.min.js"></script>
       <!-- JS -->
-      <script src="../js/admin.js"></script>
+      <script src="../js/admin.js" type="module"></script>
 
 </head>
 
@@ -52,6 +52,19 @@
                                           <tr>
                                                 <td>Price</td>
                                                 <td><input type="text" name="product_price" /></td>
+                                          </tr>
+
+                                          <tr>
+                                                <td>Supplier name</td>
+                                                <td>
+                                                      <select name="supplier_selected" id="supplier_selected" class="btn- btn--hover" style="width: 80%;">
+                                                            <?php
+                                                            foreach ($suppliers as $supplier) {
+                                                                  echo '<option name="' . $supplier["name"] . '" value="' . $supplier["id"] . '" title="' . $supplier["name"] . '">' . $supplier["name"] . '</option>';
+                                                            }
+                                                            ?>
+                                                      </select>
+                                                </td>
                                           </tr>
 
                                           <tr>
