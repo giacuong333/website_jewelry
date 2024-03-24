@@ -4,13 +4,16 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<script src="../assets/libs/jquery-3.7.1.min.js"></script>
+	<title>Log in</title>
+
+	<!-- CSS -->
 	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
 	<link rel="stylesheet" href="../assets/css/config.css">
 	<link rel="stylesheet" href="../assets/css/login.css">
-	<title>Log in</title>
+
 	<!-- JQUERY -->
 	<script src="../assets/libs/jquery-3.7.1.min.js"></script>
+
 	<!-- Js -->
 	<script src="../js/login.js" type="module"></script>
 </head>
@@ -23,7 +26,7 @@
 
 	<main id="login-main">
 		<div class="header">
-			<a href="../index.php">Trang chủ > </a>
+			<a href="../index.php">Trang chủ</a>
 			<p> Đăng nhập tài khoản</p>
 		</div>
 
@@ -142,7 +145,7 @@
 
 
 
-	<?php include("../templates/footer.php") ?>
+	<?php include_once("../templates/footer.php") ?>
 </body>
 
 </html>

@@ -999,4 +999,83 @@ class Admin extends Database
 			exit();
 		}
 	}
+
+	// ======================================================================= CONTACT =======================================================
+
+	protected function getContacts()
+	{
+		$sql = "SELECT *, `contact`.`id` AS `contact_id`
+		FROM `contact` 
+		WHERE `isDeleted` != 1;";
+
+		try {
+			$stmt = $this->connect()->query($sql);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function getContactById($id)
+	{
+		$sql = "SELECT * FROM `contact` WHERE `isDeleted` != 1 AND `id` = ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			return $result ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function deleteContactById($id)
+	{
+		$sql = "UPDATE `contact` SET `isDeleted` = 1 WHERE `id` = ?;";
+
+		try {
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$id]);
+			return true;
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
+
+	protected function searchContacts($searchInput, $searchValue)
+	{
+		try {
+			$sql = "SELECT *, `contact`.`id` AS `contact_id` FROM `contact`
+			WHERE `contact`.`isDeleted` != 1 AND ";
+
+			switch ($searchValue) {
+				case "id":
+					$sql .= "CAST(`contact`.`id` AS CHAR) LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+				case "email":
+					$sql .= "`contact`.`email` LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+				case "phone_number":
+					$sql .= "`contact`.`phone_number` LIKE ?;";
+					$searchInput = "%$searchInput%";
+					break;
+			}
+
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$searchInput]);
+			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			return $results ?? [];
+		} catch (Exception $e) {
+			$e->getMessage();
+			exit();
+		}
+	}
 }

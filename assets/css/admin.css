@@ -107,7 +107,7 @@ input[type="checkbox"] {
   background-color: #7fcbc9;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease-in-out;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -196,7 +196,8 @@ main {
 #bodycategory > tr:nth-child(odd),
 #bodyrole > tr:nth-child(odd),
 #bodyprivilege > tr:nth-child(odd),
-#bodyimportinvoice > tr:nth-child(odd) {
+#bodyimportinvoice > tr:nth-child(odd),
+#bodycontact > tr:nth-child(odd) {
   background-color: #fff;
 }
 /* Product */
@@ -346,13 +347,15 @@ th {
 }
 
 #bodyorder > tr,
-#bodyimportinvoice > tr {
+#bodyimportinvoice > tr,
+#bodycontact > tr {
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
 
 #bodyorder > tr:hover,
-#bodyimportinvoice > tr:hover {
+#bodyimportinvoice > tr:hover,
+#bodycontact > tr:hover {
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.4);
 }
 
@@ -674,7 +677,7 @@ h4 {
   border-radius: 6px;
   width: 100%;
   height: 350px;
-  overflow-y: scroll;
+  overflow: auto;
 }
 
 .image-details__img > img {
@@ -882,4 +885,59 @@ h4 {
 }
 
 .import-invoice-container__footer-address {
+}
+
+/* Contact */
+#bodycontact tr > td:nth-child(5) {
+  text-overflow: ellipsis !important;
+  overflow: hidden;
+  max-width: 120px;
+  white-space: nowrap;
+}
+
+.content-popup {
+  background-color: #fff;
+  vertical-align: middle;
+  margin: auto;
+  padding: 26px;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 10;
+  top: 20%;
+  bottom: 20%;
+  left: 26%;
+  right: 26%;
+  box-shadow: 0 4px 10px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.content-popup::before {
+  --radius: 8px;
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background-color: #7fcbc9;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  /* z-index: -1; */
+}
+
+.content-popup::after {
+  --radius: 8px;
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background-color: #7fcbc9;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  z-index: -1;
+}
+
+.content-msg {
 }

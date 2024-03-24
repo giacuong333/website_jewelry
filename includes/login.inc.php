@@ -1,14 +1,14 @@
 <?php
 if (isset($_POST["login"])) {
-    // Check if user logged in
     session_start();
 
+    // Check if user logged in
     if (!isset($_SESSION["id"]) && !isset($_SESSION["useremail"])) {
 
         // Instatiate LoginController class
-        include("../server/connection/connect.s.php");
-        include("../server/models/loginmodel.s.php");
-        include("../server/controllers/logincontr.s.php");
+        include_once("../server/connection/connect.s.php");
+        include_once("../server/models/loginmodel.s.php");
+        include_once("../server/controllers/logincontr.s.php");
 
         // Grab the data
         $useremail = $_POST["useremail"];

@@ -65,11 +65,11 @@ CREATE TABLE `gallery` (
 
 CREATE TABLE `contact` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `subject_name` varchar(255),
-  `note` varchar(255),
-  `thumbnail` varchar(500),
-  `user_id` int,
-  `product_id` int
+  `fullname` varchar(255),
+  `email` varchar(255),
+  `phone_number` varchar(255),
+  `content` varchar(255),
+  `isDeleted` int
 );
 
 /* ------------------------------------- ORDER */
@@ -168,14 +168,6 @@ ALTER TABLE `order`
 ADD FOREIGN KEY (`user_id`) 
 REFERENCES `user` (`id`);
 
-ALTER TABLE `contact` 
-ADD FOREIGN KEY (`user_id`) 
-REFERENCES `user` (`id`);
-
-ALTER TABLE `contact` 
-ADD FOREIGN KEY (`product_id`) 
-REFERENCES `product` (`id`);
-
 ALTER TABLE `role_permission` 
 ADD FOREIGN KEY (`permission_id`) 
 REFERENCES `permission` (`id`);
@@ -253,6 +245,11 @@ FOR EACH ROW
 
 CREATE TRIGGER order_delete_create 
 BEFORE INSERT ON `order` 
+FOR EACH ROW 
+  SET NEW.isDeleted = 0;
+
+CREATE TRIGGER contact_delete_create 
+BEFORE INSERT ON `contact` 
 FOR EACH ROW 
   SET NEW.isDeleted = 0;
 
@@ -419,10 +416,10 @@ INSERT INTO `supplier` (`name`, `address`, `contact`) VALUES
 ('PNG', '466 Hai Bà Trưng, P. Tân Định, Quận 1', '02846203198'),
 ('SJC', '418 - 420 Nguyễn Thị Minh Khai, Phường 5, Quận 3', '02835356561');
 
-INSERT INTO `contact` (`subject_name`, `note`, `thumbnail`, `user_id`, `product_id`) VALUES
-('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/errings/img1.png', 2, 1),
-('Phản hồi sản phẩm dỏm', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/rings/img1.png', 1, 2),
-('Phản hồi sản phẩm kém chất lượng', 'Sản phẩm rất dỏm đặc biệt là màu sắc và chất liệu', '../assets/imgs/necklaces/img1.png', 3, 4);
+INSERT INTO `contact` (`fullname`, `email`, `phone_number`, `content`) VALUES
+('Cường', 'lgcuong789@gmail.com', '0945566528', 'Shop đóng hàng không kỹ, móp méo hộp đựng đồ'),
+('Nhung', 'vnhung@gmail.com', '0955632547', 'Sản phẩm rất tuyệt vời, đúng như mong đợi, sẽ quay lại ủng hộ'),
+('Minh Cảnh', 'minhcah@gmail.com', '0948855629', 'Nhẫn rất đẹp');
 
 INSERT INTO `import` (`user_id`, `supplier_id`) VALUES 
 (3, 1);

@@ -264,4 +264,25 @@ class AdminController extends Admin
     {
         return Admin::getSuppliers();
     }
+
+    // ================================================================= CONTACT ===========================================================
+    public function getContacts()
+    {
+        return Admin::getContacts();
+    }
+
+    public function getContactById($id)
+    {
+        return Admin::getContactById($id);
+    }
+
+    public function deleteContactById($id)
+    {
+        return Admin::deleteContactById($id);
+    }
+
+    public function searchContacts($searchInput, $searchValue)
+    {
+        return Admin::searchContacts($searchInput, $searchValue);
+    }
 }

@@ -46,6 +46,8 @@ $(document).ready(function () {
       url: "../includes/admin.inc.php",
       data: { searchValue: searchValue, searchInput: searchInput, searchType: searchType },
       success: function (response) {
+        console.log(response);
+
         $(containElement).html(response);
 
         console.log(response);
@@ -69,6 +71,11 @@ $(document).ready(function () {
           solvedStatus(); // Patch to the admin.inc.php
           // Used for viewing order details
           viewOrderDetails();
+        }
+
+        // Used for contact
+        if (searchType === "contact") {
+          showContent();
         }
 
         if (searchType === "gallery") {
@@ -785,9 +792,93 @@ $(document).ready(function () {
       },
     });
   });
-});
 
-// Disable when being selected a supplier
-$("select[name='supplier_selected']").change(function () {
-  $(this).attr("disabled", "disabled");
+  // Disable when being selected a supplier
+  $("select[name='supplier_selected']").change(function () {
+    $(this).attr("disabled", "disabled");
+  });
+
+  // ========================================================== CONTACT ==========================================================
+
+  // Delete contact
+  function del_contact() {
+    $(".del-contactbtn").each(function () {
+      $(this).click(function (e) {
+        e.stopPropagation();
+        const question = confirm("Bạn có chắc chắn muốn xóa liên lạc này?");
+        if (question) {
+          const contact_id = $(this).closest("tr").data("contactid");
+          console.log(contact_id);
+
+          $.ajax({
+            type: "POST",
+            url: "../includes/admin.inc.php",
+            data: {
+              contact_id: contact_id,
+              type: "del_contact",
+            },
+            success: function (response) {
+              console.log(response);
+              if (response == 1) {
+                alert("Delete successfully");
+                window.location.reload();
+              } else {
+                alert("Delete failed");
+              }
+            },
+          });
+        }
+      });
+    });
+  }
+  del_contact();
+
+  // Search contacts
+  const seach_contact_input = $("#searchcontactinput");
+  seach_contact_input.on("keypress", function (e) {
+    const searchContactValue = $("#searchcontactvalue");
+    const contactContainer = $("#bodycontact");
+
+    console.log(searchContactValue.val());
+    console.log($(this).val());
+
+    if (e.which == 13) {
+      if ($(this).val().trim() !== "") {
+        handleSearch("contact", $(this), searchContactValue, contactContainer, null, del_contact);
+      } else {
+        window.location.reload();
+      }
+    }
+  });
+
+  // Show content
+  function showContent() {
+    $("#bodycontact tr").click(function () {
+      const contactId = $(this).data("contactid");
+
+      $.ajax({
+        type: "POST",
+        url: "../includes/admin.inc.php",
+        data: {
+          contactId: contactId,
+          type: "showContent",
+        },
+        success: function (response) {
+          $(".contact-main").prepend(response);
+
+          hideContent();
+        },
+      });
+    });
+  }
+  showContent();
+
+  // Hide content when clicking on the overlay
+  function hideContent() {
+    $(".overlay").click(function () {
+      $(this).remove();
+      $(".content-popup").remove();
+    });
+  }
+  hideContent();
 });

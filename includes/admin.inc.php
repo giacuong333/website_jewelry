@@ -14,6 +14,7 @@ $categories = $admin->getCategories();
 $roles = $admin->getRoles();
 $import_invoices = $admin->getInputInvoices();
 $suppliers = $admin->getSuppliers();
+$contacts = $admin->getContacts();
 
 // =============================================== COMMON ===============================================
 
@@ -1040,4 +1041,66 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["search
 if (isset($_POST["exitnewimport"]) && isset($_SESSION["import_products"])) {
   session_start();
   unset($_SESSION["import_products"]);
+}
+
+// =============================================== CONTACT ===============================================
+
+// Delete
+if (isset($_POST["contact_id"]) && isset($_POST["type"]) && $_POST["type"] == "del_contact") {
+  $contactId = $_POST["contact_id"];
+
+  $isDeleted = $admin->deleteContactById($contactId);
+
+  if ($isDeleted) {
+    echo 1;
+  } else {
+    echo 0;
+  }
+}
+
+// Search 
+if (isset($_POST["searchInput"]) && isset($_POST["searchValue"]) && isset($_POST["searchType"]) && $_POST["searchType"] == "contact") {
+  $searchInput = $_POST["searchInput"];
+  $searchValue = $_POST["searchValue"];
+
+  $searchedContacts = $admin->searchContacts($searchInput, $searchValue);
+
+  $html = !empty($searchedContacts) ? "" : "No contact found";
+
+  $delIcon = checkPermission("Delete contacts", $admin) ? '<span class="fa-solid fa-trash del-contactbtn" name="del-contact" value="del-contact"></span>' : "";
+
+  if (!empty($searchedContacts)) {
+    foreach ($searchedContacts as $contact) {
+      $html .= '
+      <tr data-contactid="' . $contact["contact_id"] . '">
+            <td>' . $contact["contact_id"] . '</td>
+            <td>' . $contact["fullname"] . '</td>
+            <td>' . $contact["email"] . '</td>
+            <td>' . $contact["phone_number"] . '</td>
+            <td>' . $contact["content"] . '</td>
+            <td>' . $delIcon . '</td>
+      </tr>
+      ';
+    }
+  }
+
+  echo $html;
+}
+
+// Show content
+if (isset($_POST["contactId"]) && isset($_POST["type"]) && $_POST["type"] == "showContent") {
+  $contactId = $_POST["contactId"];
+
+  $contact = $admin->getContactById($contactId);
+
+  $html = '
+    <div class="overlay"></div>
+    <div class="content-popup">
+          <div class="content-msg">
+            ' . $contact["content"] . '
+          </div>
+    </div>
+  ';
+
+  echo $html;
 }
