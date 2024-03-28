@@ -1,31 +1,43 @@
+<!-- Fontawesome -->
 <link rel="stylesheet" href="../assets/icons/css/all.min.css">
-<link rel="stylesheet" href="../assets/css/config.css">
 
-<header class="main-header">
-    <div class="common-header">
-        <div class="top-left">
-            <i class="fa-brands fa-facebook-f"></i>
-            <i class="fa-brands fa-pinterest"></i>
-            <i class="fa-brands fa-google"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-        </div>
-        <div class="top-middle">
-            <img src="../assets/imgs/brand/logo.png" alt="">
-        </div>
-        <div class="top-right">
-            <label for="userpanel" class="fa-solid fa-user"></label>
-            <input type="checkbox" name="" id="userpanel" style="display: none;">
-            <div class="login-options">
-                <?php
-                session_start();
-                if (isset($_SESSION["id"])) {
-                    echo "
+<!-- CDN Boostrap Css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+<!-- CDN Boostrap Js  -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+<!-- Js -->
+<script src="../js/header.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <header class="main-header">
+            <div class="common-header py-4">
+                <div class="top-left">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <i class="fa-brands fa-pinterest"></i>
+                    <i class="fa-brands fa-google"></i>
+                    <i class="fa-brands fa-square-instagram"></i>
+                </div>
+                <div class="top-middle">
+                    <img src="../assets/imgs/brand/logo.png" alt="">
+                </div>
+                <div class="top-right">
+                    <label for="userpanel" class="fa-solid fa-user"></label>
+                    <input type="checkbox" name="" id="userpanel" style="display: none;">
+                    <div class="login-options">
+                        <?php
+                        session_start();
+                        if (isset($_SESSION["id"])) {
+                            echo "
                     <a href='../includes/logout.inc.php'>
                         <i class='fa-solid fa-power-off'> </i>
                         <span>Đăng xuất</span>
                     </a>";
-                } else {
-                    echo "
+                        } else {
+                            echo "
                     <a href='../templates/login.php'>
                         <i class='fa-solid fa-user-plus'></i>
                         <span> Đăng nhập</span>
@@ -34,29 +46,30 @@
                         <i class='fa-solid fa-right-from-bracket'></i>
                         <span> Đăng ký</span>
                     </a>";
-                }
-                ?>
+                        }
+                        ?>
+                    </div>
+                    <i class="fa-solid fa-cart-shopping">
+                        <span class="quantity">1</span>
+                    </i>
+                </div>
             </div>
-            <i class="fa-solid fa-cart-shopping">
-                <span class="quantity">1</span>
-            </i>
-        </div>
-    </div>
-    <div class="bottom">
-        <ul class="list-items">
-            <li class="item">TRANG CHỦ</li>
-            <li class="item">SẢN PHẨM
-                <label for="openchildmenu" class="fa-solid fa-angle-down"></label>
-                <input type="checkbox" name="" id="openchildmenu" style="display: none;">
-                <ul class="child-list-items">
-                    <li class="child-item">Nhẫn</li>
-                    <li class="child-item">Bông tai</li>
-                    <li class="child-item">Dây chuyền</li>
-                    <li class="child-item">Trâm cài</li>
+            <div class="bottom">
+                <ul class="list-items bg-white w-100">
+                    <li class="item">TRANG CHỦ</li>
+                    <li class="item dropdown">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
+                        <ul class="child-list-items dropdown-menu dropdown-menu-end" aria-labelledby="openchildmenu">
+                            <li class="child-item dropdown-item">Nhẫn</li>
+                            <li class="child-item dropdown-item">Bông tai</li>
+                            <li class="child-item dropdown-item">Dây chuyền</li>
+                            <li class="child-item dropdown-item">Trâm cài</li>
+                        </ul>
+                    </li>
+                    <li class="item">GIỚI THIỆU</li>
+                    <li class="item">PHẢN HỒI</li>
                 </ul>
-            </li>
-            <li class="item">GIỚI THIỆU</li>
-            <li class="item">PHẢN HỒI</li>
-        </ul>
+            </div>
+        </header>
     </div>
-</header>
+</div>
