@@ -38,8 +38,8 @@
 					<div class="top">
 						<h3>ĐĂNG NHẬP TÀI KHOẢN</h3>
 						<div class="loginby">
-							<i class="fa-brands fa-facebook-f"><span>Facebook</span></i>
-							<i class="fa-brands fa-google"><span>Google</span></i>
+							<i class="fa-brands fa-facebook-f mb-md-0 mb-2 " style="width: 12rem;"><span>Facebook</span></i>
+							<i class="fa-brands fa-google" style="width: 12rem;"><span>Google</span></i>
 						</div>
 						<p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
 					</div>
