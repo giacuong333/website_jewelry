@@ -1,12 +1,16 @@
 $(document).ready(function () {
-  const menuItemListObj = $(".list-items");
-  const headerNavbarObj = $(".main-header");
+  function handleScroll() {
+    if (window.matchMedia("(min-width: 767px)").matches) {
+      const menuItemListObj = $(".list-items");
+      const headerNavbarObj = $(".main-header");
 
-  $(window).scroll(function () {
-    menuItemListObj.removeClass("shadow-sm").removeClass("position-fixed").removeClass("top-0").removeClass("start-0").removeClass("end-0");
+      menuItemListObj.removeClass("shadow-sm").removeClass("fixed-top");
 
-    if ($(window).scrollTop() > headerNavbarObj.height()) {
-      menuItemListObj.addClass("shadow-sm").addClass("position-fixed").addClass("top-0").addClass("start-0").addClass("end-0");
+      if ($(window).scrollTop() > headerNavbarObj.height()) {
+        menuItemListObj.addClass("shadow-sm").addClass("fixed-top");
+      }
     }
-  });
+  }
+
+  $(window).scroll(handleScroll);
 });

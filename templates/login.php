@@ -6,9 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Log in</title>
 
-	<!-- Fontawesome -->
-	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
-
 	<!-- CSS -->
 	<link rel="stylesheet" href="../assets/css/config.css">
 	<link rel="stylesheet" href="../assets/css/login.css">
@@ -26,14 +23,14 @@
 	include_once("../templates/header.php");
 	?>
 
-	<main id="login-main" class="mt-5 container">
+	<main id="login-main" class="mt-md-5 mt-0 container">
 		<div class="row">
 			<div class="header">
 				<a href="../index.php">Trang chủ</a> >
 				<p> Đăng nhập tài khoản</p>
 			</div>
 
-			<div class="content">
+			<div class="content d-md-grid d-block">
 				<div class="content-left">
 					<div class="top">
 						<h3>ĐĂNG NHẬP TÀI KHOẢN</h3>
@@ -41,7 +38,7 @@
 							<i class="fa-brands fa-facebook-f mb-md-0 mb-2 " style="width: 12rem;"><span>Facebook</span></i>
 							<i class="fa-brands fa-google" style="width: 12rem;"><span>Google</span></i>
 						</div>
-						<p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
+						<p class="mt-4">Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
 					</div>
 
 					<div class="middle">
@@ -131,7 +128,7 @@
 
 									<div class="error-message"></div>
 
-									<button type="button" style="display: inline-block;" class="btn btn--active" name="confirmpasscode" value="confirmpasscode">XÁC NHẬN</button>
+									<button type="button" style="display: inline-block;" class="btn btn--active text-white" name="confirmpasscode" value="confirmpasscode">XÁC NHẬN</button>
 
 									<button style="border:none; background-color: transparent; font-size: 16px; cursor: pointer;" type="submit" name="sendcode" value="sendcode">Send code again</button>
 								</div>

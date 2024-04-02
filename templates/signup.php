@@ -39,11 +39,11 @@
                                 <i class="fa-brands fa-facebook-f"><span>Facebook</span></i>
                                 <i class="fa-brands fa-google"><span>Google</span></i>
                             </div>
-                            <p>Nếu chưa có tài khoản vui lòng đăng ký tại đây</p>
+                            <p class="mt-4">Nếu chưa có tài khoản vui lòng đăng ký tại đây</p>
                         </div>
                     </div>
                     <div class="content-right">
-                        <form action="../includes/signup.inc.php" method="post">
+                        <form action="../includes/signup.inc.php" method="post" class="d-md-grid d-block">
                             <div class="left">
                                 <div class="form-group">
                                     <label for="fullname" style="font-weight: 600;">Họ tên
@@ -69,8 +69,10 @@
                                     <span class="error-message"></span>
                                 </div>
 
-                                <button type="button" class="btn btn--active btn-signup" name="signup" value="signup" style="color: #fff !important;">ĐĂNG KÝ</button>
-                                <a style="margin-left: 12px;" href="./login.php">Đăng nhập</a>
+                                <div class="btn-gr d-md-block d-none">
+                                    <button type="button" class="btn btn--active btn-signup" name="signup" value="signup" style="color: #fff !important;">ĐĂNG KÝ</button>
+                                    <a style="margin-left: 12px;" href="./login.php">Đăng nhập</a>
+                                </div>
                             </div>
 
                             <div class="right">
@@ -91,6 +93,11 @@
                                     <span class="error-message"></span>
                                 </div>
 
+                                <!-- Small screen -->
+                                <div class="btn-gr d-block d-md-none">
+                                    <button type="button" class="btn btn--active btn-signup" name="signup" value="signup" style="color: #fff !important;">ĐĂNG KÝ</button>
+                                    <a style="margin-left: 12px;" href="./login.php">Đăng nhập</a>
+                                </div>
                             </div>
                         </form>
                     </div>
