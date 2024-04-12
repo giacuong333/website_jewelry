@@ -17,6 +17,9 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
       <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+      <!-- Config datepicker -->
+      <script src="../js/datepicker.config.js"></script>
 </head>
 
 <body id="import-body">
@@ -170,16 +173,6 @@
                   </table>
             </div>
       </main>
-
-      <!-- Customize date picker -->
-      <script>
-            const config = {
-                  enableTime: false,
-                  dateFormat: "Y-m-d",
-            };
-
-            flatpickr("input[type=datetime-local]", config);
-      </script>
 
 </body>
 
