@@ -62,9 +62,11 @@
 
             <div class="bottom" id="collapse-parent">
                 <ul class="list-items bg-white w-100 p-0 m-0 flex-md-row flex-column align-items-start">
-                    <li class="item ps-0">TRANG CHỦ</li>
+                    <li class="item ps-0">
+                        <a href="../templates/trangchu.php" style="text-decoration: none;">TRANG CHỦ</a>
+                    </li>
                     <li class="item ps-0 dropdown">
-                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
+                        <a href="SanPham.php" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
                         <ul class="child-list-items dropdown-menu dropdown-menu-end" aria-labelledby="openchildmenu">
                             <li class="child-item dropdown-item">Nhẫn</li>
                             <li class="child-item dropdown-item">Bông tai</li>
@@ -72,8 +74,12 @@
                             <li class="child-item dropdown-item">Trâm cài</li>
                         </ul>
                     </li>
-                    <li class="item ps-0">GIỚI THIỆU</li>
-                    <li class="item ps-0">PHẢN HỒI</li>
+                    <li class="item ps-0">
+                        <a href="../templates/gioithieu.php" style="text-decoration: none;">GIỚI THIỆU</a>
+                    </li>
+                    <li class="item ps-0">
+                        <a href="../templates/phanhoi.php" style="text-decoration: none;">PHẢN HỒI</a>
+                    </li>
                 </ul>
             </div>
         </header>

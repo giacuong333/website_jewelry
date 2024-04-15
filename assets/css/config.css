@@ -9,11 +9,11 @@
 body {
   src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
   font-family: "Roboto", sans-serif;
-  /* max-width: 1200px;
+  max-width: 1600px;
   width: 100%;
   display: block;
   margin: 0 auto;
-  padding: 0 20px; */
+  padding: 0 20px;
 }
 
 .btn {
@@ -37,9 +37,18 @@ body {
   background-color: #000;
 }
 
+.section-top-60{
+  padding-top: 60px;
+}
+
+.cell-padding-top-20{
+  padding-top:20px ;
+}
+
 a {
   transition: all 0.1s ease-in-out;
   color: #000;
+  text-decoration: none;
 }
 
 a:hover {
@@ -82,15 +91,32 @@ main {
 
 /* Header */
 .main-header {
+  box-shadow: 0 2px 14px 2px rgba(0, 0, 0, 0.1);
+  position: absolute;
   z-index: 2;
+  top: 0;
+  right: 0;
+  left: 0;
   background-color: #fff;
-  transition: all ease-in-out 0.2s;
+
+}
+.hide-header {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.bottom {
+  display: block;
+  width:100%;
+  transition: transform 0.3s ease-in-out;
 }
 
 .common-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 30px 0;
+  transition: top 0.3s ease-in-out;
 }
 
 .top-left > i {
@@ -144,6 +170,79 @@ main {
   right: -6px;
 }
 
+
+  
+.bottom > .list-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #fff;
+  height: 55px;
+}
+
+.list-items > .item {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-right: 20px;
+  margin-top: 6px;
+  min-width: 50px;
+  transition: all 0.1s ease-in-out;
+  font-weight: 10;
+  opacity: 0.8;
+ text-transform: uppercase;
+}
+
+.list-items > .item:hover,
+.list-items > .item > i:hover {
+  color: #7fcbc9;
+}
+
+.list-items > .item > label {
+  font-size: 16px;
+  color: #aaa;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+#openchildmenu:checked ~ .child-list-items {
+  display: block;
+}
+
+main {
+  margin-top: 200px;
+}
+
+.list-items > .item:nth-child(2) {
+  position: relative;
+}
+
+
+
+.child-list-items {
+  display: none;
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  left: 20px;
+  min-width: 200px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.child-list-items .child-item {
+  padding: 14px;
+  border-bottom: 1px dotted #ccc;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.child-list-items .child-item:hover {
+  color: #7fcbc9;
+}
+/* login */
 #userpanel:checked ~ .login-options {
   display: flex;
 }
@@ -173,59 +272,290 @@ main {
   text-decoration: none;
 }
 
-.list-items .login-options > a > i {
+.login-options > a > i {
   margin-right: 10px;
 }
+/* banner */
+.banner{
+  margin-top: 130px;
+  width: 100%;
+  height: 900px; /* Điều chỉnh chiều cao của banner theo nhu cầu */
+  overflow: hidden;
+  position: relative;
+  
+}
+.banner img{
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.banner img.active {
+  opacity: 1;
+}
 
-.bottom > .list-items {
+
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+}
+.banner-item .banner-text {
+  animation: none;
+}
+
+.banner-item.active .banner-text {
+  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+}
+/* Section */
+.shell{
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.range{
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+ justify-content: space-between;
+}
+
+.cell{
+  flex-basis: 33.3333%;
+  flex-direction: 33.3333%;
+}
+
+.cell>a{
+  display: inline-block ;
+}
+
+
+.cell>a>img{
+  width: 100%;
+}
+
+/* list-product */
+h1{
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.2667;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.divider-bold {
+  border-top-width: 2px;
+  width: 132px;
+  margin-bottom: 26px;
+}
+
+.divider-base {
+  border-color: #141414;
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border:0;
+  border-top: 1px solid #f5f5f7;
+  width: 50%; /* or any percentage you want */
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
+}
+
+.offset{
+  position: relative;
+
+}
+
+.offset img{
+  width: 100%;
+}
+
+.offset .caption {
+  position: absolute; 
+  color: white;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  transition: all ease-in-out 0.2s;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  height: 80px;
+}
+.offset .caption .caption-title {
+ opacity: 1;
 }
 
-.list-items > .item {
-  cursor: pointer;
-  padding: 10px 20px;
-  min-width: 50px;
-  transition: all 0.1s ease-in-out;
+.offset .caption .caption-descr {
+  opacity: 0;
+  margin-bottom: 20px;
+  
 }
 
-.list-items > .item:hover,
-.list-items > .item > i:hover {
+.thumbnail-variant-1:hover .caption-descr {
+  opacity: 1;
+
+}
+
+.range .offset .caption {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: .3s;
+  color: #141414;
+  text-align: center;
+}
+
+.range .offset .caption:hover {
+  background-color: #141414d5;
+  color: #fff;
+}
+.thumbnail-variant-1:hover .caption {
+  background-color: rgba(20, 20, 20, 0.9);
+  color: #fff;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+.caption-title {
+ 
+  font-size: 20px;
+  font-weight: 100;
+  line-height: 1.2667;
+  margin-bottom: 20px;
+  text-align: center;
+  text-decoration: none;
+}
+
+h2{
+  font-size: 14px;
+    line-height: 1.42857;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+}
+/* Hot Deal */
+h3 >a{
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.2667;
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
   color: #7fcbc9;
 }
 
-.list-items > .item > label {
-  font-size: 16px;
-  color: #aaa;
-  margin-left: 8px;
-  cursor: pointer;
+.hot-deal-prd{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.product-name{
+  text-align: center;
+}
+.product-price{
+  text-align: center;
+  line-height: 1.5;
+  color: #7fcbc9;
+}
+/* About */
+.about-img{
+  background-image: url(../imgs/section/sec_about.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 12% 10%;
 }
 
-.child-list-items {
-  transition: all 0.2s ease-in-out;
-  background-color: #fff;
-  box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  border: none;
+.about-content{
+  font-size: small;
+  text-align: center;
 }
 
-.child-list-items .child-item {
-  padding: 14px;
-  cursor: pointer;
+h4{
+  text-align: center;
+  font-size: 30px;
+}
+.text-base{
+  color: #141414;
 }
 
-.child-list-items .child-item:hover {
-  color: #488b89;
+.big{
+  margin-top: 15px;
 }
-
+/* Product */
+.unit-left>a>img{
+width: 100%;
+height: auto;
+}
+.unit-left{
+ width: 100%;
+}
+.unit-body{
+  
+  padding-left: 20px;
+  width: 100%;
+}
+.p>a{
+  font-size: 14px;
+  line-height: 1.42857;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  color: #7fcbc9;
+}
+.big{
+ 
+}
+.cell-product{
+  flex-basis: 33.3333%;
+  max-width: 50%;
+}
+.range-product{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.unit{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
+}
+.divider-left{
+  margin-left: 0px;
+}
+h5>a{
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.2667;
+  margin-bottom: 20px;
+  display: block;
+  color: #7fcbc9;
+}
 /* Footer */
 
 footer {
   margin: 50px 0;
   text-align: center;
   border-top: 1px solid #ccc;
+}
+
+.footer-header {
+  margin: 50px 0 20px;
 }
 
 .footer-body__info,
@@ -260,6 +590,4 @@ footer {
   display: inline-block;
 }
 
-.error-message {
-  color: #e14b33;
-}
+/* admin */
