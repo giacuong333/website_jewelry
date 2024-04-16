@@ -15,7 +15,9 @@ class Database
             $dtb = new PDO('mysql:host=localhost;dbname=' . self::DTBNAME, self::USERNAME, self::PASSWORD);
             return $dtb;
         } catch (PDOException $e) {
-            $e->getMessage();
+            // Log or handle the error
+            error_log('Database connection error: ' . $e->getMessage());
+            throw new Exception('Database connection failed');
             die();
         }
     }

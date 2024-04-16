@@ -26,6 +26,11 @@ body {
   color: #fff;
 }
 
+.btn-.btn--active {
+  background-color: #7fcbc9;
+  color: #fff;
+}
+
 .btn--exit {
   margin-right: 14px !important;
 }
@@ -567,6 +572,10 @@ th {
   width: 11%;
 }
 
+#statistic-search {
+  width: 12%;
+}
+
 .content-body__middle-product-info {
   display: flex;
   align-items: center;
@@ -940,4 +949,14 @@ h4 {
 }
 
 .content-msg {
+}
+
+/* ================================== BEST SELLER */
+.sold-amount-tbody > tr {
+  text-align: center;
+}
+
+.sold-amount-tbody > tr > td:first-child,
+.sold-amount-tbody > tr > td:nth-child(2) {
+  text-align: left;
 }
