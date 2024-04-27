@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -33,24 +31,39 @@
                         <tbody>
                             <tr>
                                 <td>Full name</td>
-                                <td><input type="text" name="fullname" required /></td>
+                                <td>
+                                    <input type="text" name="fullname" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
 
                             <tr>
                                 <td>Email</td>
-                                <td><input type="email" name="email" required /></td>
+                                <td>
+                                    <input type="email" name="email" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Phone number</td>
-                                <td><input type="text" name="phonenumber" required /></td>
+                                <td>
+                                    <input type="text" name="phonenumber" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Password</td>
-                                <td><input type="password" name="password" required></td>
+                                <td>
+                                    <input type="password" name="password" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Verify password</td>
-                                <td><input type="password" name="verifypassword" required></td>
+                                <td>
+                                    <input type="password" name="verifypassword" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Role</td>
@@ -67,7 +80,7 @@
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="saveuser" value="saveuser" type="submit">Save</button>
+                                    <button class="btn- btn--hover" name="saveuser" value="saveuser" type="button">Save</button>
                                     <button class="btn- btn--hover" id="exituser" name="exituser" value="exituser" type="button">Exit</button>
                                 </td>
                             </tr>

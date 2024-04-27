@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -33,13 +31,16 @@
                             <tr>
                                 <td>Name of category</td>
                                 <input type="text" name="categoryid" value="<?php echo $categoriesId["id"]; ?>" hidden>
-                                <td><input type="text" name="categoryname" value="<?php echo $categoriesId["name"]; ?>" required /></td>
+                                <td>
+                                    <input type="text" name="categoryname" value="<?php echo $categoriesId["name"]; ?>" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="updatecategory" value="updatecategory" type="submit">Save</button>
+                                    <button class="btn- btn--hover" name="updatecategory" value="updatecategory" type="button">Save</button>
                                     <button class="btn- btn--hover" id="exitcategory" name="exitcategory" value="exitcategory" type="button">Exit</button>
                                 </td>
                             </tr>

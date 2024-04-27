@@ -11,8 +11,6 @@
       <link rel="stylesheet" href="../assets/icons/css/all.min.css">
       <!-- JQuery -->
       <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-      <!-- JS -->
-      <script src="../js/admin.js" type="module"></script>
 
 </head>
 
@@ -46,12 +44,16 @@
 
                                           <tr>
                                                 <td>Quantity</td>
-                                                <td><input type="text" name="product_amount" /></td>
+                                                <td><input type="text" name="product_amount" />
+                                                      <div class="error-message"></div>
+                                                </td>
                                           </tr>
 
                                           <tr>
                                                 <td>Price</td>
-                                                <td><input type="text" name="product_price" /></td>
+                                                <td><input type="text" name="product_price" />
+                                                      <div class="error-message"></div>
+                                                </td>
                                           </tr>
 
                                           <tr>
@@ -70,7 +72,7 @@
                                           <tr>
                                                 <td></td>
                                                 <td>
-                                                      <button class="btn- btn--hover" name="addproduct" value="addproduct" type="submit">Add</button>
+                                                      <button class="btn- btn--hover" name="addproduct" value="addproduct" type="button">Add</button>
                                                       <button class="btn- btn--hover saveproducttempo" type="button">Save</button>
                                                       <button class="btn- btn--hover" id="exitimportinvoice" type="button" name="exitnewimport" value="exitnewimport">Exit</button>
                                                 </td>

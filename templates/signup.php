@@ -25,7 +25,7 @@
 
     <div class="container">
         <div class="row">
-            <main>
+            <main id="register-main">
                 <div class="header">
                     <a href="../index.php">Trang chủ > </a>
                     <p> Đăng ký tài khoản</p>

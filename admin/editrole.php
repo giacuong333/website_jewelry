@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -33,13 +31,16 @@
                         <tbody>
                             <tr>
                                 <td>Name of role</td>
-                                <td><input type="text" name="rolename" required value="<?php echo $rolesId["name"]; ?>" /></td>
+                                <td>
+                                    <input type="text" name="rolename" required value="<?php echo $rolesId["name"]; ?>" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="updaterole" value="updaterole" type="submit">Update</button>
+                                    <button class="btn- btn--hover" name="updaterole" value="updaterole" type="button">Update</button>
                                     <button class="btn- btn--hover" id="exitrole" name="exitrole" value="exitrole" type="button">Exit</button>
                                 </td>
                             </tr>

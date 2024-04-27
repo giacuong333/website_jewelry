@@ -40,6 +40,11 @@ body {
   color: #fff;
 }
 
+.error-message {
+  color: red;
+  font-size: 14px;
+}
+
 input[type="checkbox"] {
   ---dimensions: 18px;
   width: var(---dimensions);

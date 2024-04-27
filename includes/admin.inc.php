@@ -42,11 +42,16 @@ if (isset($_POST["saveuser"])) {
   $roleid = $_POST["roleid"];
 
   $isSaved = $admin->setUser($fullname, $email, $phonenumber, $password, $verifypassword, $roleid);
-  if ($isSaved) {
+  // Handle the response from setUser method
+  if ($isSaved == "existingemail") {
+    echo "<script>alert('Email is existing')</script>";
+    echo "<script>window.location.href='../admin/newUser.php'</script>";
+  } elseif ($isSaved == "existingphonenumber") {
+    echo "<script>alert('Phone number is existing')</script>";
+    echo "<script>window.location.href='../admin/newUser.php'</script>";
+  } else {
     echo "<script>alert('Save a user successfully')</script>";
     echo "<script>window.location.href='../admin/usermanager.php'</script>";
-  } else {
-    echo "<script>alert('Save a user failed')</script>";
   }
 }
 

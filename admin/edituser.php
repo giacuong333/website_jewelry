@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -35,17 +33,24 @@
                                 <td>Full name</td>
                                 <td>
                                     <input type="text" name="user_id" value="<?php echo $user['id']; ?>" hidden />
-                                    <input type="text" name="fullname" required value="<?php echo $user['fullname']; ?>" />
+                                    <input type="text" name="fullname" value="<?php echo $user['fullname']; ?>" />
+                                    <div class="error-message"></div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>Email</td>
-                                <td><input type="email" name="email" required value="<?php echo $user['email']; ?>" /></td>
+                                <td>
+                                    <input type="email" name="email" value="<?php echo $user['email']; ?>" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Phone number</td>
-                                <td><input type="text" name="phonenumber" required value="<?php echo $user['phone_number']; ?>" /></td>
+                                <td>
+                                    <input type="text" name="phonenumber" value="<?php echo $user['phone_number']; ?>" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Role</td>
@@ -66,7 +71,7 @@
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="updateuser" value="updateuser" type="submit">Update</button>
+                                    <button class="btn- btn--hover" name="updateuser" value="updateuser" type="button">Update</button>
                                     <button class="btn- btn--hover" id="exituser" name="exituser" value="exituser" type="button">Exit</button>
                                 </td>
                             </tr>

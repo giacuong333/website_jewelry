@@ -23,7 +23,7 @@
 	include_once("../templates/header.php");
 	?>
 
-	<main id="login-main" class="mt-md-5 mt-0 container">
+	<main id="login-main" class="container">
 		<div class="row">
 			<div class="header">
 				<a href="../index.php">Trang chủ</a> >
