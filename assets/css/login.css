@@ -93,3 +93,7 @@
 .change-password-container .form-group > button {
   margin-left: auto;
 }
+
+#login-main {
+  margin-top: 10rem;
+}

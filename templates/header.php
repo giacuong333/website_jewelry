@@ -14,8 +14,8 @@
 <div class="container-fluid">
     <div class="row">
         <header class="main-header">
-            <div class="common-header py-md-4 py-0 justify-content-md-around">
-                <div class="top-left d-md-flex d-none">
+            <div class="common-header py-md-4 py-0 justify-content-md-around justify-content-lg-around justify-content-between">
+                <div class="top-left d-lg-flex d-md-flex d-none">
                     <i class="fa-brands fa-facebook-f"></i>
                     <i class="fa-brands fa-pinterest"></i>
                     <i class="fa-brands fa-google"></i>
@@ -54,20 +54,21 @@
                     </i>
 
                     <!-- Used for < medium screen -->
-                    <button type="button" class="btn d-md-none d-block w-100 text-dark text-end fs-4" data-bs-toggle="collapse" data-bs-target="#collapse-parent" aria-expanded="false" aria-controls="collapse-parent">
+                    <button type="button" class="btn d-md-none d-lg-none d-flex text-dark text-end fs-4" data-bs-toggle="collapse" data-bs-target="#collapse-parent" aria-expanded="false" aria-controls="collapse-parent">
                         <i class="fa-solid fa-bars ms-auto" style="color: #7fcbc9;"></i>
                     </button>
                 </div>
+
             </div>
 
-            <div class="bottom" id="collapse-parent">
-                <ul class="list-items bg-white w-100 p-0 m-0 flex-md-row flex-column align-items-start">
+            <div class="bottom collapse d-lg-block d-md-block" id="collapse-parent">
+                <ul class="list-items bg-white w-100 p-0 m-0 flex-md-row flex-lg-row flex-column align-items-start">
                     <li class="item ps-0">
                         <a href="../templates/trangchu.php" style="text-decoration: none;">TRANG CHỦ</a>
                     </li>
                     <li class="item ps-0 dropdown">
                         <a href="SanPham.php" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
-                        <ul class="child-list-items dropdown-menu dropdown-menu-end" aria-labelledby="openchildmenu">
+                        <ul class="child-list-items bg-white dropdown-menu py-0" aria-labelledby="openchildmenu">
                             <li class="child-item dropdown-item">Nhẫn</li>
                             <li class="child-item dropdown-item">Bông tai</li>
                             <li class="child-item dropdown-item">Dây chuyền</li>
