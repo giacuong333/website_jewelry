@@ -5,7 +5,13 @@
 }
 
 .main-bread-crumb{
-    padding-top: 140px;
+    padding-top: 160px;
+    padding-bottom: 20px;
+   margin-left: 180px;
+}
+.breadcrumb .current {
+    color: #7fcbc9; /* Thay đổi màu sắc theo ý muốn */
+    font-weight: bold;
 }
 .container {
     display: flex;
@@ -18,6 +24,22 @@
     background-color: #fff; 
     padding: 20px;
 }
+
+
+
+#sort-by{
+    text-align: left;
+    font-size: 14px;
+    
+}
+
+.sort-product, .title-prod{
+    width: fit-content;
+    display: inline-block !important; 
+    margin-left: 10px;
+}
+
+
 
 .side-bar {
     flex: 0 0 25%; 
@@ -45,4 +67,22 @@
     margin: 10px;
     box-sizing: border-box;
     border: 1px solid #fff;
+}
+
+.pagination {
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.page-item.active .page-link {
+    background-color: #7fcbc9;
+    border-color: #7fcbc9;
+}
+
+.page-item .page-link {
+    color: #000;
+}
+
+.page-item {
+    margin: 0 5px;
 }

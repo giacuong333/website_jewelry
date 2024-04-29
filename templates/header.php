@@ -66,7 +66,9 @@
                         <a href="../templates/trangchu.php" style="text-decoration: none;">TRANG CHỦ</a>
                     </li>
                     <li class="item ps-0 dropdown">
-                        <a href="SanPham.php" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
+                        <a href="SanPham.php">SẢN PHẨM</a> <i class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none; margin-left: 5px;"></i>
+                        <a href="" ></a>
+                        
                         <ul class="child-list-items dropdown-menu dropdown-menu-end" aria-labelledby="openchildmenu">
                             <li class="child-item dropdown-item">Nhẫn</li>
                             <li class="child-item dropdown-item">Bông tai</li>
