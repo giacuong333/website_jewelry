@@ -79,7 +79,7 @@
                         <a href="../templates/gioithieu.php" style="text-decoration: none;">GIỚI THIỆU</a>
                     </li>
                     <li class="item ps-0">
-                        <a href="../templates/phanhoi.php" style="text-decoration: none;">PHẢN HỒI</a>
+                        <a href="./feedback.php" style="text-decoration: none;">PHẢN HỒI</a>
                     </li>
                 </ul>
             </div>

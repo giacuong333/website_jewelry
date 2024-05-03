@@ -27,15 +27,15 @@
         <form id="feedback-form" action="submit_feedback.php" method="post">
             <div class="form-group">
                 <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" required placeholder="Enter your name" />
+                <input type="text" id="name" name="name" placeholder="Enter your name" />
             </div>
             <div class="form-group">
                 <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" required placeholder="Enter your email" />
+                <input type="email" id="email" name="email" placeholder="Enter your email" />
             </div>
             <div class="form-group">
                 <label for="message">Your Feedback:</label>
-                <textarea id="message" name="message" required placeholder="Enter your feedback"></textarea>
+                <textarea id="message" name="message" placeholder="Enter your feedback"></textarea>
             </div>
             <button type="submit">Submit Feedback</button>
         </form>
