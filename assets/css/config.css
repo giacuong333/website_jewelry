@@ -13,7 +13,6 @@ body {
   width: 100%;
   display: block;
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 .btn {
@@ -284,6 +283,8 @@ main {
   top: 0;
   left: 0;
   opacity: 0;
+  object-fit: cover;
+  object-position: center;
   transition: opacity 0.5s ease-in-out;
 }
 .banner img.active {
@@ -380,8 +381,10 @@ hr {
   transition: opacity 0.3s ease;
   height: 80px;
 }
+
 .offset .caption .caption-title {
   opacity: 1;
+  margin-bottom: 0;
 }
 
 .offset .caption .caption-descr {

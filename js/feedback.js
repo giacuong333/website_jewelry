@@ -1,4 +1,4 @@
-import { isEmail, isEmpty } from "./config.js";
+import { isEmail, isEmpty, isPhoneNumber } from "./config.js";
 
 $(document).ready(function () {
   function handleSubmitFeedback(e) {
@@ -12,6 +12,8 @@ $(document).ready(function () {
       if (inputField.length && !isEmpty(inputField.val(), error)) {
         isValid = false;
       } else if (inputField.attr("type") === "email" && !isEmail(inputField.val(), error)) {
+        isValid = false;
+      } else if (inputField.attr("name") === "phonenumber" && !isPhoneNumber(inputField.val(), error)) {
         isValid = false;
       }
 

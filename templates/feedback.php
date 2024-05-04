@@ -9,10 +9,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/config.css"> <!-- Đường dẫn tới tập tin CSS của bạn -->
     <link rel="stylesheet" href="../assets/css/feedback.css"> <!-- CSS cho trang phản hồi -->
-
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script> <!-- Đường dẫn tới jQuery -->
-
     <!-- JavaScript -->
     <script src="../js/feedback.js" type="module"></script> <!-- JavaScript cho trang phản hồi -->
 </head>
@@ -26,17 +24,22 @@
         <h1>Feedback Form</h1>
         <form id="feedback-form" action="../includes/submit_feedback.php" method="post">
             <div class="form-group">
-                <label for="name">Your Name <span class="text-danger">*</span></label>
+                <label for="name">Your name <span class="text-danger">*</span></label>
                 <input type="text" id="name" name="name" placeholder="Enter your name" />
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
-                <label for="email">Your Email <span class="text-danger">*</span></label>
+                <label for="email">Your email <span class="text-danger">*</span></label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" />
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
-                <label for="message">Your Feedback <span class="text-danger">*</span></label>
+                <label for="phonenumber">Your phone number <span class="text-danger">*</span></label>
+                <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter your phonenumber" />
+                <div class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="message">Your feedback <span class="text-danger">*</span></label>
                 <textarea id="message" name="message" placeholder="Enter your feedback"></textarea>
                 <div class="error-message"></div>
             </div>
