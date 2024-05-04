@@ -76,7 +76,8 @@ a:hover {
   transition: all 0.1s ease-in-out;
 }
 
-.form-group > input:focus {
+.form-group > input:focus,
+.form-group > textarea:focus {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   border-color: #ccc;
 }
@@ -578,4 +579,5 @@ footer {
 
 .error-message {
   color: red;
+  font-size: 14px;
 }

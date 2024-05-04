@@ -26,23 +26,26 @@
         <h1>Feedback Form</h1>
         <form id="feedback-form" action="../includes/submit_feedback.php" method="post">
             <div class="form-group">
-                <label for="name">Your Name:</label>
+                <label for="name">Your Name <span class="text-danger">*</span></label>
                 <input type="text" id="name" name="name" placeholder="Enter your name" />
+                <div class="error-message"></div>
             </div>
             <div class="form-group">
-                <label for="email">Your Email:</label>
+                <label for="email">Your Email <span class="text-danger">*</span></label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" />
+                <div class="error-message"></div>
             </div>
             <div class="form-group">
-                <label for="message">Your Feedback:</label>
+                <label for="message">Your Feedback <span class="text-danger">*</span></label>
                 <textarea id="message" name="message" placeholder="Enter your feedback"></textarea>
+                <div class="error-message"></div>
             </div>
-            <button type="submit" name="submit_feedback" value="submit_feedback">Submit Feedback</button>
+            <button type="button" name="submit_feedback" value="submit_feedback">Submit Feedback</button>
         </form>
     </div>
 
     <?php
-    include_once("../templates/footer.php"); 
+    include_once("../templates/footer.php");
     ?>
 </body>
 

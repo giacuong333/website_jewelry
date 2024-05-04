@@ -46,26 +46,23 @@ textarea {
   font-size: 16px; /* Kích thước chữ */
 }
 
+textarea {
+  outline: none;
+}
+
 /* Định dạng cho nút bấm */
-button {
-  background-color: #007bff; /* Màu xanh dương cho nút */
+button[name="submit_feedback"] {
+  background-color: #7fcbc9; /* Màu xanh dương cho nút */
   color: white; /* Chữ trắng */
   padding: 10px 20px; /* Khoảng cách bên trong nút */
   border: none; /* Không có viền */
-  border-radius: 5px; /* Bo góc cho nút */
+  border-radius: 5px !important; /* Bo góc cho nút */
   font-size: 16px; /* Kích thước chữ */
   cursor: pointer; /* Thay đổi con trỏ khi di chuột lên nút */
   transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
 }
 
 /* Hiệu ứng khi di chuột lên nút */
-button:hover {
-  background-color: #0056b3; /* Màu đậm hơn khi di chuột */
-}
-
-/* Định dạng cho phần thông báo lỗi (nếu cần) */
-.error-message {
-  color: red; /* Màu đỏ cho thông báo lỗi */
-  font-weight: bold; /* Làm đậm thông báo lỗi */
-  text-align: center; /* Canh giữa */
+button[name="submit_feedback"]:hover {
+  background-color: #2d2b98; /* Màu đậm hơn khi di chuột */
 }
