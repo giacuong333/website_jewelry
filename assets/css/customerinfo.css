@@ -1,0 +1,26 @@
+.customerinfo-wrap {
+  margin-top: 10rem;
+}
+
+.btns-group > button {
+  border: 1px solid #ccc;
+  color: #000;
+  background-color: transparent;
+  font-size: 14px;
+  display: block;
+  width: 100%;
+  border-radius: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.btns-group > button:hover {
+  color: #7fcbc9;
+}
+
+.active {
+  color: #7fcbc9 !important;
+}
+
+.customerinfo-header {
+  margin-bottom: 1rem;
+}
