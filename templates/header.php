@@ -56,10 +56,11 @@
                         }
                         ?>
                     </div>
+                    <a href="./cart.php">
                     <i class="fa-solid fa-cart-shopping">
                         <span class="quantity">1</span>
                     </i>
-
+                    </a>        
                     <!-- Used for < medium screen -->
                     <button type="button" class="btn d-md-none d-lg-none d-flex text-dark text-end fs-4" data-bs-toggle="collapse" data-bs-target="#collapse-parent" aria-expanded="false" aria-controls="collapse-parent">
                         <i class="fa-solid fa-bars ms-auto" style="color: #7fcbc9;"></i>
