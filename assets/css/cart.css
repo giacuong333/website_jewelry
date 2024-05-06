@@ -28,7 +28,7 @@
       margin: 0 8px;
     }
     .cart{
-    padding: 40px 40px ;
+    padding: 0 40px ;
   }
   
   .cart-content-left{
@@ -131,7 +131,7 @@
     align-items: center;
   }
   .cart-content-right-button button{
-    padding:0 10px;
+    padding:0 5px;
     height: 35px;
     cursor: pointer;
     margin: 0 5px;

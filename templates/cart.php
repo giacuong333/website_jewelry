@@ -16,15 +16,17 @@
 </head>
 
 <body>
+    <header></header>
     <!-- header -->
     <?php
     include_once("../templates/header.php")
     ?>
     <!-- Nội dung của trang Giỏ hàng -->
-
+    </header>
+    <main> 
     <section class="cart">
         <div class="breadcrumb">
-            <a href="#" class="breadcrumb-item" style="padding-left: 20px;">Trang chủ</a>
+            <a href="./trangchu.php" class="breadcrumb-item" style="padding-left: 20px;">Trang chủ</a>
             <span class="breadcrumb-separator">&gt;</span>
             <span class="breadcrumb-item">Giỏ hàng</span>
 
@@ -89,6 +91,7 @@
             </div>
         </div>
     </section>
+    </main>
     <!-- footer -->
     <?php include_once("../templates/footer.php")  ?>
 </body>
