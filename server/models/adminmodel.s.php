@@ -482,6 +482,34 @@ class Admin extends Database
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	protected function checkUser($email)
+	{
+		try {
+			$sql = "SELECT `email` FROM `user` WHERE `email` = ?";
+			$stmt = $this->connect()->prepare($sql);
+
+			$stmt->execute([$email]);
+
+			return $stmt->rowCount() > 0;
+		} catch (PDOException $e) {
+			header("location: ../index.php?error=stmtfailer");
+			exit();
+		}
+	}
+
+	protected function checkPhoneNumber($phone_number)
+	{
+		try {
+			$sql = "SELECT `phone_number` FROM `user` WHERE `phone_number` = ?;";
+			$stmt = $this->connect()->prepare($sql);
+			$stmt->execute([$phone_number]);
+			return $stmt->rowCount() > 0;
+		} catch (PDOException $e) {
+			header("location: ../index.php?error=stmtfailer");
+			exit();
+		}
+	}
+
 	protected function setAnUser($fullname, $email, $phoneNumber, $password, $role_id)
 	{
 		$sql = "INSERT INTO `user` (`fullname`, `email`,`phone_number`,`password`,`role_id`)

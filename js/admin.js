@@ -1,4 +1,4 @@
-import { isEmpty, queryValue } from "./config.js";
+import { isCorrectVerifyPassword, isEmail, isEmpty, isExceedDefault, isNumber, isPhoneNumber, queryValue } from "./config.js";
 
 $(document).ready(function () {
   // ========================================================== COMMON ==========================================================
@@ -30,10 +30,43 @@ $(document).ready(function () {
   function moveOn(element, url) {
     if (element) {
       $(element).click((e) => {
-        // e.preventDefault();
         window.location.href = url;
       });
     }
+  }
+
+  // Is valid input fields
+  function isValidInputs(inputObj, errorObj, type) {
+    let isValid = false;
+    if ((isValid = isEmpty(inputObj.val(), errorObj))) {
+      switch (type) {
+        case "email":
+          isValid = isEmail(inputObj.val(), errorObj);
+          break;
+        case "phoneNumber":
+          isValid = isPhoneNumber(inputObj.val(), errorObj);
+          break;
+        case "number":
+          isValid = isNumber(inputObj.val(), errorObj);
+          break;
+        case "verifypassword":
+          isValid = isCorrectVerifyPassword(inputObj.val(), $("input[name='password']").val(), errorObj);
+          break;
+      }
+    }
+    return isValid;
+  }
+
+  // Handle valid input fields when the user's typing
+  function handleValidInput(inputFields) {
+    let isValid = true;
+    for (const key in inputFields) {
+      const inputType = inputFields[key];
+      const inputObj = $(`input[name=${key}`);
+      const errorObj = inputObj.closest("td").find(".error-message");
+      isValid = isValidInputs(inputObj, errorObj, inputType) && isValid;
+    }
+    return isValid;
   }
 
   // Search function for keypress event
@@ -175,6 +208,33 @@ $(document).ready(function () {
     }
   });
 
+  // Validate input fields
+  $("button[name='saveproduct']")
+    .unbind("click")
+    .click(function () {
+      const inputFields = {
+        title: "",
+        price: "number",
+        discount: "number",
+      };
+      if (handleValidInput(inputFields)) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
+  $("button[name='updateproduct']")
+    .unbind("click")
+    .click(function () {
+      const inputFields = {
+        title: "",
+        price: "number",
+        discount: "number",
+      };
+      if (handleValidInput(inputFields)) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
   // ========================================================== USER ==========================================================
   // Move on to the add user page
   moveOn("#adduser", "../admin/newUser.php");
@@ -223,6 +283,38 @@ $(document).ready(function () {
       handleSearch("user", $(this), searchUserValue, bodyUser, updateUser, deleteUser);
     }
   });
+
+  // Validate input fields
+  $("button[name='saveuser']")
+    .unbind("click")
+    .click(function () {
+      const inputFields = {
+        fullname: "",
+        email: "email",
+        phonenumber: "phoneNumber",
+        password: "",
+        verifypassword: "",
+        verifypassword: "verifypassword",
+      };
+      if (handleValidInput(inputFields)) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
+  $("button[name='updateuser']")
+    .unbind("click")
+    .click(function () {
+      const inputFields = {
+        fullname: "",
+        email: "email",
+        phonenumber: "phoneNumber",
+      };
+      if (handleValidInput(inputFields)) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
+  // Check whether the user is set
 
   // ========================================================== ORDER ==========================================================
   // Search order by date
@@ -423,6 +515,23 @@ $(document).ready(function () {
     }
   });
 
+  // Validate input fields
+  $("button[name='savecategory']")
+    .unbind("click")
+    .click(function () {
+      if (handleValidInput({ categoryname: "" })) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
+  $("button[name='updatecategory']")
+    .unbind("click")
+    .click(function () {
+      if (handleValidInput({ categoryname: "" })) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
   // ========================================================== ROLE ==========================================================
   // Move on to the add new role page
   moveOn("#addrole", "../admin/newRole.php");
@@ -430,6 +539,7 @@ $(document).ready(function () {
   // Move on to the rolemanager page
   moveOn("#exitrole", "../admin/rolemanager.php");
 
+  // Delete
   function deleteRole() {
     const deleteBtns = $(".del-rolebtn");
     deleteBtns.each(function () {
@@ -445,6 +555,7 @@ $(document).ready(function () {
   }
   deleteRole();
 
+  // Update
   function updateRole() {
     const editBtns = $(".edit-rolebtn");
     editBtns.each(function (editBtnIndex) {
@@ -468,6 +579,23 @@ $(document).ready(function () {
       handleSearch("role", $(this), searchRoleValue, bodyRole, updateRole, deleteRole);
     }
   });
+
+  // Validate input fields
+  $("button[name='saverole']")
+    .unbind("click")
+    .click(function () {
+      if (handleValidInput({ rolename: "" })) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
+
+  $("button[name='updaterole']")
+    .unbind("click")
+    .click(function () {
+      if (handleValidInput({ rolename: "" })) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
 
   // ========================================================== PRIVILEGE ==========================================================
   // Clicking on the `Phân quyền` button
@@ -648,7 +776,6 @@ $(document).ready(function () {
   });
 
   // ========================================================== INPUT INVOICE ==========================================================
-
   // Delete
   function del_input_invoice() {
     $(".del-importbtn").each(function () {
@@ -797,6 +924,19 @@ $(document).ready(function () {
   $("select[name='supplier_selected']").change(function () {
     $(this).attr("disabled", "disabled");
   });
+
+  // Validate input fields
+  $("button[name='addproduct']")
+    .unbind("click")
+    .click(function () {
+      const inputFields = {
+        product_amount: "number",
+        product_price: "number",
+      };
+      if (handleValidInput(inputFields)) {
+        $(this).attr("type", "submit").trigger("click");
+      }
+    });
 
   // ========================================================== CONTACT ==========================================================
 

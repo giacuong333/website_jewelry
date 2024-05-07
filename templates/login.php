@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Log in</title>
+	<title>Login</title>
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="../assets/css/config.css">
@@ -23,7 +23,7 @@
 	include_once("../templates/header.php");
 	?>
 
-	<main id="login-main" class="mt-md-5 mt-0 container">
+	<main id="login-main" class="container mt-xs-5">
 		<div class="row">
 			<div class="header">
 				<a href="../index.php">Trang chủ</a> >
@@ -35,8 +35,8 @@
 					<div class="top">
 						<h3>ĐĂNG NHẬP TÀI KHOẢN</h3>
 						<div class="loginby">
-							<i class="fa-brands fa-facebook-f mb-md-0 mb-2 " style="width: 12rem;"><span>Facebook</span></i>
-							<i class="fa-brands fa-google" style="width: 12rem;"><span>Google</span></i>
+							<i class="fa-brands fa-facebook-f mb-md-0 mb-2 "><span>Facebook</span></i>
+							<i class="fa-brands fa-google"><span>Google</span></i>
 						</div>
 						<p class="mt-4">Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
 					</div>

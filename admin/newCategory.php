@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <!-- JS -->
-    <script src="../js/admin.js"></script>
 
 </head>
 
@@ -30,13 +28,16 @@
                         <tbody>
                             <tr>
                                 <td>Name of category</td>
-                                <td><input type="text" name="categoryname" required /></td>
+                                <td>
+                                    <input type="text" name="categoryname" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
 
                             <tr>
                                 <td></td>
                                 <td>
-                                    <button class="btn- btn--hover" name="savecategory" value="savecategory" type="submit">Save</button>
+                                    <button class="btn- btn--hover" name="savecategory" value="savecategory" type="button">Save</button>
                                     <button class="btn- btn--hover" id="exitcategory" name="exitcategory" value="exitcategory" type="button">Exit</button>
                                 </td>
                             </tr>

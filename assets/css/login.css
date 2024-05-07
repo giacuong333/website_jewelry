@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8rem;
+  margin-top: 8rem;
 }
 
 .header > p {
@@ -91,4 +92,8 @@
 
 .change-password-container .form-group > button {
   margin-left: auto;
+}
+
+#login-main {
+  margin-top: 10rem;
 }

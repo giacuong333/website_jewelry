@@ -12,6 +12,15 @@ $(document).ready(function () {
     }
   }
 
-  $(window).scroll(handleScroll);
-});
+  function handleDropdownChild() {
+    const dropdownChild = $(".child-list-items").closest(".dropdown");
+    console.log(dropdownChild);
+    dropdownChild.removeClass("dropend");
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      dropdownChild.addClass("dropend");
+    }
+  }
 
+  $(window).scroll(handleScroll);
+  $(window).resize(handleDropdownChild);
+});

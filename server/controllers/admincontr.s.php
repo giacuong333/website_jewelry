@@ -42,12 +42,13 @@ class AdminController extends Admin
 
     public function setUser($fullname, $email, $phoneNumber, $password, $verifyPassword, $role_id)
     {
-        if ($password == $verifyPassword) {
-            $this->setAnUser($fullname, $email, $phoneNumber, $password, $role_id);
-            return true;
-        } else {
-            return false;
+        if ($this->checkUser($email)) {
+            return "existingemail";
+        } else if ($this->checkPhoneNumber($phoneNumber)) {
+            return "existingphonenumber";
         }
+        $this->setAnUser($fullname, $email, $phoneNumber, $password, $role_id);
+        return "none";
     }
 
     public function getUserById($id)

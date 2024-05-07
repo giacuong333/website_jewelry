@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- JQuery -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
+    <!-- JS -->
+    <script src="../js/admin.js" type="module"></script>
 
 </head>
 
@@ -42,7 +44,10 @@
                             </tr>
                             <tr>
                                 <td>Title</td>
-                                <td><input type="text" value="<?php echo $product["title"]; ?>" required name="title" /></td>
+                                <td>
+                                    <input type="text" value="<?php echo $product["title"]; ?>" name="title" />
+                                    <div class="error-message"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Category</td>
@@ -63,13 +68,15 @@
                             <tr>
                                 <td>Price</td>
                                 <td>
-                                    <input type="text" name="price" value="<?php echo $product['price']; ?>" required />
+                                    <input type="number" name="price" value="<?php echo $product['price']; ?>" />
+                                    <div class="error-message"></div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Discount</td>
                                 <td>
-                                    <input type="text" name="discount" value="<?php echo $product["discount"]; ?>" />
+                                    <input type="number" name="discount" value="<?php echo $product["discount"]; ?>" />
+                                    <div class="error-message"></div>
                                 </td>
                             </tr>
                             <tr>
@@ -95,7 +102,7 @@
                             <tr>
                                 <td>Action</td>
                                 <td>
-                                    <button class="btn- btn--hover" name="updateproduct" value="updateproduct" id="updateproduct" type="submit">Save</button>
+                                    <button class="btn- btn--hover" name="updateproduct" value="updateproduct" id="updateproduct" type="button">Save</button>
                                     <button class="btn- btn--hover" id="exitproduct" type="button">Exit</button>
                                 </td>
                             </tr>

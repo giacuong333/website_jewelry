@@ -37,12 +37,12 @@ body {
   background-color: #000;
 }
 
-.section-top-60{
+.section-top-60 {
   padding-top: 60px;
 }
 
-.cell-padding-top-20{
-  padding-top:20px ;
+.cell-padding-top-20 {
+  padding-top: 20px;
 }
 
 a {
@@ -98,7 +98,6 @@ main {
   right: 0;
   left: 0;
   background-color: #fff;
-
 }
 .hide-header {
   transform: translateY(-100%);
@@ -107,14 +106,13 @@ main {
 
 .bottom {
   display: block;
-  width:100%;
+  width: 100%;
   transition: transform 0.3s ease-in-out;
 }
 
 .common-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
   padding: 30px 0;
   transition: top 0.3s ease-in-out;
 }
@@ -170,15 +168,12 @@ main {
   right: -6px;
 }
 
-
-  
 .bottom > .list-items {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
-  background-color: #fff;
-  height: 55px;
+  background-color: #fff !important;
 }
 
 .list-items > .item {
@@ -190,7 +185,7 @@ main {
   transition: all 0.1s ease-in-out;
   font-weight: 10;
   opacity: 0.8;
- text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .list-items > .item:hover,
@@ -217,8 +212,6 @@ main {
   position: relative;
 }
 
-
-
 .child-list-items {
   display: none;
   transition: all 0.2s ease-in-out;
@@ -240,7 +233,7 @@ main {
 }
 
 .child-list-items .child-item:hover {
-  color: #7fcbc9;
+  color: #4a9795;
 }
 /* login */
 #userpanel:checked ~ .login-options {
@@ -276,15 +269,14 @@ main {
   margin-right: 10px;
 }
 /* banner */
-.banner{
+.banner {
   margin-top: 130px;
   width: 100%;
   height: 900px; /* Điều chỉnh chiều cao của banner theo nhu cầu */
   overflow: hidden;
   position: relative;
-  
 }
-.banner img{
+.banner img {
   max-width: 100%;
   max-height: 100%;
   position: absolute;
@@ -297,51 +289,48 @@ main {
   opacity: 1;
 }
 
-
-
 .banner-text {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 .banner-item .banner-text {
   animation: none;
 }
 
 .banner-item.active .banner-text {
-  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+  animation: tracking-in-expand-fwd-bottom 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 /* Section */
-.shell{
+.shell {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
-.range{
+.range {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
- justify-content: space-between;
+  justify-content: space-between;
 }
 
-.cell{
+.cell {
   flex-basis: 33.3333%;
   flex-direction: 33.3333%;
 }
 
-.cell>a{
-  display: inline-block ;
+.cell > a {
+  display: inline-block;
 }
 
-
-.cell>a>img{
+.cell > a > img {
   width: 100%;
 }
 
 /* list-product */
-h1{
+h1 {
   font-size: 30px;
   font-weight: 300;
   line-height: 1.2667;
@@ -362,7 +351,7 @@ h1{
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border:0;
+  border: 0;
   border-top: 1px solid #f5f5f7;
   width: 50%; /* or any percentage you want */
   margin-left: auto;
@@ -370,17 +359,16 @@ hr {
   opacity: 1;
 }
 
-.offset{
+.offset {
   position: relative;
-
 }
 
-.offset img{
+.offset img {
   width: 100%;
 }
 
 .offset .caption {
-  position: absolute; 
+  position: absolute;
   color: white;
   background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
   display: flex;
@@ -392,18 +380,16 @@ hr {
   height: 80px;
 }
 .offset .caption .caption-title {
- opacity: 1;
+  opacity: 1;
 }
 
 .offset .caption .caption-descr {
   opacity: 0;
   margin-bottom: 20px;
-  
 }
 
 .thumbnail-variant-1:hover .caption-descr {
   opacity: 1;
-
 }
 
 .range .offset .caption {
@@ -414,7 +400,7 @@ hr {
   padding-top: 16px;
   padding-bottom: 16px;
   background-color: rgba(255, 255, 255, 0.9);
-  transition: .3s;
+  transition: 0.3s;
   color: #141414;
   text-align: center;
 }
@@ -431,7 +417,6 @@ hr {
 }
 
 .caption-title {
- 
   font-size: 20px;
   font-weight: 100;
   line-height: 1.2667;
@@ -440,14 +425,14 @@ hr {
   text-decoration: none;
 }
 
-h2{
+h2 {
   font-size: 14px;
-    line-height: 1.42857;
-    letter-spacing: 0.1em;
-    font-weight: 400;
+  line-height: 1.42857;
+  letter-spacing: 0.1em;
+  font-weight: 400;
 }
 /* Hot Deal */
-h3 >a{
+h3 > a {
   font-size: 30px;
   font-weight: 300;
   line-height: 1.2667;
@@ -457,88 +442,89 @@ h3 >a{
   color: #7fcbc9;
 }
 
-.hot-deal-prd{
+.hot-deal-prd {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 30px;
 }
-.product-name{
+.product-name {
   text-align: center;
 }
-.product-price{
+.product-price {
   text-align: center;
   line-height: 1.5;
   color: #7fcbc9;
 }
 /* About */
-.about-img{
+.about-img {
   background-image: url(../imgs/section/sec_about.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   padding: 12% 10%;
 }
 
-.about-content{
+.about-content {
   font-size: small;
   text-align: center;
 }
 
-h4{
+h4 {
   text-align: center;
   font-size: 30px;
 }
-.text-base{
+.text-base {
   color: #141414;
 }
 
-.big{
+.big {
   margin-top: 15px;
 }
 /* Product */
-.unit-left>a>img{
-width: 100%;
-height: auto;
+.unit-left > a > img {
+  width: 100%;
+  height: auto;
 }
-.unit-left{
- width: 100%;
+.unit-left {
+  width: 100%;
 }
-.unit-body{
-  
+.unit-body {
   padding-left: 20px;
   width: 100%;
 }
-.p>a{
+.p > a {
   font-size: 14px;
   line-height: 1.42857;
   letter-spacing: 0.1em;
   font-weight: 400;
   color: #7fcbc9;
 }
-.big{
- 
-}
-.cell-product{
+
+.cell-product {
   flex-basis: 33.3333%;
   max-width: 50%;
 }
-.range-product{
+
+.range-product {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
 }
-.unit{
+
+.unit {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 20px;
   width: 100%;
 }
-.divider-left{
+
+.divider-left {
   margin-left: 0px;
 }
-h5>a{
+
+h5 > a {
   font-size: 30px;
   font-weight: 300;
   line-height: 1.2667;
@@ -590,4 +576,6 @@ footer {
   display: inline-block;
 }
 
-/* admin */
+.error-message {
+  color: red;
+}

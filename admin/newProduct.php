@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
 	<!-- JQuery -->
 	<script src="../assets/libs/jquery-3.7.1.min.js"></script>
+	<!-- JS -->
+	<script src="../js/admin.js" type="module"></script>
 
 </head>
 
@@ -32,7 +34,7 @@
 							<tr>
 								<td>Image</td>
 								<td>
-									<input type="file" required name="imagepath" class="btn- btn--hover" id="productinputimg" accept="image/*">
+									<input type="file" name="imagepath" class="btn- btn--hover" id="productinputimg" accept="image/*">
 								</td>
 								<td rowspan="8">
 									<img id="productimg" src="" alt="Product Image" />
@@ -41,7 +43,10 @@
 							</tr>
 							<tr>
 								<td>Title</td>
-								<td><input type="text" required name="title" /></td>
+								<td>
+									<input type="text" name="title" />
+									<div class="error-message"></div>
+								</td>
 							</tr>
 							<tr>
 								<td>Category</td>
@@ -57,11 +62,17 @@
 							</tr>
 							<tr>
 								<td>Price</td>
-								<td><input type="text" required name="price" /></td>
+								<td>
+									<input type="number" name="price" />
+									<div class="error-message"></div>
+								</td>
 							</tr>
 							<tr>
 								<td>Discount</td>
-								<td><input type="text" name="discount" /></td>
+								<td>
+									<input type="number" name="discount" />
+									<div class="error-message"></div>
+								</td>
 							</tr>
 							<tr>
 								<td>Description</td>
@@ -84,7 +95,7 @@
 							<tr>
 								<td>Action</td>
 								<td>
-									<button class="btn- btn--hover" name="saveproduct" value="saveproduct" id="saveproduct" type="submit">Save</button>
+									<button class="btn- btn--hover" name="saveproduct" value="saveproduct" id="saveproduct" type="button">Save</button>
 									<button class="btn- btn--hover" id="exitproduct" type="button">Exit</button>
 								</td>
 							</tr>
