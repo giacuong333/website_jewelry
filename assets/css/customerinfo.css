@@ -24,3 +24,23 @@
 .customerinfo-header {
   margin-bottom: 1rem;
 }
+
+.box {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 120px;
+  padding: 14px;
+  font-size: 14px;
+}
+
+.box > p {
+  margin: 0;
+}
+
+.productlist-table > thead {
+  border-bottom-color: #ccc !important;
+}
+
+.productlist-table td {
+  border: none;
+}

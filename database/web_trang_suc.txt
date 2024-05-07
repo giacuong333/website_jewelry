@@ -284,11 +284,13 @@ FOR EACH ROW
 CREATE TRIGGER calculate_total_order
 AFTER INSERT ON `orderdetail`
 FOR EACH ROW
-  UPDATE `order` 
+  -- Update the total_money for the affected order in the order table
+  UPDATE `order`
   SET `total_money` = (
     SELECT SUM(`total_money`)
     FROM `orderdetail`
     WHERE `orderdetail`.`order_id` = NEW.`order_id`
+    GROUP BY `orderdetail`.`order_id`
   )
   WHERE `id` = NEW.`order_id`;
 
@@ -402,13 +404,7 @@ INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `st
 ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 1, 0),
 ('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 2, 0),
 ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Vận chuyển cẩn thận', 0, 3, 0),
-('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 4, 0),
-('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Tự đem vào sân nhà giúp người nhận', 0, 3, 0),
-('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', '', 0, 3, 0),
-('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', '', 0, 3, 0),
-('Minh Cảnh', 'mcanh@gmail.com', '0914072076', 'Phú Hòa, Phú Yên', 'Giao hàng cẩn thận', 0, 3, 0),
-('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 2, 0),
-('Nhung Vy', 'vnhung@gmail.com', '0372352186', 'Sơn Tịnh, Quãng Ngãi', 'Đóng gói sản phẩm cẩn thận', 0, 2, 0);
+('Minh Lâm', 'ml@gmail.com', '0658965223', 'Nha Trang, Khánh Hòa', 'Che tên sản phẩm', 1, 4, 0);
 
 INSERT INTO `orderdetail` (`order_id`, `product_id`, `num`) VALUES
 (1, 1, 2),
