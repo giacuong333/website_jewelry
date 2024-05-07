@@ -24,7 +24,7 @@ $(document).ready(function () {
         if (response == "1") {
           window.location.href = "../admin/admin.php";
         } else if (response == "2") {
-          window.location.href = "../index.php";
+          window.location.href = "../templates/trangchu.php";
         } else if (response == "usernotfound") {
           $(errorEmailMessage).text("Tài khoản không tồn tại"); // Alert for account not found
         } else if (response == "wrongpassword") {

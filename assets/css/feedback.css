@@ -1,0 +1,68 @@
+/* CSS cho trang phản hồi */
+
+/* Định dạng chung cho toàn bộ trang */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5; /* Màu nền nhẹ nhàng */
+}
+
+/* Định dạng tiêu đề */
+h1 {
+  text-align: center;
+  color: #333; /* Màu đậm hơn cho tiêu đề */
+}
+
+/* Định dạng cho container chính của trang phản hồi */
+.feedback-container {
+  max-width: 600px; /* Giới hạn chiều rộng */
+  margin: 200px auto 100px auto; /* Để trung tâm */
+  padding: 20px;
+  background-color: #fff; /* Nền trắng */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo bóng */
+  border-radius: 10px; /* Bo góc */
+}
+
+/* Định dạng cho các nhóm trong biểu mẫu */
+.form-group {
+  margin-bottom: 20px; /* Khoảng cách giữa các nhóm */
+}
+
+/* Định dạng cho các nhãn trong biểu mẫu */
+label {
+  display: block; /* Đảm bảo nhãn hiển thị theo dòng */
+  margin-bottom: 8px; /* Khoảng cách giữa nhãn và input */
+  font-weight: bold; /* Làm đậm nhãn */
+}
+
+/* Định dạng cho các trường nhập liệu */
+input,
+textarea {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+  padding: 10px; /* Nội dung bên trong trường */
+  border: 1px solid #ccc; /* Viền xám nhạt */
+  border-radius: 5px; /* Bo góc cho trường nhập liệu */
+  font-size: 16px; /* Kích thước chữ */
+}
+
+textarea {
+  outline: none;
+}
+
+/* Định dạng cho nút bấm */
+button[name="submit_feedback"] {
+  background-color: #7fcbc9; /* Màu xanh dương cho nút */
+  color: white; /* Chữ trắng */
+  padding: 10px 20px; /* Khoảng cách bên trong nút */
+  border: none; /* Không có viền */
+  border-radius: 5px !important; /* Bo góc cho nút */
+  font-size: 16px; /* Kích thước chữ */
+  cursor: pointer; /* Thay đổi con trỏ khi di chuột lên nút */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+/* Hiệu ứng khi di chuột lên nút */
+button[name="submit_feedback"]:hover {
+  background-color: #2d2b98; /* Màu đậm hơn khi di chuột */
+}

@@ -17,9 +17,9 @@
 <body>
     <div id="wrapper">
         <!--Start Header-->
-        <?php include 'header.php'; ?>
+        <?php include_once 'header.php'; ?>
         <script>
-        handleScroll();
+            handleScroll();
         </script>
         <!-- End Header -->
         <!-- Banner -->
@@ -38,29 +38,29 @@
             </div>
         </div>
         <script>
-        const images = document.querySelectorAll(".banner img");
-        let currentIndex = 0;
+            const images = document.querySelectorAll(".banner img");
+            let currentIndex = 0;
 
-        function showImage(index) {
-            images.forEach((img, i) => {
-                if (i === index) {
-                    img.classList.add("active");
-                } else {
-                    img.classList.remove("active");
-                }
-            });
-        }
+            function showImage(index) {
+                images.forEach((img, i) => {
+                    if (i === index) {
+                        img.classList.add("active");
+                    } else {
+                        img.classList.remove("active");
+                    }
+                });
+            }
 
-        // Hiển thị hình ảnh đầu tiên ngay từ đầu
-        showImage(currentIndex);
-
-        function rotateImages() {
-            currentIndex = (currentIndex + 1) % images.length;
+            // Hiển thị hình ảnh đầu tiên ngay từ đầu
             showImage(currentIndex);
-        }
 
-        // Thay đổi hình ảnh sau mỗi vài giây
-        setInterval(rotateImages, 3000); // Đổi hình ảnh mỗi 3 giây (3000ms)
+            function rotateImages() {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+
+            // Thay đổi hình ảnh sau mỗi vài giây
+            setInterval(rotateImages, 3000); // Đổi hình ảnh mỗi 3 giây (3000ms)
         </script>
         <!-- End Banner -->
         <!-- Start Section -->
@@ -359,7 +359,7 @@
             </section>
             <!-- End product -->
             <!-- Footer -->
-            <?php include('footer.php'); ?>
+            <?php include_once('footer.php'); ?>
             <!-- End Footer -->
     </div>
 </body>

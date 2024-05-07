@@ -8,6 +8,9 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 
+<!-- JQUERY -->
+<script src="../assets/libs/jquery-3.7.1.min.js"></script>
+
 <!-- Js -->
 <script src="../js/header.js"></script>
 
@@ -32,27 +35,32 @@
                         session_start();
                         if (isset($_SESSION["id"])) {
                             echo "
-                    <a href='../includes/logout.inc.php'>
-                        <i class='fa-solid fa-power-off'> </i>
-                        <span>Đăng xuất</span>
-                    </a>";
+                                <a href='./customerinfo.php'>
+                                    <i class='fa-solid fa-user'> </i>
+                                    <span>" . $_SESSION["fullname"] . "</span>
+                                </a>
+                                <a href='../includes/logout.inc.php'>
+                                    <i class='fa-solid fa-power-off'> </i>
+                                    <span>Đăng xuất</span>
+                                </a>";
                         } else {
                             echo "
-                    <a href='../templates/login.php'>
-                        <i class='fa-solid fa-user-plus'></i>
-                        <span> Đăng nhập</span>
-                    </a>
-                    <a href='../templates/signup.php'>
-                        <i class='fa-solid fa-right-from-bracket'></i>
-                        <span> Đăng ký</span>
-                    </a>";
+                                <a href='../templates/login.php'>
+                                    <i class='fa-solid fa-user-plus'></i>
+                                    <span> Đăng nhập</span>
+                                </a>
+                                <a href='../templates/signup.php'>
+                                    <i class='fa-solid fa-right-from-bracket'></i>
+                                    <span> Đăng ký</span>
+                                </a>";
                         }
                         ?>
                     </div>
+                    <a href="./cart.php">
                     <i class="fa-solid fa-cart-shopping">
                         <span class="quantity">1</span>
                     </i>
-
+                    </a>        
                     <!-- Used for < medium screen -->
                     <button type="button" class="btn d-md-none d-lg-none d-flex text-dark text-end fs-4" data-bs-toggle="collapse" data-bs-target="#collapse-parent" aria-expanded="false" aria-controls="collapse-parent">
                         <i class="fa-solid fa-bars ms-auto" style="color: #7fcbc9;"></i>
@@ -79,7 +87,7 @@
                         <a href="../templates/gioithieu.php" style="text-decoration: none;">GIỚI THIỆU</a>
                     </li>
                     <li class="item ps-0">
-                        <a href="../templates/phanhoi.php" style="text-decoration: none;">PHẢN HỒI</a>
+                        <a href="./feedback.php" style="text-decoration: none;">PHẢN HỒI</a>
                     </li>
                 </ul>
             </div>
