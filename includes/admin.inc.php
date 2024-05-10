@@ -767,7 +767,7 @@ if (isset($_GET["show_img_upload_panel"])) {
           <form action="../includes/admin.inc.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label for="image_choosen">Choose image</label>
-              <input type="file" name="image-path" class="btn- btn--hover image-path" id="image_choosen">
+              <input type="file" name="image_path" class="btn- btn--hover image-path" id="image_choosen">
               <div class="error-message"></div>
             </div>
             <div class="form-group">

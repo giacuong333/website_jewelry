@@ -71,10 +71,10 @@
 
             <div class="bottom collapse d-lg-block d-md-block" id="collapse-parent">
                 <ul class="list-items bg-white w-100 p-0 m-0 flex-md-row flex-lg-row flex-column align-items-start">
-                    <li class="item ps-0">
+                    <li class="item">
                         <a href="../templates/trangchu.php" style="text-decoration: none;">TRANG CHỦ</a>
                     </li>
-                    <li class="item ps-0 dropdown">
+                    <li class="item dropdown">
                         <a href="" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
                         <ul class="child-list-items bg-white dropdown-menu py-0" aria-labelledby="openchildmenu">
                             <li class="child-item dropdown-item">Nhẫn</li>
@@ -83,10 +83,10 @@
                             <li class="child-item dropdown-item">Trâm cài</li>
                         </ul>
                     </li>
-                    <li class="item ps-0">
+                    <li class="item">
                         <a href="../templates/gioithieu.php" style="text-decoration: none;">GIỚI THIỆU</a>
                     </li>
-                    <li class="item ps-0">
+                    <li class="item">
                         <a href="./feedback.php" style="text-decoration: none;">PHẢN HỒI</a>
                     </li>
                 </ul>
