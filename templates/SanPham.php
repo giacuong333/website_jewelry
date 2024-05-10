@@ -13,33 +13,45 @@ if ($conn->connect_error) {
 }
 
 $results_per_page = 9;
-// Find out the number of results stored in database
-$sql = 'SELECT * FROM product';
+
+// Determine the current page number
+if (isset($_GET['page'])) {
+    $current_page = intval($_GET['page']);
+} else {
+    $current_page = 1;
+}
+
+// If filtering
+if (isset($_GET["filter-product"])) {
+    // Filter based on price range
+    $fromPrice = isset($_GET["input-min"]) ? $_GET["input-min"] : null;
+    $toPrice = isset($_GET["input-max"]) ? $_GET["input-max"] : null;
+
+    if ($fromPrice !== null && $toPrice !== null) {
+        $sql = 'SELECT * FROM product WHERE price BETWEEN ' . $fromPrice . ' AND ' . $toPrice;
+    } else {
+        $sql = 'SELECT * FROM product';
+    }
+} else {
+    $sql = 'SELECT * FROM product';
+}
+
 $result = mysqli_query($conn, $sql);
 $number_of_results = mysqli_num_rows($result);
 
-// Determine the total number of pages available
 $number_of_pages = ceil($number_of_results / $results_per_page);
 
-// Determine which page number visitor is currently on
-if (isset($_GET['page'])) {
-    $pages = intval($_GET['page']);
-} else {
-    $pages = 1;
-}
-$current_page = $pages;
+$this_page_first_result = ($current_page - 1) * $results_per_page;
 
-// Determine the sql LIMIT starting number for the results on the displaying page
-$this_page_first_result = ($pages - 1) * $results_per_page;
+$sql .= ' LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
 
-// Retrieve selected results from database and display them on page
-$sql = 'SELECT * FROM product LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
 $query = mysqli_query($conn, $sql);
 
-// Display the links to the pages
-for ($page = 2; $page <= $number_of_pages; $page++) {
+// Display pagination links
+for ($page = 1; $page <= $number_of_pages; $page++) {
     echo '<a href="SanPham.php?page=' . $page . '">' . $page . '</a> ';
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -62,7 +74,6 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="../js/cart.js"></script>
-    <script src="../js/product.js"></script>
 </head>
 
 <body>
@@ -118,7 +129,12 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
 
                         <div class="title-prod mb-4">
                             <span>
-                                Hiển thị 1 - 18 trong tổng số 22 sản phẩm</span>
+                                <!-- 
+                                    Vidu: page-1 -> 0 + 1 = 1, 9 + 0 = 9, min(9, 15) => 1-9
+                                          page-2 -> 9 + 1 = 10, 9 + 9 = 18, min(18, 15) => 10-15 
+                                 -->
+                                Hiển thị <?php echo $this_page_first_result + 1 . ' - ' . min($results_per_page + $this_page_first_result, $number_of_results); ?> trong tổng số <?php echo $number_of_results ?> sản phẩm
+                            </span>
                         </div>
 
                     </div>
@@ -156,25 +172,48 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                     </div>
                     <!-- pagination  -->
                     <?php
-                    echo '<nav aria-label="Page navigation example">';
-                    echo '<ul class="pagination">';
-                    if ($current_page > 1) {
-                        echo '<li class="page-item  "><a class="page-link" href="SanPham.php?page=' . ($pages - 1) . '">Previous</a></li>';
-                    }
-                    for ($pages = 1; $pages <= $number_of_pages; $pages++) {
-                        if ($pages == $current_page) {
-                            echo '<li class="page-item active"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
-                        } else {
-                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
-                        }
-                    }
-                    if ($current_page < $number_of_pages) {
-                        echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . ($current_page + 1) . '">Next</a></li>';
-                    }
-                    echo '</ul>';
-                    echo '</nav>';
-
+                    if (!isset($_GET["input-min"]) && !isset($_GET["input-max"])) {
                     ?>
+
+                        <?php
+                        echo '<nav aria-label="Page navigation example">';
+                        echo '<ul class="pagination">';
+                        if ($current_page > 1) {
+                            echo '<li class="page-item  "><a class="page-link" href="SanPham.php?page=' . ($current_page - 1) . '">Previous</a></li>';
+                        }
+                        for ($pages = 1; $pages <= $number_of_pages; $pages++) {
+                            if ($pages == $current_page) {
+                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                            } else {
+                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                            }
+                        }
+                        if ($current_page < $number_of_pages) {
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . ($current_page + 1) . '">Next</a></li>';
+                        }
+                        echo '</ul>';
+                        echo '</nav>';
+                    } else { ?>
+                    <?php
+                        echo '<nav aria-label="Page navigation example">';
+                        echo '<ul class="pagination">';
+                        if ($current_page > 1) {
+                            echo '<li class="page-item  "><a class="page-link" href="SanPham.php?input-min=' . $_GET["input-min"] . '&input-max=' . $_GET['input-max'] . '&filter-product=filter-product&page=' . ($current_page - 1) . '">Previous</a></li>';
+                        }
+                        for ($pages = 1; $pages <= $number_of_pages; $pages++) {
+                            if ($pages == $current_page) {
+                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?input-min=' . $_GET["input-min"] . '&input-max=' . $_GET['input-max'] . '&filter-product=filter-product&page=' . $pages . '">' . $pages . '</a></li>';
+                            } else {
+                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?input-min=' . $_GET["input-min"] . '&input-max=' . $_GET['input-max'] . '&filter-product=filter-product&page=' . $pages . '">' . $pages . '</a></li>';
+                            }
+                        }
+                        if ($current_page < $number_of_pages) {
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?input-min=' . $_GET["input-min"] . '&input-max=' . $_GET['input-max'] . '&filter-product=filter-product&page=' . ($current_page + 1) . '">Next</a></li>';
+                        }
+                        echo '</ul>';
+                        echo '</nav>';
+                    } ?>
+
                     <!-- End pagination -->
                 </div>
             </div>
@@ -213,7 +252,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                         </nav>
                     </div>
                 </aside>
-                <aside class="aside-item filter-price">
+                <form action="SanPham.php" method="get" class="aside-item filter-price">
                     <div class="aside-title">
                         <h2 class="title-head margin-top-0 "><span>Theo mức giá</span></h2>
                     </div>
@@ -221,12 +260,12 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                         <div class="price-input">
                             <div class="field">
 
-                                <input type="number" class="input-min" value="250000">
+                                <input type="number" class="input-min" value="<?php isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>" name="input-min">
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
 
-                                <input type="number" class="input-max" value="750000">
+                                <input type="number" class="input-max" value=" <?php isset($_GET['input-max']) ? $_GET['input-max'] : "750000" ?>" name="input-max">
                             </div>
                         </div>
                         <div class="slider">
@@ -238,42 +277,11 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary" type="button" name="filter-product">Lọc</button>
+                        <button class="btn btn-primary" name="filter-product" value="filter-product" type="submit">Lọc</button>
                     </div>
-                </aside>
+                </form>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                 <script src="../js/fillterprice.js"></script>
-                <script>
-                    $(document).ready(function() {
-                        var currentPage = 1;
-                        var itemsPerPage = 9;
-
-                        function loadProducts() {
-                            var minPrice = $('.input-min').val(); // Lấy giá trị min từ input
-                            var maxPrice = $('.input-max').val(); // Lấy giá trị max từ input
-
-                            $.ajax({
-                                url: "./filter.php",
-                                method: "GET",
-                                data: {
-                                    min_price: minPrice,
-                                    max_price: maxPrice,
-                                    page: currentPage
-                                },
-                                success: function(data) {
-                                    $(' .product-view .row').empty();
-                                    $(".product-view .row").html(data);
-                                }
-                            });
-                        }
-
-                        $(".btn-filter-price").unbind("click").on("click", function(e) {
-                            e.preventDefault();
-                            currentPage = 1; // Đặt lại trang hiện tại về 1 mỗi khi lọc
-                            loadProducts(); // Gọi hàm loadProducts sau khi cập nhật giá trị
-                        });
-                    });
-                </script>
             </aside>
         </div>
         <script>
