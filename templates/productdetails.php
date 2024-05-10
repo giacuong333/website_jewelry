@@ -1,3 +1,27 @@
+<?php 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "web_trang_suc";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$id = $_GET['data-productid'];
+// Tạo truy vấn SQL
+$sql = "SELECT * FROM product WHERE id = ?";
+// Chuẩn bị và thực thi truy vấn
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+// Lấy kết quả
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +44,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+    <style>
+    .product-info {
+        margin-left: 100px;
+    }
+
+    .pro-price {
+        font-size: 20px;
+        font-weight: 400;
+        color: #7fcbc9;
+    }
+    </style>
 </head>
 
 <body>
@@ -34,7 +69,7 @@
            $breadcrumb_parts = [
             ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
             ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
-            ['name' => 'Chi Tiết Sản phẩm', 'url' => 'productdetails.php'],
+            ['name' => $product['title'], 'url' => 'productdetails.php'],
             
         ];
 
@@ -59,29 +94,65 @@
         </div>
         <!-- End bread-crumb -->
         <div class="container">
-            <div class="col-xs-12">
-                <div class="row">
-                    <div class="col-xs-12 col-lg-12 details-product">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 relative product-image-block" >
-                                <div class="large-image featured-image">
-                                    <a href="">
-                                        <img class="img-pro-details" src="../assets/imgs/Dây Chuyền Bạc  Mặt Trái Tim Nhiều Màu.png" alt="">
-                                    </a> 
-                                </div>
-
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="pro-image">
+                        <img src="<?php echo $product['thumbnail']; ?>" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-info">
+                        <div class="border-item-bottom">
+                            <h2 class="pro-name"><?php echo $product['title']; ?></h2>
+                            <div class="pro-price margin-bottom-20"> <?php echo $product['price'] . "đ" ; ?> </div>
+                        </div>
+                        <div class="pro-description border-item-bottom margin-bottom-20">
+                            <p><?php echo $product['description']; ?></p>
+                        </div>
+                        <div class="pro-quantity border-item-bottom ">
+                            <button class="margin-bottom-20" onclick="handelPlus()"><i
+                                    class="fa-solid fa-plus"></i></button>
+                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10"
+                                class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
+                            <button class="margin-bottom-20" onclick="handelMinus()"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <div class="pro-action margin-bottom-20">
+                                <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 details-pro">
-                                <h1 class="title-head">Nhẫn vòng ADV</h1>
-                                <div class="product-price">
-                                    <span class="price">1.000.000đ</span>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="top-left d-lg-flex d-md-flex d-none">
+                            <label for="" class="share">Chia sẻ: </label>
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <i class="fa-brands fa-pinterest"></i>
+                            <i class="fa-brands fa-google"></i>
+                            <i class="fa-brands fa-square-instagram"></i>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+        <div class="res-tab">
+            <h2 class="mota border-item-bottom ">Mô tả sản phẩm</h2>
+            <p><?php echo $product['description']; ?></p>
+            <img src="<?php echo $product['thumbnail']; ?>" alt="">
+        </div>
+
+        <script>
+        let amountElement = document.getElementById('amount');
+        let amount = amountElement.value;
+        //Handel Plus
+        let handelPlus = () => {
+            amount++;
+            amountElement.value = amount;
+        }
+        let handelMinus = () => {
+            if (amount > 1) {
+                amount--;
+                amountElement.value = amount;
+            }
+        }
+        </script>
         <!-- Footer -->
         <?php include('footer.php'); ?>
         <!-- End Footer -->

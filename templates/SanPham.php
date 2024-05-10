@@ -60,7 +60,8 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+   </script>
+   <script src="../js/cart.js"></script>
 </head>
 
 <body>
@@ -140,7 +141,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                                         </div>
                                     </div>
                                     <div class="product-name">
-                                        <p class="big"><a href="#"><?php echo $row['title'] ?>
+                                        <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
                                             </a></p>
                                     </div>
                                     <div class="product-price">
@@ -291,6 +292,24 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
             console.log($(this).data("productid"));
         })
     </script>
+
+    <!-- Minh Kha -->
+    <div class="overlay"></div>
+    <div class="popupcart d-none">
+        <div class="popuppanel">
+            <div class="popuppanel__header">
+                <i></i> <!-- Dấu tích -->
+                <p>Bạn đã thêm Vòng tay cao cấp vào giỏ hàng</p>
+            </div>
+            <div class="popuppanel__subheader">
+                <i class="fa-solid fa-cart"></i>
+                <a href="./cart.php">Giỏ hàng của bạn (4 sản phẩm)</a>
+            </div>
+
+        <!-- Close icon -->
+        <i class="fa-solid fa-close"></i>
+        </div>
+    </div>
 </body>
 
 </html>
