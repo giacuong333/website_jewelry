@@ -58,6 +58,9 @@ $(document).ready(function () {
         case "discount":
           isValid = isExceedDefault(inputObj.val(), 50, errorObj);
           break;
+        case "amount":
+          isValid = isExceedDefault(inputObj.val(), 100, errorObj);
+          break;
       }
     }
     return isValid;
@@ -72,8 +75,8 @@ $(document).ready(function () {
       const errorObj = inputObj.closest("td").find(".error-message");
       isValid = isValidInputs(inputObj, errorObj, inputType) && isValid;
 
-      if (key === "price" || key === "discount") {
-        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : "discount") && isValid;
+      if (key === "price" || key === "discount" || key === "product_amount") {
+        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : key === "discount" ? "discount" : "amount") && isValid;
       }
 
       // Remove the error when the user is typing
@@ -745,30 +748,35 @@ $(document).ready(function () {
 
     let is_allowed = true;
 
-    if (isEmpty(img_chosen.val(), img_chosen_error)) {
+    if (!isEmpty(img_chosen.val(), img_chosen_error)) {
       is_allowed = false;
     }
 
-    if (isEmpty(img_title.val(), img_title_error)) {
+    if (!isEmpty(img_title.val(), img_title_error)) {
       is_allowed = false;
     }
+
+    const formData = new FormData();
+    formData.append("image_path", img_chosen[0].files[0]);
+    formData.append("image_title", img_title.val());
+    formData.append("upload_img", "upload_img");
+
+    console.log(formData);
 
     if (is_allowed) {
       $.ajax({
         type: "POST",
         url: "../includes/admin.inc.php",
-        data: {
-          image_path: img_chosen.val(),
-          image_title: img_title.val(),
-          upload_img: "upload_img",
-        },
+        data: formData,
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting contentType
 
         success: function (response) {
           console.log(response); // fix response
-          if (response === "success") {
+          if (response.includes("success")) {
             alert("Upload image successfully");
             window.location.reload();
-          } else if (response == "failed") {
+          } else if (response.includes("failed")) {
             alert("Upload image failed");
           }
         },
@@ -942,7 +950,7 @@ $(document).ready(function () {
   });
 
   // Validate input fields
-  $("button[name='addproduct']")
+  $("button[name='saveproducttempo']")
     .unbind("click")
     .click(function () {
       const inputFields = {

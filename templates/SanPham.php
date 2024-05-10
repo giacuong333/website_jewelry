@@ -57,7 +57,6 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- SCRIPT -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <script src="../js/header.js"></script>
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
@@ -68,7 +67,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
 <body>
     <div class="page">
         <!--Start Header-->
-        <?php include_once('header.php'); ?>
+        <?php include_once('./header.php'); ?>
         <!-- End Header -->
         <!--Start bread-crumb -->
         <div class="main-bread-crumb">
@@ -77,7 +76,6 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
             $breadcrumb_parts = [
                 ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
                 ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
-
             ];
 
             // Tạo một chuỗi HTML từ mảng này
@@ -285,7 +283,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
             });
         </script>
         <!-- Footer -->
-        <?php include_once('footer.php'); ?>
+        <?php include_once('./footer.php'); ?>
         <!-- End Footer -->
     </div>
 
