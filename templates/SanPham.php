@@ -143,7 +143,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                                         </div>
                                     </div>
                                     <div class="product-name">
-                                        <p class="big"><a href="#"><?php echo $row['title'] ?>
+                                        <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
                                             </a></p>
                                     </div>
                                     <div class="product-price">
