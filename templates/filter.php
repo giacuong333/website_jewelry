@@ -12,17 +12,16 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if(isset($_POST['min_price']) && isset($_POST['max_price'])){
-    $min_price = $_POST['min_price'];
-    $max_price = $_POST['max_price'];
+if (isset($_GET['min_price']) && isset($_GET['max_price'])) {
+    $min_price = $_GET['min_price'];
+    $max_price = $_GET['max_price'];
 
     $sql = "SELECT * FROM product WHERE  isShow='1' AND price BETWEEN '$min_price' AND '$max_price' ";
     $query = mysqli_query($conn, $sql);
     $count = mysqli_num_rows($query);
-    if($count == 0){
+    if ($count == 0) {
         echo '<h2>No Product Found</h2>';
     }
-    
 }
 
 
@@ -32,4 +31,3 @@ if(isset($_POST['min_price']) && isset($_POST['max_price'])){
 
 // Close connection
 mysqli_close($conn);
-?>

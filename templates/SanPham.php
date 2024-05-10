@@ -60,8 +60,9 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-   </script>
-   <script src="../js/cart.js"></script>
+    </script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/product.js"></script>
 </head>
 
 <body>
@@ -237,7 +238,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary">Lọc</button>
+                        <button class="btn btn-primary" type="button" name="filter-product">Lọc</button>
                     </div>
                 </aside>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -252,8 +253,8 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                             var maxPrice = $('.input-max').val(); // Lấy giá trị max từ input
 
                             $.ajax({
-                                url: "filter.php",
-                                method: "POST",
+                                url: "./filter.php",
+                                method: "GET",
                                 data: {
                                     min_price: minPrice,
                                     max_price: maxPrice,
@@ -266,7 +267,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                             });
                         }
 
-                        $(".btn-filter-price .btn").on("click", function(e) {
+                        $(".btn-filter-price").unbind("click").on("click", function(e) {
                             e.preventDefault();
                             currentPage = 1; // Đặt lại trang hiện tại về 1 mỗi khi lọc
                             loadProducts(); // Gọi hàm loadProducts sau khi cập nhật giá trị
@@ -306,8 +307,8 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                 <a href="./cart.php">Giỏ hàng của bạn (4 sản phẩm)</a>
             </div>
 
-        <!-- Close icon -->
-        <i class="fa-solid fa-close"></i>
+            <!-- Close icon -->
+            <i class="fa-solid fa-close"></i>
         </div>
     </div>
 </body>

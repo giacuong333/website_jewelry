@@ -1,4 +1,4 @@
-<?php 
+<?php
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -22,6 +22,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,21 +40,19 @@ $product = $result->fetch_assoc();
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <script src="../js/header.js"></script>
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <style>
-    .product-info {
-        margin-left: 100px;
-    }
+        .product-info {
+            margin-left: 100px;
+        }
 
-    .pro-price {
-        font-size: 20px;
-        font-weight: 400;
-        color: #7fcbc9;
-    }
+        .pro-price {
+            font-size: 20px;
+            font-weight: 400;
+            color: #7fcbc9;
+        }
     </style>
 </head>
 
@@ -65,31 +64,31 @@ $product = $result->fetch_assoc();
         <!--Start bread-crumb -->
         <div class="main-bread-crumb">
             <?php
-           // Giả sử bạn có một mảng chứa các phần của breadcrumb
-           $breadcrumb_parts = [
-            ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
-            ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
-            ['name' => $product['title'], 'url' => 'productdetails.php'],
-            
-        ];
+            // Giả sử bạn có một mảng chứa các phần của breadcrumb
+            $breadcrumb_parts = [
+                ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
+                ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
+                ['name' => $product['title'], 'url' => 'productdetails.php'],
 
-        // Tạo một chuỗi HTML từ mảng này
-        $breadcrumb_html = array_map(function($part) {
-            // Kiểm tra xem URL của phần này có phải là URL của trang hiện tại không
-            $is_current_page = (parse_url(str_replace('/website_jewelry/templates/', '', $_SERVER['REQUEST_URI']), PHP_URL_PATH) == $part['url']);
-            
-            // Nếu đúng, thêm lớp 'current' vào phần tử này
-            $class = $is_current_page ? ' class="current"' : '';
-        
-            return '<a href="' . $part['url'] . '"' . $class . '>' . $part['name'] . '</a>';
-        }, $breadcrumb_parts);
-        
-        // Chuyển mảng thành chuỗi, phân tách bởi ' > '
-        $breadcrumb_html = implode(' > ', $breadcrumb_html);
-        
-        // Hiển thị breadcrumb
-        echo '<div class="breadcrumb">' . $breadcrumb_html . '</div>';
-        
+            ];
+
+            // Tạo một chuỗi HTML từ mảng này
+            $breadcrumb_html = array_map(function ($part) {
+                // Kiểm tra xem URL của phần này có phải là URL của trang hiện tại không
+                $is_current_page = (parse_url(str_replace('/website_jewelry/templates/', '', $_SERVER['REQUEST_URI']), PHP_URL_PATH) == $part['url']);
+
+                // Nếu đúng, thêm lớp 'current' vào phần tử này
+                $class = $is_current_page ? ' class="current"' : '';
+
+                return '<a href="' . $part['url'] . '"' . $class . '>' . $part['name'] . '</a>';
+            }, $breadcrumb_parts);
+
+            // Chuyển mảng thành chuỗi, phân tách bởi ' > '
+            $breadcrumb_html = implode(' > ', $breadcrumb_html);
+
+            // Hiển thị breadcrumb
+            echo '<div class="breadcrumb">' . $breadcrumb_html . '</div>';
+
             ?>
         </div>
         <!-- End bread-crumb -->
@@ -104,18 +103,15 @@ $product = $result->fetch_assoc();
                     <div class="product-info">
                         <div class="border-item-bottom">
                             <h2 class="pro-name"><?php echo $product['title']; ?></h2>
-                            <div class="pro-price margin-bottom-20"> <?php echo $product['price'] . "đ" ; ?> </div>
+                            <div class="pro-price margin-bottom-20"> <?php echo $product['price'] . "đ"; ?> </div>
                         </div>
                         <div class="pro-description border-item-bottom margin-bottom-20">
                             <p><?php echo $product['description']; ?></p>
                         </div>
                         <div class="pro-quantity border-item-bottom ">
-                            <button class="margin-bottom-20" onclick="handelPlus()"><i
-                                    class="fa-solid fa-plus"></i></button>
-                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10"
-                                class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
-                            <button class="margin-bottom-20" onclick="handelMinus()"><i
-                                    class="fa-solid fa-minus"></i></button>
+                            <button class="margin-bottom-20" onclick="handelPlus()"><i class="fa-solid fa-plus"></i></button>
+                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10" class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
+                            <button class="margin-bottom-20" onclick="handelMinus()"><i class="fa-solid fa-minus"></i></button>
                             <div class="pro-action margin-bottom-20">
                                 <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
                             </div>
@@ -139,19 +135,19 @@ $product = $result->fetch_assoc();
         </div>
 
         <script>
-        let amountElement = document.getElementById('amount');
-        let amount = amountElement.value;
-        //Handel Plus
-        let handelPlus = () => {
-            amount++;
-            amountElement.value = amount;
-        }
-        let handelMinus = () => {
-            if (amount > 1) {
-                amount--;
+            let amountElement = document.getElementById('amount');
+            let amount = amountElement.value;
+            //Handel Plus
+            let handelPlus = () => {
+                amount++;
                 amountElement.value = amount;
             }
-        }
+            let handelMinus = () => {
+                if (amount > 1) {
+                    amount--;
+                    amountElement.value = amount;
+                }
+            }
         </script>
         <!-- Footer -->
         <?php include('footer.php'); ?>
