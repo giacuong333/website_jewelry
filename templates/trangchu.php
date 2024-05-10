@@ -18,9 +18,7 @@
     <div id="wrapper">
         <!--Start Header-->
         <?php include_once 'header.php'; ?>
-        <script>
-            handleScroll();
-        </script>
+       
         <!-- End Header -->
         <!-- Banner -->
         <div class="banner">
