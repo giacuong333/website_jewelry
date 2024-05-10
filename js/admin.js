@@ -52,6 +52,12 @@ $(document).ready(function () {
         case "verifypassword":
           isValid = isCorrectVerifyPassword(inputObj.val(), $("input[name='password']").val(), errorObj);
           break;
+        case "price":
+          isValid = isExceedDefault(inputObj.val(), 600000000, errorObj);
+          break;
+        case "discount":
+          isValid = isExceedDefault(inputObj.val(), 50, errorObj);
+          break;
       }
     }
     return isValid;
@@ -65,6 +71,13 @@ $(document).ready(function () {
       const inputObj = $(`input[name=${key}`);
       const errorObj = inputObj.closest("td").find(".error-message");
       isValid = isValidInputs(inputObj, errorObj, inputType) && isValid;
+
+      if (key === "price" || key === "discount") {
+        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : "discount") && isValid;
+      }
+
+      // Remove the error when the user is typing
+      inputObj.on("input", () => errorObj.text(""));
     }
     return isValid;
   }
@@ -711,9 +724,11 @@ $(document).ready(function () {
           }
 
           // Save img
-          $("#uploadgallery").click(function () {
-            handle_upload_img();
-          });
+          $("#uploadgallery")
+            .unbind("click")
+            .click(function () {
+              handle_upload_img();
+            });
         },
       });
     });
@@ -749,6 +764,7 @@ $(document).ready(function () {
         },
 
         success: function (response) {
+          console.log(response); // fix response
           if (response === "success") {
             alert("Upload image successfully");
             window.location.reload();

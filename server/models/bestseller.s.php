@@ -12,7 +12,8 @@ class BestSeller extends Database
                   FROM `orderdetail` 
                   JOIN `product` ON `product_id` = `product`.`id`
                   GROUP BY `product_id`
-                  ORDER BY SUM(`num`) DESC;";
+                  ORDER BY SUM(`num`) DESC
+                  LIMIT 3;";
 
                   $stmt = $this->connect()->query($sql);
 

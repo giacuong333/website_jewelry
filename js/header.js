@@ -23,4 +23,7 @@ $(document).ready(function () {
 
   $(window).scroll(handleScroll);
   $(window).resize(handleDropdownChild);
+  $("li.item.dropdown")
+    .unbind("click")
+    .click(() => (window.location.href = "../templates/SanPham.php"));
 });

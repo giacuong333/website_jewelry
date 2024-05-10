@@ -139,15 +139,21 @@ main {
 }
 
 .top-right > i,
-.top-right > label {
+.top-right > label,
+.top-right > .shoppingcart {
   color: #7fcbc9;
   font-size: 22px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
+.top-right > .fa-user {
+  margin-right: 6px;
+}
+
 .top-right > label:hover,
-.top-right > i:hover {
+.top-right > i:hover,
+.top-right > .shoppingcart:hover {
   color: #2d2b98;
 }
 
@@ -166,6 +172,13 @@ main {
   position: absolute;
   top: -10px;
   right: -6px;
+}
+
+@media only screen and (max-width: 768px) {
+  .top-right .quantity {
+    top: 10px;
+    right: 54px;
+  }
 }
 
 .bottom > .list-items {
@@ -244,7 +257,7 @@ main {
   position: absolute;
   z-index: 3;
   top: 30px;
-  right: 40px;
+  right: 30px;
   width: 150px;
   font-size: 16px;
   border-radius: 6px;

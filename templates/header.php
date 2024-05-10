@@ -56,11 +56,11 @@
                         }
                         ?>
                     </div>
-                    <a href="./cart.php">
-                    <i class="fa-solid fa-cart-shopping">
-                        <span class="quantity">1</span>
-                    </i>
-                    </a>        
+                    <a href="./cart.php" class="shoppingcart">
+                        <i class="fa-solid fa-cart-shopping">
+                            <span class="quantity">1</span>
+                        </i>
+                    </a>
                     <!-- Used for < medium screen -->
                     <button type="button" class="btn d-md-none d-lg-none d-flex text-dark text-end fs-4" data-bs-toggle="collapse" data-bs-target="#collapse-parent" aria-expanded="false" aria-controls="collapse-parent">
                         <i class="fa-solid fa-bars ms-auto" style="color: #7fcbc9;"></i>
@@ -75,7 +75,7 @@
                         <a href="../templates/trangchu.php" style="text-decoration: none;">TRANG CHỦ</a>
                     </li>
                     <li class="item ps-0 dropdown">
-                        <a href="SanPham.php" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
+                        <a href="" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
                         <ul class="child-list-items bg-white dropdown-menu py-0" aria-labelledby="openchildmenu">
                             <li class="child-item dropdown-item">Nhẫn</li>
                             <li class="child-item dropdown-item">Bông tai</li>
