@@ -261,7 +261,7 @@ for ($page = 2; $page <= $number_of_pages; $page++) {
                                     page: currentPage
                                 },
                                 success: function(data) {
-                                    $('.main-container .product-view .row').empty();
+                                    $(' .product-view .row').empty();
                                     $(".product-view .row").html(data);
                                 }
                             });
