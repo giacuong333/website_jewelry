@@ -67,12 +67,14 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
 
     <!-- ICON -->
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
-    <!-- SCRIPT -->
+    <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
+    <!-- JS -->
     <script src="../js/cart.js"></script>
 </head>
 
@@ -303,20 +305,86 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
     </script>
 
     <!-- Minh Kha -->
-    <div class="overlay"></div>
-    <div class="popupcart d-none">
+    <div class="overlay d-none"></div>
+    <div class="popupcart bg-white p-5 d-none">
         <div class="popuppanel">
-            <div class="popuppanel__header">
-                <i></i> <!-- Dấu tích -->
-                <p>Bạn đã thêm Vòng tay cao cấp vào giỏ hàng</p>
+            <div class="popuppanel__header mb-3">
+                <i class="fa-solid fa-check" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
+                <span style="font-weight: 900; font-size: 18px">Bạn đã thêm <span style="color: #7fcbc9;">Vòng tay cao cấp</span> vào giỏ hàng</span>
             </div>
             <div class="popuppanel__subheader">
-                <i class="fa-solid fa-cart"></i>
+                <i class="fa-solid fa-cart-shopping" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
                 <a href="./cart.php">Giỏ hàng của bạn (4 sản phẩm)</a>
             </div>
+            <table class="popuppanel__table table border mt-2" style="">
+                <thead>
+                    <tr style="background-color: #f7f7f7;">
+                        <th style="font-size: 14px;" class="border">SẢN PHẨM</th>
+                        <th style="font-size: 14px;" class="border text-center">ĐƠN GIÁ</th>
+                        <th style="font-size: 14px;" class="border text-center">SỐ LƯỢNG</th>
+                        <th style="font-size: 14px;" class="border text-center">THÀNH TIỀN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="productid-1">
+                        <td class="d-flex align-items-start">
+                            <img src="../assets/imgs/Nhẫn vòng ADV.png" alt="" class="img-responsive border" style="width: 80px">
+                            <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
+                                <span style="font-size: 14px; font-weight: 600; color: #7fcbc9;" class="mb-2">Vòng tay cao cấp</span>
+                                <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">
+                            500.000đ
+                        </td>
+                        <td class="text-center">
+                            <div>
+                                <button type="button" class="plus">+</button>
+                                <input type="number" name="quantity">
+                                <button type="button" class="minus">-</button>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
+                    </tr>
+
+                    <tr class="productid-2">
+                        <td class="d-flex align-items-start">
+                            <img src="../assets/imgs/Nhẫn vòng ADV.png" alt="" class="img-responsive border" style="width: 80px">
+                            <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
+                                <span style="font-size: 14px; font-weight: 600; color: #7fcbc9;" class="mb-2">Vòng tay cao cấp</span>
+                                <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
+                                <span style=" color: #898989; font-size: 14px"><i class="fa-solid fa-check me-1" style="color: #7fcbc9; font-weight: 900; font-size: 14px"></i>Sản phẩm vừa thêm!</span>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">
+                            500.000đ
+                        </td>
+                        <td class="text-center">
+                            <div>
+                                <button type="button" class="plus">+</button>
+                                <input type="number" name="quantity" value="1">
+                                <button type="button" class="minus">-</button>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="popuppanel__bottom d-flex align-items-center justify-content-between">
+                <div class="popuppanel__bottom-left" style="font-size: 14px;">
+                    <p class="mb-0">Giao hàng trên toàn quốc</p>
+                    <a href="SanPham.php" style="font-size: 12px;">Tiếp tục mua hàng</a>
+                </div>
+                <div class="popuppanel__bottom-right">
+                    <p>Thành tiền: <span style="color: #7fcbc9; font-weight: 600">1.850.000đ</span></p>
+                </div>
+            </div>
+
+            <button type="button" name="btn-placeorder" class="btn btn-primary rounded-0">TIẾN HÀNH ĐẶT HÀNG</button>
 
             <!-- Close icon -->
-            <i class="fa-solid fa-close"></i>
+            <button type="button" class="fa-solid fa-close popupcart_close"></button>
         </div>
     </div>
 </body>
