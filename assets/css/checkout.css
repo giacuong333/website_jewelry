@@ -1,0 +1,66 @@
+.checkout-body {
+  margin-top: 150px;
+  display: flex;
+}
+.checkout-body__main {
+  flex: 1;
+  flex-basis: 100px;
+}
+.checkout-body__main h5 {
+  margin-left: 50px;
+  font-weight: bold;
+}
+.checkout-body__main__info {
+  border: 0.5px solid;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  justify-content: center;
+}
+.checkout-body__main__info div {
+  width: 100%;
+}
+
+.checkout-body__main__info__header {
+  width: 100%;
+  font-weight: bold;
+}
+.checkout-body__main__info div label {
+  min-width: 200px;
+}
+.checkout-body__main__info div input {
+  min-width: 50%;
+  height: 35px;
+}
+.checkout-body__main__info__note {
+  margin-top: 20px;
+}
+.delivery {
+  width: 30%;
+  flex: 1;
+  padding-top: 35px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.delivery__delivery {
+  width: 300px;
+  height: 50px;
+  border: 0.5px solid;
+  margin: auto;
+}
+.delivery__checkoutMethod {
+  width: 300px;
+  height: 50px;
+  border: 0.5px solid;
+  margin: 20px auto;
+  justify-items: baseline;
+}
+.checkout-body__aside {
+  width: 30%;
+  flex: 1;
+  border: 1px solid;
+}
