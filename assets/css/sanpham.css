@@ -270,21 +270,20 @@ input[type="range"]::-moz-range-thumb {
   border-color: #111313;
 }
 .aside-item .aside-content {
-    margin-top: 18px;
-    margin-bottom: 0;
+  margin-top: 18px;
+  margin-bottom: 0;
 }
 
-.filter-group
-{
-    height: 80px;
+.filter-group {
+  height: 80px;
 }
 .filter-item {
-    margin: 0;
-    cursor: pointer;
-    line-height: 2.5em;
-    min-width: 50%;
-    float: left;
-    padding-right: 8px;
+  margin: 0;
+  cursor: pointer;
+  line-height: 2.5em;
+  min-width: 50%;
+  float: left;
+  padding-right: 8px;
 }
 /* Product Detail */
 .border-item-bottom {

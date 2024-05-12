@@ -29,7 +29,6 @@ if (isset($_GET["filter-product"])) {
 
     if ($fromPrice !== null && $toPrice !== null) {
         $sql = 'SELECT * FROM product WHERE price BETWEEN ' . $fromPrice . ' AND ' . $toPrice;
-        
     } else {
         $sql = 'SELECT * FROM product';
     }
@@ -54,7 +53,7 @@ if (isset($_GET["sort"])) {
             $sql .= ' ORDER BY thumbnail DESC';
             break;
         default:
-        $sql = 'SELECT * FROM product';
+            $sql = 'SELECT * FROM product';
             break;
     }
 }
@@ -98,10 +97,8 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
     <!-- JS -->
@@ -184,26 +181,25 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
 
                         ?>
 
-                        <div class="product-item" data-productid="<?php echo $row["id"] ?>">
-                            <div class="product">
-                                <div class="product-img">
-                                    <a href="#">
-                                        <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
-                                    </a>
-                                    <div class="cart-icon">
-                                        <i class="fa fa-shopping-cart"></i>
+                            <div class="product-item" data-productid="<?php echo $row["id"] ?>">
+                                <div class="product">
+                                    <div class="product-img">
+                                        <a href="#">
+                                            <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
+                                        </a>
+                                        <div class="cart-icon">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-name">
+                                        <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
+                                            </a></p>
+                                    </div>
+                                    <div class="product-price">
+                                        <?php echo $row['price'] . "đ" ?>
                                     </div>
                                 </div>
-                                <div class="product-name">
-                                    <p class="big"><a
-                                            href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
-                                        </a></p>
-                                </div>
-                                <div class="product-price">
-                                    <?php echo $row['price'] . "đ" ?>
-                                </div>
                             </div>
-                        </div>
                         <?php
                         }
                         ?>
@@ -213,7 +209,7 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                     if (!isset($_GET["input-min"]) && !isset($_GET["input-max"])) {
                     ?>
 
-                    <?php
+                        <?php
                         echo '<nav aria-label="Page navigation example">';
                         echo '<ul class="pagination">';
                         if ($current_page > 1) {
@@ -298,16 +294,12 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         <div class="price-input">
                             <div class="field">
 
-                                <input type="number" class="input-min"
-                                    value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>"
-                                    name="input-min">
+                                <input type="number" class="input-min" value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>" name="input-min">
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
 
-                                <input type="number" class="input-max"
-                                    value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>"
-                                    name="input-max">
+                                <input type="number" class="input-max" value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>" name="input-max">
                             </div>
                         </div>
                         <div class="slider">
@@ -319,8 +311,7 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary" name="filter-product" value="filter-product"
-                            type="submit">Lọc</button>
+                        <button class="btn btn-primary" name="filter-product" value="filter-product" type="submit">Lọc</button>
                     </div>
                 </form>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -332,64 +323,59 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         </div>
                         <div class="aside-content filter-group">
                             <ul>
-                                <li class="filter-item"><span><label for="filter-bong-tai"><input type="checkbox"
-                                                name="category_id" value="4" onchange="this.form.submit()"> Bông
+                                <li class="filter-item"><span><label for="filter-bong-tai"><input type="checkbox" name="category_id" value="4" onchange="this.form.submit()"> Bông
                                             Tai</label></span></li>
-                                <li class="filter-item"><span><label for="filter-nhan"><input type="checkbox"
-                                                name="category_id" value="1" onchange="this.form.submit()">
+                                <li class="filter-item"><span><label for="filter-nhan"><input type="checkbox" name="category_id" value="1" onchange="this.form.submit()">
                                             Nhẫn</label></span></li>
-                                <li class="filter-item"><span><label for="filter-day-chuyen"><input type="checkbox"
-                                                name="category_id" value="2" onchange="this.form.submit()"> Dây
+                                <li class="filter-item"><span><label for="filter-day-chuyen"><input type="checkbox" name="category_id" value="2" onchange="this.form.submit()"> Dây
                                             Chuyền</label></span></li>
-                                <li class="filter-item"><span><label for="filter-tram-cai"><input type="checkbox"
-                                                name="category_id" value="3" onchange="this.form.submit()"> Trâm
+                                <li class="filter-item"><span><label for="filter-tram-cai"><input type="checkbox" name="category_id" value="3" onchange="this.form.submit()"> Trâm
                                             Cài</label></span></li>
                             </ul>
                         </div>
                     </aside>
                 </form>
                 <script>
-                // Select all checkboxes within the filter items
-                const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
+                    // Select all checkboxes within the filter items
+                    const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
 
-                // Function to uncheck all other checkboxes except the one passed as parameter
-                function uncheckOthers(currentCheckbox) {
+                    // Function to uncheck all other checkboxes except the one passed as parameter
+                    function uncheckOthers(currentCheckbox) {
+                        checkboxes.forEach((checkbox) => {
+                            if (checkbox !== currentCheckbox) {
+                                checkbox.checked = false;
+                            }
+                        });
+                    }
+
+                    // Add a change event listener to each checkbox
                     checkboxes.forEach((checkbox) => {
-                        if (checkbox !== currentCheckbox) {
-                            checkbox.checked = false;
-                        }
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked) {
+                                uncheckOthers(this);
+                            }
+                        });
                     });
-                }
-
-                // Add a change event listener to each checkbox
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            uncheckOthers(this);
-                        }
-                    });
-                });
                 </script>
             </aside>
 
         </div>
         <script>
-        $(document).ready(function() {
-            $('.sub-btn').click(function() {
-                $(this).next('.sub-menu').slideToggle();
+            $(document).ready(function() {
+                $('.sub-btn').click(function() {
+                    $(this).next('.sub-menu').slideToggle();
+                });
             });
-        });
         </script>
         <!-- Footer -->
         <?php include_once('./footer.php'); ?>
         <!-- End Footer -->
     </div>
 
-    <script>
-    $(".product-item").each(function() {
-        console.log($(this).data("productid"));
-    })
-    </script>
+    <?php
+    // session_start();
+    // unset($_SESSION["cart"]);
+    ?>
 
     <!-- Minh Kha -->
     <div class="overlay d-none"></div>
@@ -397,23 +383,24 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
         <div class="popuppanel">
             <div class="popuppanel__header mb-3">
                 <i class="fa-solid fa-check" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
-                <span style="font-weight: 900; font-size: 18px">Bạn đã thêm <span style="color: #7fcbc9;">Vòng tay cao cấp</span> vào giỏ hàng</span>
+                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span style="color: #7fcbc9;"></span> vào giỏ hàng</span>
             </div>
-            <div class="popuppanel__subheader">
+            <div class="popuppanel__subheader mb-2">
                 <i class="fa-solid fa-cart-shopping" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
-                <a href="./cart.php">Giỏ hàng của bạn (4 sản phẩm)</a>
+                <a href="./cart.php" id="popuppanel__subheader_cart"></a>
             </div>
-            <table class="popuppanel__table table border mt-2" style="">
-                <thead>
-                    <tr style="background-color: #f7f7f7;">
-                        <th style="font-size: 14px;" class="border">SẢN PHẨM</th>
-                        <th style="font-size: 14px;" class="border text-center">ĐƠN GIÁ</th>
-                        <th style="font-size: 14px;" class="border text-center">SỐ LƯỢNG</th>
-                        <th style="font-size: 14px;" class="border text-center">THÀNH TIỀN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="productid-1">
+            <div style="max-height: 250px; overflow-y: scroll;" class="mb-3">
+                <table class="popuppanel__table table border">
+                    <thead class="sticky-top">
+                        <tr style="background-color: #f7f7f7;">
+                            <th style="font-size: 14px;" class="border">SẢN PHẨM</th>
+                            <th style="font-size: 14px;" class="border text-center">ĐƠN GIÁ</th>
+                            <th style="font-size: 14px;" class="border text-center">SỐ LƯỢNG</th>
+                            <th style="font-size: 14px;" class="border text-center">THÀNH TIỀN</th>
+                        </tr>
+                    </thead>
+                    <tbody class="product_in_cart">
+                        <!-- <tr class="productid-1">
                         <td class="d-flex align-items-start">
                             <img src="../assets/imgs/Nhẫn vòng ADV.png" alt="" class="img-responsive border" style="width: 80px">
                             <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
@@ -426,9 +413,9 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         </td>
                         <td class="text-center">
                             <div>
-                                <button type="button" class="plus">+</button>
-                                <input type="number" name="quantity">
                                 <button type="button" class="minus">-</button>
+                                <input type="number" name="quantity" value="1">
+                                <button type="button" class="plus">+</button>
                             </div>
                         </td>
                         <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
@@ -448,15 +435,16 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         </td>
                         <td class="text-center">
                             <div>
-                                <button type="button" class="plus">+</button>
-                                <input type="number" name="quantity" value="1">
                                 <button type="button" class="minus">-</button>
+                                <input type="number" name="quantity" value="1">
+                                <button type="button" class="plus">+</button>
                             </div>
                         </td>
                         <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
-                    </tr>
-                </tbody>
-            </table>
+                    </tr> -->
+                    </tbody>
+                </table>
+            </div>
 
             <div class="popuppanel__bottom d-flex align-items-center justify-content-between">
                 <div class="popuppanel__bottom-left" style="font-size: 14px;">
@@ -464,7 +452,7 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                     <a href="SanPham.php" style="font-size: 12px;">Tiếp tục mua hàng</a>
                 </div>
                 <div class="popuppanel__bottom-right">
-                    <p>Thành tiền: <span style="color: #7fcbc9; font-weight: 600">1.850.000đ</span></p>
+                    <p>Thành tiền: <span style="color: #7fcbc9; font-weight: 600" id="total_or_order"></span></p>
                 </div>
             </div>
 
