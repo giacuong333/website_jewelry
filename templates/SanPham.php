@@ -274,6 +274,31 @@ $stmt->close();
                                         <?php echo $row['price'] . "đ" ?>
                                     </div>
                                 </div>
+<<<<<<< HEAD
+=======
+                                <div class="product-name">
+                                    <p class="big"><a
+                                            href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
+                                        </a></p>
+                                </div>
+                                <div class="product-price">
+                                    <?php
+    $discountPercent = isset($row['discount']) ? $row['discount'] : 0; 
+    $originalPrice = $row['price'];
+    $discountAmount = ($originalPrice * $discountPercent) / 100;
+    $finalPrice = $originalPrice - $discountAmount;
+
+    if ($discountPercent > 0) {
+        // Hiển thị giá cũ gạch ngang và giá mới sau khi giảm
+        echo "<span style='color: #7fcbc9;'>" . number_format($finalPrice) . "đ</span>";
+        echo "<span style='text-decoration: line-through; margin-left:5px;'>" . number_format($originalPrice) . "đ</span> ";
+    } else {
+        // Nếu không có giảm giá, chỉ hiển thị giá gốc
+        echo number_format($originalPrice) . "đ";
+    }
+    ?>
+                                </div>
+>>>>>>> c075ab7470ef9d33dbac31d73484750d0cf30f99
                             </div>
                         <?php
                         }
@@ -433,6 +458,7 @@ $stmt->close();
                         <?php $conn->close(); ?>
                     </aside>
                 </form>
+<<<<<<< HEAD
                 <script>
                     // Select all checkboxes within the filter items
                     const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
@@ -455,6 +481,8 @@ $stmt->close();
                         });
                     });
                 </script>
+=======
+>>>>>>> c075ab7470ef9d33dbac31d73484750d0cf30f99
             </aside>
 
         </div>
