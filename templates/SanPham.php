@@ -52,8 +52,8 @@ if (isset($_GET["sort"])) {
     switch ($_GET["sort"]) {
         case 'price-asc': $sql .= ' ORDER BY price ASC'; break;
         case 'price-desc': $sql .= ' ORDER BY price DESC'; break;
-        case 'name-asc': $sql .= ' ORDER BY thumbnail ASC'; break;
-        case 'name-desc': $sql .= ' ORDER BY thumbnail DESC'; break;
+        case 'name-asc': $sql .= ' ORDER BY title ASC'; break;
+        case 'name-desc': $sql .= ' ORDER BY title DESC'; break;
     }
 }
 
@@ -185,11 +185,11 @@ $stmt->close();
                             <div class="sort-product mb-4">
                                 <label for="sort" class="form-label"></label>
                                 <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                                    <option value="default">Mặc định</option>
-                                    <option value="price-asc">Giá: Thấp đến Cao</option>
-                                    <option value="price-desc">Giá: Cao đến Thấp</option>
-                                    <option value="name-asc">Tên: A-Z</option>
-                                    <option value="name-desc">Tên: Z-A</option>
+                                    <option value="default" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>Mặc định</option>
+                                    <option value="price-asc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>Giá: Thấp đến Cao</option>
+                                    <option value="price-desc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>Giá: Cao đến Thấp</option>
+                                    <option value="name-asc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>Tên: A-Z</option>
+                                    <option value="name-desc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>Tên: Z-A</option>
                                 </select>
                             </div>
                         </form>
@@ -333,10 +333,10 @@ $stmt->close();
                                     <a href="">Sản Phẩm</a>
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Nhẫn</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Bông tai</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Dây chuyền</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Trâm cài</a>
+                                        <a class="sub-item" href="SanPham.php?category_id=1"> <i class="fa fa-caret-right"></i>Nhẫn</a>
+                                        <a class="sub-item" href="SanPham.php?category_id=4"> <i class="fa fa-caret-right"></i>Bông tai</a>
+                                        <a class="sub-item" href="SanPham.php?category_id=2"> <i class="fa fa-caret-right"></i>Dây chuyền</a>
+                                        <a class="sub-item" href="SanPham.php?category_id=3"> <i class="fa fa-caret-right"></i>Trâm cài</a>
                                     </div>
                                 </li>
                                 <li class="nav-item">
