@@ -113,6 +113,9 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
     echo '<a href="' . $link . '">' . $page . '</a> ';
 }
 
+$sql = "SELECT * FROM category";
+$result = $conn->query($sql);
+
 // Close the statement
 $stmt->close();
 ?>
@@ -185,11 +188,21 @@ $stmt->close();
                             <div class="sort-product mb-4">
                                 <label for="sort" class="form-label"></label>
                                 <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                                    <option value="default" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>Mặc định</option>
-                                    <option value="price-asc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>Giá: Thấp đến Cao</option>
-                                    <option value="price-desc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>Giá: Cao đến Thấp</option>
-                                    <option value="name-asc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>Tên: A-Z</option>
-                                    <option value="name-desc" <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>Tên: Z-A</option>
+                                    <option value="default"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
+                                        Mặc định</option>
+                                    <option value="price-asc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
+                                        Giá: Thấp đến Cao</option>
+                                    <option value="price-desc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
+                                        Giá: Cao đến Thấp</option>
+                                    <option value="name-asc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
+                                        Tên: A-Z</option>
+                                    <option value="name-desc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
+                                        Tên: Z-A</option>
                                 </select>
                             </div>
                         </form>
@@ -235,7 +248,7 @@ $stmt->close();
                                         style="<?php if ($row['quantity'] <= 0) { echo 'display: block;   pointer-events: none; opacity: 0.5;'; }  ?>">
                                         <?php if ($row['quantity'] <= 0) { ?>
                                         <span class="out-of-stock">Hết Hàng</span>
-                                       <style>
+                                        <style>
                                         .out-of-stock {
                                             position: absolute;
                                             top: 50%;
@@ -246,7 +259,7 @@ $stmt->close();
                                             padding: 5px 10px;
                                             border-radius: 5px;
                                         }
-                                       </style>
+                                        </style>
                                         <?php }  else { ?>
                                         <i class="fa fa-shopping-cart cart-icon-btn"></i>
                                         <?php } ?>
@@ -333,11 +346,20 @@ $stmt->close();
                                     <a href="">Sản Phẩm</a>
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
-                                        <a class="sub-item" href="SanPham.php?category_id=1"> <i class="fa fa-caret-right"></i>Nhẫn</a>
-                                        <a class="sub-item" href="SanPham.php?category_id=4"> <i class="fa fa-caret-right"></i>Bông tai</a>
-                                        <a class="sub-item" href="SanPham.php?category_id=2"> <i class="fa fa-caret-right"></i>Dây chuyền</a>
-                                        <a class="sub-item" href="SanPham.php?category_id=3"> <i class="fa fa-caret-right"></i>Trâm cài</a>
-                                    </div>
+                                        <?php
+                                    if ($result->num_rows > 0) {
+                                        // Xuất dữ liệu của mỗi hàng
+                                        while($row = $result->fetch_assoc()) {
+                                            echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["tenLoai"] . '</a>';
+                                        }
+                                    } else {
+                                        echo "Không có loại sản phẩm";
+                                    }
+                                    ?>
+                                 </div>
+                                 <?php
+                                $conn->close();
+                                ?>
                                 </li>
                                 <li class="nav-item">
                                     <i class="fa fa-caret-right"></i>
