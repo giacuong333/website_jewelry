@@ -350,7 +350,7 @@ $stmt->close();
                                     if ($result->num_rows > 0) {
                                         // Xuất dữ liệu của mỗi hàng
                                         while($row = $result->fetch_assoc()) {
-                                            echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["tenLoai"] . '</a>';
+                                            echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["name"] . '</a>';
                                         }
                                     } else {
                                         echo "Không có loại sản phẩm";
