@@ -109,9 +109,9 @@ $product = $result->fetch_assoc();
                             <p><?php echo $product['description']; ?></p>
                         </div>
                         <div class="pro-quantity border-item-bottom ">
-                            <button class="margin-bottom-20" onclick="handelPlus()"><i class="fa-solid fa-plus"></i></button>
-                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10" class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
                             <button class="margin-bottom-20" onclick="handelMinus()"><i class="fa-solid fa-minus"></i></button>
+                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10" class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
+                            <button class="margin-bottom-20" onclick=" handelPlus()"><i class="fa-solid fa-plus"></i></button>
                             <div class="pro-action margin-bottom-20">
                                 <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
                             </div>

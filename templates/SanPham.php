@@ -14,72 +14,110 @@ if ($conn->connect_error) {
 
 $results_per_page = 9;
 
-// Determine the current page number
-if (isset($_GET['page'])) {
-    $current_page = intval($_GET['page']);
-} else {
-    $current_page = 1;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Start with a base SQL query
+$sql = "SELECT * FROM product WHERE 1=1";
+$params = []; // Array to hold bound parameters
+$types = ''; // String to hold parameter types
+
+
+// Filter based on price range
+if (isset($_GET["filter-product"], $_GET["input-min"], $_GET["input-max"])) {
+    $fromPrice = $_GET["input-min"];
+    $toPrice = $_GET["input-max"];
+    $sql .= " AND price BETWEEN ? AND ?";
+    $types .= 'dd'; // 'd' represents a double (decimal) parameter type
+    array_push($params, $fromPrice, $toPrice);
 }
 
-// If filtering
-if (isset($_GET["filter-product"])) {
-    // Filter based on price range
-    $fromPrice = isset($_GET["input-min"]) ? $_GET["input-min"] : null;
-    $toPrice = isset($_GET["input-max"]) ? $_GET["input-max"] : null;
-
-    if ($fromPrice !== null && $toPrice !== null) {
-        $sql = 'SELECT * FROM product WHERE price BETWEEN ' . $fromPrice . ' AND ' . $toPrice;
-    } else {
-        $sql = 'SELECT * FROM product';
-    }
-} else {
-    $sql = 'SELECT * FROM product';
+// Filter based on search query
+if (isset($_GET['search'])) {
+    $search = '%' . $_GET['search'] . '%';
+    $sql .= " AND title LIKE ?";
+    $types .= 's'; // 's' represents a string parameter type
+    $params[] = $search;
 }
 
-// Check if sort option is selected
-if (isset($_GET["sort"])) {
-    $sortOption = $_GET["sort"];
-    switch ($sortOption) {
-        case 'price-asc':
-            $sql .= ' ORDER BY price ASC';
-            break;
-        case 'price-desc':
-            $sql .= ' ORDER BY price DESC';
-            break;
-        case 'name-asc':
-            $sql .= ' ORDER BY thumbnail ASC';
-            break;
-        case 'name-desc':
-            $sql .= ' ORDER BY thumbnail DESC';
-            break;
-        default:
-            $sql = 'SELECT * FROM product';
-            break;
-    }
-}
-
-//loc theo loai san pham
+// Filter based on category
 if (isset($_GET["category_id"])) {
     $category_id = $_GET["category_id"];
-    $sql = 'SELECT * FROM product WHERE category_id = ' . $category_id;
+    $sql .= " AND category_id = ?";
+    $types .= 'i'; // 'i' represents an integer parameter type
+    $params[] = $category_id;
 }
-$result = mysqli_query($conn, $sql);
-$number_of_results = mysqli_num_rows($result);
 
+// Sorting
+if (isset($_GET["sort"])) {
+    switch ($_GET["sort"]) {
+        case 'price-asc': $sql .= ' ORDER BY price ASC'; break;
+        case 'price-desc': $sql .= ' ORDER BY price DESC'; break;
+        case 'name-asc': $sql .= ' ORDER BY title ASC'; break;
+        case 'name-desc': $sql .= ' ORDER BY title DESC'; break;
+    }
+}
+
+// Prepare the statement for pagination calculation
+$stmt = $conn->prepare($sql);
+if ($types) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$number_of_results = $result->num_rows;
+
+// Calculate number of pages
 $number_of_pages = ceil($number_of_results / $results_per_page);
 
+// Calculate the offset for the current page
 $this_page_first_result = ($current_page - 1) * $results_per_page;
 
-$sql .= ' LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
+// Add LIMIT clause to the SQL query
+$sql .= " LIMIT ?, ?";
+$types .= 'ii';
+array_push($params, $this_page_first_result, $results_per_page);
 
-$query = mysqli_query($conn, $sql);
+// Prepare the final statement with LIMIT
+$stmt = $conn->prepare($sql);
+if ($types) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$query = $stmt->get_result();
 
-// Display pagination links
-for ($page = 1; $page <= $number_of_pages; $page++) {
-    echo '<a href="SanPham.php?page=' . $page . '">' . $page . '</a> ';
+// Giả sử $filters đã được khởi tạo trước đó
+
+$filters = isset($filters) ? $filters : [];
+unset($filters['page']);
+// Lấy tất cả tham số từ URL
+$paramsFromUrl = $_GET;
+
+// Duyệt qua từng tham số trong URL
+foreach ($paramsFromUrl as $key => $value) {
+    // Chỉ thêm tham số vào $filters nếu nó chưa tồn tại
+    if (!array_key_exists($key, $filters)) {
+        $filters[$key] = $value;
+    }
+    // Nếu bạn muốn cập nhật giá trị cho khóa đã tồn tại với giá trị mới từ URL, bạn có thể bỏ qua điều kiện if hoặc xử lý cụ thể tại đây
 }
 
+// Bây giờ $filters sẽ chứa tất cả các tham số lọc hiện tại cùng với bất kỳ tham số mới nào từ URL mà không cập nhật lại các giá trị hiện có
 
+ // Loại bỏ tham số 'page'
+print_r($filters);
+$filter_query = http_build_query($filters); // Tạo chuỗi truy vấn từ các tham số lọc
+// Display pagination links
+for ($page = 1; $page <= $number_of_pages; $page++) {
+    // Tạo liên kết với các tham số lọc và tham số 'page'
+    $link = "SanPham.php?" . $filter_query . (!empty($filter_query) ? "&" : "") . "page=" . $page ;
+    echo '<a href="' . $link . '">' . $page . '</a> ';
+}
+
+$sql = "SELECT * FROM category";
+$result = $conn->query($sql);
+
+// Close the statement
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,8 +135,10 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
     <!-- JS -->
@@ -148,11 +188,21 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                             <div class="sort-product mb-4">
                                 <label for="sort" class="form-label"></label>
                                 <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                                    <option value="default">Mặc định</option>
-                                    <option value="price-asc">Giá: Thấp đến Cao</option>
-                                    <option value="price-desc">Giá: Cao đến Thấp</option>
-                                    <option value="name-asc">Tên: A-Z</option>
-                                    <option value="name-desc">Tên: Z-A</option>
+                                    <option value="default"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
+                                        Mặc định</option>
+                                    <option value="price-asc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
+                                        Giá: Thấp đến Cao</option>
+                                    <option value="price-desc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
+                                        Giá: Cao đến Thấp</option>
+                                    <option value="name-asc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
+                                        Tên: A-Z</option>
+                                    <option value="name-desc"
+                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
+                                        Tên: Z-A</option>
                                 </select>
                             </div>
                         </form>
@@ -169,7 +219,14 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                                 trong tổng số <?php echo $number_of_results ?> sản phẩm
                             </span>
                         </div>
-
+                        <div class="search-pro">
+                            <form action="SanPham.php" method="get">
+                                <div class="input-group mb-5 width-50">
+                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm"
+                                        name="search" onchange="this.form.submit()">
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
@@ -181,49 +238,70 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
 
                         ?>
 
-                            <div class="product-item" data-productid="<?php echo $row["id"] ?>">
-                                <div class="product">
-                                    <div class="product-img">
-                                        <a href="#">
-                                            <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
-                                        </a>
-                                        <div class="cart-icon">
-                                            <i class="fa fa-shopping-cart"></i>
-                                        </div>
-                                    </div>
-                                    <div class="product-name">
-                                        <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
-                                            </a></p>
-                                    </div>
-                                    <div class="product-price">
-                                        <?php echo $row['price'] . "đ" ?>
+                        <div class="product-item" data-productid="<?php echo $row["id"] ?>">
+                            <div class="product">
+                                <div class="product-img">
+                                    <a href="#">
+                                        <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
+                                    </a>
+                                    <div class="cart-icon " data-quantity="<?php echo $row['quantity']; ?>"
+                                        style="<?php if ($row['quantity'] <= 0) { echo 'display: block;   pointer-events: none; opacity: 0.5;'; }  ?>">
+                                        <?php if ($row['quantity'] <= 0) { ?>
+                                        <span class="out-of-stock">Hết Hàng</span>
+                                        <style>
+                                        .out-of-stock {
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);
+                                            font-size: medium;
+                                            color: #fff;
+                                            padding: 5px 10px;
+                                            border-radius: 5px;
+                                        }
+                                        </style>
+                                        <?php }  else { ?>
+                                        <i class="fa fa-shopping-cart cart-icon-btn"></i>
+                                        <?php } ?>
                                     </div>
                                 </div>
+                                <div class="product-name">
+                                    <p class="big"><a
+                                            href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
+                                        </a></p>
+                                </div>
+                                <div class="product-price">
+                                    <?php echo $row['price'] . "đ" ?>
+                                </div>
                             </div>
+                        </div>
                         <?php
                         }
                         ?>
                     </div>
+                    <script>
+
+                    </script>
                     <!-- pagination  -->
                     <?php
                     if (!isset($_GET["input-min"]) && !isset($_GET["input-max"])) {
                     ?>
 
-                        <?php
+                    <?php
                         echo '<nav aria-label="Page navigation example">';
                         echo '<ul class="pagination">';
                         if ($current_page > 1) {
-                            echo '<li class="page-item  "><a class="page-link" href="SanPham.php?page=' . ($current_page - 1) . '">Previous</a></li>';
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . ($current_page - 1) . '">Previous</a></li>';
                         }
                         for ($pages = 1; $pages <= $number_of_pages; $pages++) {
                             if ($pages == $current_page) {
-                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . $pages . '">' . $pages . '</a></li>';
                             } else {
-                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . $pages . '">' . $pages . '</a></li>';
                             }
                         }
                         if ($current_page < $number_of_pages) {
-                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . ($current_page + 1) . '">Next</a></li>';
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . ($current_page + 1) . '">Next</a></li>';
                         }
                         echo '</ul>';
                         echo '</nav>';
@@ -268,11 +346,18 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                                     <a href="">Sản Phẩm</a>
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Nhẫn</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Bông tai</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Dây chuyền</a>
-                                        <a class="sub-item" href="#"> <i class="fa fa-caret-right"></i>Trâm cài</a>
+                                        <?php
+                                    if ($result->num_rows > 0) {
+                                        // Xuất dữ liệu của mỗi hàng
+                                        while($row = $result->fetch_assoc()) {
+                                            echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["name"] . '</a>';
+                                        }
+                                    } else {
+                                        echo "Không có loại sản phẩm";
+                                    }
+                                    ?>
                                     </div>
+
                                 </li>
                                 <li class="nav-item">
                                     <i class="fa fa-caret-right"></i>
@@ -294,12 +379,16 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         <div class="price-input">
                             <div class="field">
 
-                                <input type="number" class="input-min" value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>" name="input-min">
+                                <input type="number" class="input-min"
+                                    value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>"
+                                    name="input-min">
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
 
-                                <input type="number" class="input-max" value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>" name="input-max">
+                                <input type="number" class="input-max"
+                                    value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>"
+                                    name="input-max">
                             </div>
                         </div>
                         <div class="slider">
@@ -311,7 +400,8 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary" name="filter-product" value="filter-product" type="submit">Lọc</button>
+                        <button class="btn btn-primary" name="filter-product" value="filter-product"
+                            type="submit">Lọc</button>
                     </div>
                 </form>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -321,51 +411,64 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         <div class="aside-title">
                             <h2 class="title-head margin-top-0"><span>Theo Loại</span></h2>
                         </div>
+
                         <div class="aside-content filter-group">
                             <ul>
-                                <li class="filter-item"><span><label for="filter-bong-tai"><input type="checkbox" name="category_id" value="4" onchange="this.form.submit()"> Bông
-                                            Tai</label></span></li>
-                                <li class="filter-item"><span><label for="filter-nhan"><input type="checkbox" name="category_id" value="1" onchange="this.form.submit()">
-                                            Nhẫn</label></span></li>
-                                <li class="filter-item"><span><label for="filter-day-chuyen"><input type="checkbox" name="category_id" value="2" onchange="this.form.submit()"> Dây
-                                            Chuyền</label></span></li>
-                                <li class="filter-item"><span><label for="filter-tram-cai"><input type="checkbox" name="category_id" value="3" onchange="this.form.submit()"> Trâm
-                                            Cài</label></span></li>
+                                <?php
+                                // Lấy giá trị category_id từ URL
+                                $selectedCategoryId = isset($_GET['category_id']) ? $_GET['category_id'] : '';
+
+                                if ($result = $conn->query($sql)) {
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            // Kiểm tra xem category_id hiện tại có trùng với giá trị từ URL không
+                                            $isChecked = ($row["id"] == $selectedCategoryId) ? 'checked' : '';
+                                            echo '<li class="filter-item"><span><label for="filter-' . strtolower(str_replace(' ', '-', $row["name"])) . '"><input type="radio" name="category_id" value="' . $row["id"] . '" ' . $isChecked . ' onchange="this.form.submit()"> ' . $row["name"] . '</label></span></li>';
+                                        }
+                                    } else {
+                                        echo "Không có loại sản phẩm";
+                                    }
+                                } else {
+                                    echo "Lỗi truy vấn: " . $conn->error;
+                                }
+                                ?>
                             </ul>
                         </div>
+
+                        <?php $conn->close(); ?>
                     </aside>
                 </form>
                 <script>
-                    // Select all checkboxes within the filter items
-                    const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
+                // Select all checkboxes within the filter items
+                const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
 
-                    // Function to uncheck all other checkboxes except the one passed as parameter
-                    function uncheckOthers(currentCheckbox) {
-                        checkboxes.forEach((checkbox) => {
-                            if (checkbox !== currentCheckbox) {
-                                checkbox.checked = false;
-                            }
-                        });
-                    }
-
-                    // Add a change event listener to each checkbox
+                // Function to uncheck all other checkboxes except the one passed as parameter
+                function uncheckOthers(currentCheckbox) {
                     checkboxes.forEach((checkbox) => {
-                        checkbox.addEventListener('change', function() {
-                            if (this.checked) {
-                                uncheckOthers(this);
-                            }
-                        });
+                        if (checkbox !== currentCheckbox) {
+                            checkbox.checked = false;
+                        }
                     });
+                }
+
+                // Add a change event listener to each checkbox
+                checkboxes.forEach((checkbox) => {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            uncheckOthers(this);
+                        }
+                    });
+                });
                 </script>
             </aside>
 
         </div>
         <script>
-            $(document).ready(function() {
-                $('.sub-btn').click(function() {
-                    $(this).next('.sub-menu').slideToggle();
-                });
+        $(document).ready(function() {
+            $('.sub-btn').click(function() {
+                $(this).next('.sub-menu').slideToggle();
             });
+        });
         </script>
         <!-- Footer -->
         <?php include_once('./footer.php'); ?>
@@ -383,7 +486,8 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
         <div class="popuppanel">
             <div class="popuppanel__header mb-3">
                 <i class="fa-solid fa-check" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
-                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span style="color: #7fcbc9;"></span> vào giỏ hàng</span>
+                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span
+                        style="color: #7fcbc9;"></span> vào giỏ hàng</span>
             </div>
             <div class="popuppanel__subheader mb-2">
                 <i class="fa-solid fa-cart-shopping" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
