@@ -278,9 +278,11 @@ $stmt->close();
     $finalPrice = $originalPrice - $discountAmount;
 
     if ($discountPercent > 0) {
-        // Hiển thị giá cũ gạch ngang và giá mới sau khi giảm
-        echo "<span style='color: #7fcbc9;'>" . number_format($finalPrice) . "đ</span>";
-        echo "<span style='text-decoration: line-through; margin-left:5px;'>" . number_format($originalPrice) . "đ</span> ";
+        
+        
+        echo "<div style='color: #7fcbc9;'>" . number_format($finalPrice) . "đ</div>";
+        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray;'>" . number_format($originalPrice) . "đ</div>";
+        
     } else {
         // Nếu không có giảm giá, chỉ hiển thị giá gốc
         echo number_format($originalPrice) . "đ";
@@ -357,7 +359,7 @@ $stmt->close();
                                 </li>
                                 <li class="nav-item ">
                                     <i class="fa fa-caret-right"></i>
-                                    <a href="">Sản Phẩm</a>
+                                    <a href="SanPham.php">Sản Phẩm</a>
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
                                         <?php
