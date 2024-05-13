@@ -68,6 +68,7 @@ $(document).ready(function () {
           $("#popuppanel__header_title > span").text(`${titleOfNewProduct}`);
           $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
           $("#total_or_order").text(totalOfOrder);
+          // $(".quantity").text(`${}`);
 
           productInCartObj.html(html.join(""));
 

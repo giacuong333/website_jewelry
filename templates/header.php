@@ -58,7 +58,7 @@
                     </div>
                     <a href="#" class="shoppingcart">
                         <i class="fa-solid fa-cart-shopping">
-                            <span class="quantity"><?php echo isset($_SESSION["cart"]) ? count($_SESSION["cart"]) : "0"; ?></span>
+                            <span class="quantity">0</span>
                         </i>
                     </a>
                     <!-- Used for < medium screen -->

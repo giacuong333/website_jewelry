@@ -104,6 +104,11 @@ main {
   transition: transform 0.3s ease-in-out;
 }
 
+.dropdown:hover .dropdown-menu {
+  display: block;
+  top: 40px;
+}
+
 .bottom {
   display: block;
   width: 100%;

@@ -50,10 +50,18 @@ if (isset($_GET["category_id"])) {
 // Sorting
 if (isset($_GET["sort"])) {
     switch ($_GET["sort"]) {
-        case 'price-asc': $sql .= ' ORDER BY price ASC'; break;
-        case 'price-desc': $sql .= ' ORDER BY price DESC'; break;
-        case 'name-asc': $sql .= ' ORDER BY title ASC'; break;
-        case 'name-desc': $sql .= ' ORDER BY title DESC'; break;
+        case 'price-asc':
+            $sql .= ' ORDER BY price ASC';
+            break;
+        case 'price-desc':
+            $sql .= ' ORDER BY price DESC';
+            break;
+        case 'name-asc':
+            $sql .= ' ORDER BY title ASC';
+            break;
+        case 'name-desc':
+            $sql .= ' ORDER BY title DESC';
+            break;
     }
 }
 
@@ -103,13 +111,13 @@ foreach ($paramsFromUrl as $key => $value) {
 
 // Bây giờ $filters sẽ chứa tất cả các tham số lọc hiện tại cùng với bất kỳ tham số mới nào từ URL mà không cập nhật lại các giá trị hiện có
 
- // Loại bỏ tham số 'page'
+// Loại bỏ tham số 'page'
 print_r($filters);
 $filter_query = http_build_query($filters); // Tạo chuỗi truy vấn từ các tham số lọc
 // Display pagination links
 for ($page = 1; $page <= $number_of_pages; $page++) {
     // Tạo liên kết với các tham số lọc và tham số 'page'
-    $link = "SanPham.php?" . $filter_query . (!empty($filter_query) ? "&" : "") . "page=" . $page ;
+    $link = "SanPham.php?" . $filter_query . (!empty($filter_query) ? "&" : "") . "page=" . $page;
     echo '<a href="' . $link . '">' . $page . '</a> ';
 }
 
@@ -135,10 +143,8 @@ $stmt->close();
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
     <!-- JS -->
@@ -188,20 +194,15 @@ $stmt->close();
                             <div class="sort-product mb-4">
                                 <label for="sort" class="form-label"></label>
                                 <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                                    <option value="default"
-                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
+                                    <option value="default" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
                                         Mặc định</option>
-                                    <option value="price-asc"
-                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
+                                    <option value="price-asc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
                                         Giá: Thấp đến Cao</option>
-                                    <option value="price-desc"
-                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
+                                    <option value="price-desc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
                                         Giá: Cao đến Thấp</option>
-                                    <option value="name-asc"
-                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
+                                    <option value="name-asc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
                                         Tên: A-Z</option>
-                                    <option value="name-desc"
-                                        <?php if(isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
+                                    <option value="name-desc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
                                         Tên: Z-A</option>
                                 </select>
                             </div>
@@ -222,8 +223,7 @@ $stmt->close();
                         <div class="search-pro">
                             <form action="SanPham.php" method="get">
                                 <div class="input-group mb-5 width-50">
-                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm"
-                                        name="search" onchange="this.form.submit()">
+                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm" name="search" onchange="this.form.submit()">
                                 </div>
                             </form>
                         </div>
@@ -238,43 +238,43 @@ $stmt->close();
 
                         ?>
 
-                        <div class="product-item" data-productid="<?php echo $row["id"] ?>">
-                            <div class="product">
-                                <div class="product-img">
-                                    <a href="#">
-                                        <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
-                                    </a>
-                                    <div class="cart-icon " data-quantity="<?php echo $row['quantity']; ?>"
-                                        style="<?php if ($row['quantity'] <= 0) { echo 'display: block;   pointer-events: none; opacity: 0.5;'; }  ?>">
-                                        <?php if ($row['quantity'] <= 0) { ?>
-                                        <span class="out-of-stock">Hết Hàng</span>
-                                        <style>
-                                        .out-of-stock {
-                                            position: absolute;
-                                            top: 50%;
-                                            left: 50%;
-                                            transform: translate(-50%, -50%);
-                                            font-size: medium;
-                                            color: #fff;
-                                            padding: 5px 10px;
-                                            border-radius: 5px;
-                                        }
-                                        </style>
-                                        <?php }  else { ?>
-                                        <i class="fa fa-shopping-cart cart-icon-btn"></i>
-                                        <?php } ?>
+                            <div class="product-item" data-productid="<?php echo $row["id"] ?>">
+                                <div class="product">
+                                    <div class="product-img">
+                                        <a href="#">
+                                            <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
+                                        </a>
+                                        <div class="cart-icon " data-quantity="<?php echo $row['quantity']; ?>" style="<?php if ($row['quantity'] <= 0) {
+                                                                                                                            echo 'display: block;   pointer-events: none; opacity: 0.5;';
+                                                                                                                        }  ?>">
+                                            <?php if ($row['quantity'] <= 0) { ?>
+                                                <span class="out-of-stock">Hết Hàng</span>
+                                                <style>
+                                                    .out-of-stock {
+                                                        position: absolute;
+                                                        top: 50%;
+                                                        left: 50%;
+                                                        transform: translate(-50%, -50%);
+                                                        font-size: medium;
+                                                        color: #fff;
+                                                        padding: 5px 10px;
+                                                        border-radius: 5px;
+                                                    }
+                                                </style>
+                                            <?php } else { ?>
+                                                <i class="fa fa-shopping-cart cart-icon-btn"></i>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="product-name">
+                                        <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
+                                            </a></p>
+                                    </div>
+                                    <div class="product-price">
+                                        <?php echo $row['price'] . "đ" ?>
                                     </div>
                                 </div>
-                                <div class="product-name">
-                                    <p class="big"><a
-                                            href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
-                                        </a></p>
-                                </div>
-                                <div class="product-price">
-                                    <?php echo $row['price'] . "đ" ?>
-                                </div>
                             </div>
-                        </div>
                         <?php
                         }
                         ?>
@@ -287,7 +287,7 @@ $stmt->close();
                     if (!isset($_GET["input-min"]) && !isset($_GET["input-max"])) {
                     ?>
 
-                    <?php
+                        <?php
                         echo '<nav aria-label="Page navigation example">';
                         echo '<ul class="pagination">';
                         if ($current_page > 1) {
@@ -347,15 +347,15 @@ $stmt->close();
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
                                         <?php
-                                    if ($result->num_rows > 0) {
-                                        // Xuất dữ liệu của mỗi hàng
-                                        while($row = $result->fetch_assoc()) {
-                                            echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["name"] . '</a>';
+                                        if ($result->num_rows > 0) {
+                                            // Xuất dữ liệu của mỗi hàng
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<a class="sub-item" href="SanPham.php?category_id=' . $row["id"] . '"> <i class="fa fa-caret-right"></i>' . $row["name"] . '</a>';
+                                            }
+                                        } else {
+                                            echo "Không có loại sản phẩm";
                                         }
-                                    } else {
-                                        echo "Không có loại sản phẩm";
-                                    }
-                                    ?>
+                                        ?>
                                     </div>
 
                                 </li>
@@ -379,16 +379,12 @@ $stmt->close();
                         <div class="price-input">
                             <div class="field">
 
-                                <input type="number" class="input-min"
-                                    value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>"
-                                    name="input-min">
+                                <input type="number" class="input-min" value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>" name="input-min">
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
 
-                                <input type="number" class="input-max"
-                                    value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>"
-                                    name="input-max">
+                                <input type="number" class="input-max" value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>" name="input-max">
                             </div>
                         </div>
                         <div class="slider">
@@ -400,8 +396,7 @@ $stmt->close();
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary" name="filter-product" value="filter-product"
-                            type="submit">Lọc</button>
+                        <button class="btn btn-primary" name="filter-product" value="filter-product" type="submit">Lọc</button>
                     </div>
                 </form>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -420,7 +415,7 @@ $stmt->close();
 
                                 if ($result = $conn->query($sql)) {
                                     if ($result->num_rows > 0) {
-                                        while($row = $result->fetch_assoc()) {
+                                        while ($row = $result->fetch_assoc()) {
                                             // Kiểm tra xem category_id hiện tại có trùng với giá trị từ URL không
                                             $isChecked = ($row["id"] == $selectedCategoryId) ? 'checked' : '';
                                             echo '<li class="filter-item"><span><label for="filter-' . strtolower(str_replace(' ', '-', $row["name"])) . '"><input type="radio" name="category_id" value="' . $row["id"] . '" ' . $isChecked . ' onchange="this.form.submit()"> ' . $row["name"] . '</label></span></li>';
@@ -439,36 +434,36 @@ $stmt->close();
                     </aside>
                 </form>
                 <script>
-                // Select all checkboxes within the filter items
-                const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
+                    // Select all checkboxes within the filter items
+                    const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
 
-                // Function to uncheck all other checkboxes except the one passed as parameter
-                function uncheckOthers(currentCheckbox) {
+                    // Function to uncheck all other checkboxes except the one passed as parameter
+                    function uncheckOthers(currentCheckbox) {
+                        checkboxes.forEach((checkbox) => {
+                            if (checkbox !== currentCheckbox) {
+                                checkbox.checked = false;
+                            }
+                        });
+                    }
+
+                    // Add a change event listener to each checkbox
                     checkboxes.forEach((checkbox) => {
-                        if (checkbox !== currentCheckbox) {
-                            checkbox.checked = false;
-                        }
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked) {
+                                uncheckOthers(this);
+                            }
+                        });
                     });
-                }
-
-                // Add a change event listener to each checkbox
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            uncheckOthers(this);
-                        }
-                    });
-                });
                 </script>
             </aside>
 
         </div>
         <script>
-        $(document).ready(function() {
-            $('.sub-btn').click(function() {
-                $(this).next('.sub-menu').slideToggle();
+            $(document).ready(function() {
+                $('.sub-btn').click(function() {
+                    $(this).next('.sub-menu').slideToggle();
+                });
             });
-        });
         </script>
         <!-- Footer -->
         <?php include_once('./footer.php'); ?>
@@ -486,8 +481,7 @@ $stmt->close();
         <div class="popuppanel">
             <div class="popuppanel__header mb-3">
                 <i class="fa-solid fa-check" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
-                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span
-                        style="color: #7fcbc9;"></span> vào giỏ hàng</span>
+                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span style="color: #7fcbc9;"></span> vào giỏ hàng</span>
             </div>
             <div class="popuppanel__subheader mb-2">
                 <i class="fa-solid fa-cart-shopping" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
