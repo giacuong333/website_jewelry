@@ -13,6 +13,8 @@ $(document).ready(function () {
       sideEffectOfCart();
     });
 
+  $(".shoppingcart").unbind("click").click(sideEffectOfCart);
+
   function handleAddProductToCart(productId) {
     $.ajax({
       type: "POST",
