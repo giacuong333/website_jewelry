@@ -356,10 +356,8 @@ $stmt->close();
                                         echo "Không có loại sản phẩm";
                                     }
                                     ?>
-                                 </div>
-                                 <?php
-                                $conn->close();
-                                ?>
+                                    </div>
+
                                 </li>
                                 <li class="nav-item">
                                     <i class="fa fa-caret-right"></i>
@@ -413,22 +411,29 @@ $stmt->close();
                         <div class="aside-title">
                             <h2 class="title-head margin-top-0"><span>Theo Loại</span></h2>
                         </div>
+
+
                         <div class="aside-content filter-group">
                             <ul>
-                                <li class="filter-item"><span><label for="filter-bong-tai"><input type="checkbox"
-                                                name="category_id" value="4" onchange="this.form.submit()"> Bông
-                                            Tai</label></span></li>
-                                <li class="filter-item"><span><label for="filter-nhan"><input type="checkbox"
-                                                name="category_id" value="1" onchange="this.form.submit()">
-                                            Nhẫn</label></span></li>
-                                <li class="filter-item"><span><label for="filter-day-chuyen"><input type="checkbox"
-                                                name="category_id" value="2" onchange="this.form.submit()"> Dây
-                                            Chuyền</label></span></li>
-                                <li class="filter-item"><span><label for="filter-tram-cai"><input type="checkbox"
-                                                name="category_id" value="3" onchange="this.form.submit()"> Trâm
-                                            Cài</label></span></li>
+                                <?php
+                               if ($result = $conn->query($sql)) {
+                                   if ($result->num_rows > 0) {
+                                       while($row = $result->fetch_assoc()) {
+                                           echo '<li class="filter-item"><span><label for="filter-' . strtolower(str_replace(' ', '-', $row["name"])) . '"><input type="checkbox" name="category_id" value="' . $row["id"] . '" onchange="this.form.submit()"> ' . $row["name"] . '</label></span></li>';
+                                       }
+                                   } else {
+                                       echo "Không có loại sản phẩm";
+                                   }
+                               } else {
+                                   echo "Lỗi truy vấn: " . $conn->error;
+                               }
+                               ?>
                             </ul>
                         </div>
+
+                        <?php
+$conn->close();
+?>
                     </aside>
                 </form>
                 <script>
