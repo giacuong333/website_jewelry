@@ -273,15 +273,14 @@ $stmt->close();
                                 <div class="product-price">
                                     <?php
     $discountPercent = isset($row['discount']) ? $row['discount'] : 0; 
-    $originalPrice = $row['price'];
-    $discountAmount = ($originalPrice * $discountPercent) / 100;
-    $finalPrice = $originalPrice - $discountAmount;
+    $originalPrice = $row['price'] / (1 - $discountPercent / 100);
+    $finalPrice = $row['price'];
 
     if ($discountPercent > 0) {
         
         
-        echo "<div style='color: #7fcbc9;'>" . number_format($finalPrice) . "đ</div>";
-        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray;'>" . number_format($originalPrice) . "đ</div>";
+        echo "<div style='color: #7fcbc9; font-size:large;'>" . number_format($finalPrice) . "đ</div>";
+        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray; font-size:small;' >" . number_format($originalPrice) . "đ</div>";
         
     } else {
         // Nếu không có giảm giá, chỉ hiển thị giá gốc
