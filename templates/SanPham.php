@@ -412,28 +412,30 @@ $stmt->close();
                             <h2 class="title-head margin-top-0"><span>Theo Loại</span></h2>
                         </div>
 
-
                         <div class="aside-content filter-group">
                             <ul>
                                 <?php
-                               if ($result = $conn->query($sql)) {
-                                   if ($result->num_rows > 0) {
-                                       while($row = $result->fetch_assoc()) {
-                                           echo '<li class="filter-item"><span><label for="filter-' . strtolower(str_replace(' ', '-', $row["name"])) . '"><input type="checkbox" name="category_id" value="' . $row["id"] . '" onchange="this.form.submit()"> ' . $row["name"] . '</label></span></li>';
-                                       }
-                                   } else {
-                                       echo "Không có loại sản phẩm";
-                                   }
-                               } else {
-                                   echo "Lỗi truy vấn: " . $conn->error;
-                               }
-                               ?>
+                                // Lấy giá trị category_id từ URL
+                                $selectedCategoryId = isset($_GET['category_id']) ? $_GET['category_id'] : '';
+
+                                if ($result = $conn->query($sql)) {
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            // Kiểm tra xem category_id hiện tại có trùng với giá trị từ URL không
+                                            $isChecked = ($row["id"] == $selectedCategoryId) ? 'checked' : '';
+                                            echo '<li class="filter-item"><span><label for="filter-' . strtolower(str_replace(' ', '-', $row["name"])) . '"><input type="radio" name="category_id" value="' . $row["id"] . '" ' . $isChecked . ' onchange="this.form.submit()"> ' . $row["name"] . '</label></span></li>';
+                                        }
+                                    } else {
+                                        echo "Không có loại sản phẩm";
+                                    }
+                                } else {
+                                    echo "Lỗi truy vấn: " . $conn->error;
+                                }
+                                ?>
                             </ul>
                         </div>
 
-                        <?php
-$conn->close();
-?>
+                        <?php $conn->close(); ?>
                     </aside>
                 </form>
                 <script>
