@@ -271,7 +271,21 @@ $stmt->close();
                                         </a></p>
                                 </div>
                                 <div class="product-price">
-                                    <?php echo $row['price'] . "đ" ?>
+                                    <?php
+    $discountPercent = isset($row['discount']) ? $row['discount'] : 0; 
+    $originalPrice = $row['price'];
+    $discountAmount = ($originalPrice * $discountPercent) / 100;
+    $finalPrice = $originalPrice - $discountAmount;
+
+    if ($discountPercent > 0) {
+        // Hiển thị giá cũ gạch ngang và giá mới sau khi giảm
+        echo "<span style='color: #7fcbc9;'>" . number_format($finalPrice) . "đ</span>";
+        echo "<span style='text-decoration: line-through; margin-left:5px;'>" . number_format($originalPrice) . "đ</span> ";
+    } else {
+        // Nếu không có giảm giá, chỉ hiển thị giá gốc
+        echo number_format($originalPrice) . "đ";
+    }
+    ?>
                                 </div>
                             </div>
                         </div>
@@ -438,28 +452,6 @@ $stmt->close();
                         <?php $conn->close(); ?>
                     </aside>
                 </form>
-                <script>
-                // Select all checkboxes within the filter items
-                const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
-
-                // Function to uncheck all other checkboxes except the one passed as parameter
-                function uncheckOthers(currentCheckbox) {
-                    checkboxes.forEach((checkbox) => {
-                        if (checkbox !== currentCheckbox) {
-                            checkbox.checked = false;
-                        }
-                    });
-                }
-
-                // Add a change event listener to each checkbox
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            uncheckOthers(this);
-                        }
-                    });
-                });
-                </script>
             </aside>
 
         </div>
