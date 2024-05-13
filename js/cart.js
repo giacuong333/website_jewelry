@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  // Move on to the payment page
+  $("button[name='btn-placeorder']")
+    .unbind("click")
+    .click(() => (window.location.href = "../templates/payment.php"));
+
   $(".product-item")
     .unbind("click")
     .click(function () {

@@ -8,6 +8,7 @@
 
       <!-- CSS -->
       <link rel="stylesheet" href="../assets/css/config.css">
+      <link rel="stylesheet" href="../assets/css/payment.css">
 
       <!-- JQUERY -->
       <script src="../assets/libs/jquery-3.7.1.min.js"></script>
@@ -43,25 +44,32 @@
                                           </div>
                                           <div class="row">
                                                 <div class="form-group">
-                                                      <input type="email" name="email" class="form-control" placeholder="Email">
+                                                      <input type="email" name="email" class="form-control" placeholder="Email *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                      <input type="text" name="fullname" class="form-control" placeholder="Full name">
+                                                      <input type="text" name="fullname" class="form-control" placeholder="Full name *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                      <input type="text" name="phonenumber" class="form-control" placeholder="Phone number">
+                                                      <input type="text" name="phonenumber" class="form-control" placeholder="Phone number *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                      <input type="text" name="province" class="form-control" placeholder="Province">
+                                                      <input type="text" name="province" class="form-control" placeholder="Province *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                      <input type="text" name="district" class="form-control" placeholder="District">
+                                                      <input type="text" name="district" class="form-control" placeholder="District *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                      <input type="text" name="address" class="form-control" placeholder="Address">
+                                                      <input type="text" name="address" class="form-control" placeholder="Address *">
+                                                      <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
                                                       <textarea name="note" class="form-control" placeholder="Note"></textarea>
+                                                      <div class="error-message"></div>
                                                 </div>
                                           </div>
                                     </div>
@@ -76,8 +84,9 @@
 
                                           <div class="row">
                                                 <p style="font-size: 18px; font-weight: 600;" class="mb-2 p-0">Thanh toán</p>
-                                                <div class="form-control p-3">
-                                                      <span class="d-flex align-items-center"><input type="radio" style="width: 20px; height: 18px;" /><label for="" class="ms-2">Thanh toán khi giao hàng (COD)</label></span>
+                                                <div class="form-control p-3 d-flex align-items-center justify-content-between">
+                                                      <span class="d-flex align-items-center"><input type="radio" style="width: 20px; height: 18px;" /><label for="" class="ms-2">Cash on delivery (COD)</label></span>
+                                                      <i class="fa-solid fa-money-bill-1-wave" style="color:#7fcbc9; font-size: 20px;"></i>
                                                 </div>
                                           </div>
                                     </div>
