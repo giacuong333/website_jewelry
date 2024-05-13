@@ -14,72 +14,107 @@ if ($conn->connect_error) {
 
 $results_per_page = 9;
 
-// Determine the current page number
-if (isset($_GET['page'])) {
-    $current_page = intval($_GET['page']);
-} else {
-    $current_page = 1;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Start with a base SQL query
+$sql = "SELECT * FROM product WHERE 1=1";
+$params = []; // Array to hold bound parameters
+$types = ''; // String to hold parameter types
+
+
+// Filter based on price range
+if (isset($_GET["filter-product"], $_GET["input-min"], $_GET["input-max"])) {
+    $fromPrice = $_GET["input-min"];
+    $toPrice = $_GET["input-max"];
+    $sql .= " AND price BETWEEN ? AND ?";
+    $types .= 'dd'; // 'd' represents a double (decimal) parameter type
+    array_push($params, $fromPrice, $toPrice);
 }
 
-// If filtering
-if (isset($_GET["filter-product"])) {
-    // Filter based on price range
-    $fromPrice = isset($_GET["input-min"]) ? $_GET["input-min"] : null;
-    $toPrice = isset($_GET["input-max"]) ? $_GET["input-max"] : null;
-
-    if ($fromPrice !== null && $toPrice !== null) {
-        $sql = 'SELECT * FROM product WHERE price BETWEEN ' . $fromPrice . ' AND ' . $toPrice;
-    } else {
-        $sql = 'SELECT * FROM product';
-    }
-} else {
-    $sql = 'SELECT * FROM product';
+// Filter based on search query
+if (isset($_GET['search'])) {
+    $search = '%' . $_GET['search'] . '%';
+    $sql .= " AND title LIKE ?";
+    $types .= 's'; // 's' represents a string parameter type
+    $params[] = $search;
 }
 
-// Check if sort option is selected
-if (isset($_GET["sort"])) {
-    $sortOption = $_GET["sort"];
-    switch ($sortOption) {
-        case 'price-asc':
-            $sql .= ' ORDER BY price ASC';
-            break;
-        case 'price-desc':
-            $sql .= ' ORDER BY price DESC';
-            break;
-        case 'name-asc':
-            $sql .= ' ORDER BY thumbnail ASC';
-            break;
-        case 'name-desc':
-            $sql .= ' ORDER BY thumbnail DESC';
-            break;
-        default:
-            $sql = 'SELECT * FROM product';
-            break;
-    }
-}
-
-//loc theo loai san pham
+// Filter based on category
 if (isset($_GET["category_id"])) {
     $category_id = $_GET["category_id"];
-    $sql = 'SELECT * FROM product WHERE category_id = ' . $category_id;
+    $sql .= " AND category_id = ?";
+    $types .= 'i'; // 'i' represents an integer parameter type
+    $params[] = $category_id;
 }
-$result = mysqli_query($conn, $sql);
-$number_of_results = mysqli_num_rows($result);
 
+// Sorting
+if (isset($_GET["sort"])) {
+    switch ($_GET["sort"]) {
+        case 'price-asc': $sql .= ' ORDER BY price ASC'; break;
+        case 'price-desc': $sql .= ' ORDER BY price DESC'; break;
+        case 'name-asc': $sql .= ' ORDER BY thumbnail ASC'; break;
+        case 'name-desc': $sql .= ' ORDER BY thumbnail DESC'; break;
+    }
+}
+
+// Prepare the statement for pagination calculation
+$stmt = $conn->prepare($sql);
+if ($types) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$number_of_results = $result->num_rows;
+
+// Calculate number of pages
 $number_of_pages = ceil($number_of_results / $results_per_page);
 
+// Calculate the offset for the current page
 $this_page_first_result = ($current_page - 1) * $results_per_page;
 
-$sql .= ' LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
+// Add LIMIT clause to the SQL query
+$sql .= " LIMIT ?, ?";
+$types .= 'ii';
+array_push($params, $this_page_first_result, $results_per_page);
 
-$query = mysqli_query($conn, $sql);
+// Prepare the final statement with LIMIT
+$stmt = $conn->prepare($sql);
+if ($types) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$query = $stmt->get_result();
 
-// Display pagination links
-for ($page = 1; $page <= $number_of_pages; $page++) {
-    echo '<a href="SanPham.php?page=' . $page . '">' . $page . '</a> ';
+// Giả sử $filters đã được khởi tạo trước đó
+
+$filters = isset($filters) ? $filters : [];
+unset($filters['page']);
+// Lấy tất cả tham số từ URL
+$paramsFromUrl = $_GET;
+
+// Duyệt qua từng tham số trong URL
+foreach ($paramsFromUrl as $key => $value) {
+    // Chỉ thêm tham số vào $filters nếu nó chưa tồn tại
+    if (!array_key_exists($key, $filters)) {
+        $filters[$key] = $value;
+    }
+    // Nếu bạn muốn cập nhật giá trị cho khóa đã tồn tại với giá trị mới từ URL, bạn có thể bỏ qua điều kiện if hoặc xử lý cụ thể tại đây
 }
 
+// Bây giờ $filters sẽ chứa tất cả các tham số lọc hiện tại cùng với bất kỳ tham số mới nào từ URL mà không cập nhật lại các giá trị hiện có
 
+ // Loại bỏ tham số 'page'
+print_r($filters);
+$filter_query = http_build_query($filters); // Tạo chuỗi truy vấn từ các tham số lọc
+// Display pagination links
+for ($page = 1; $page <= $number_of_pages; $page++) {
+    // Tạo liên kết với các tham số lọc và tham số 'page'
+    $link = "SanPham.php?" . $filter_query . (!empty($filter_query) ? "&" : "") . "page=" . $page ;
+    echo '<a href="' . $link . '">' . $page . '</a> ';
+}
+
+// Close the statement
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -169,7 +204,13 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                                 trong tổng số <?php echo $number_of_results ?> sản phẩm
                             </span>
                         </div>
-
+                        <div class="search-pro">
+                            <form action="SanPham.php" method="get">
+                                <div class="input-group mb-5 width-50">
+                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm" name="search"  onchange="this.form.submit()">
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
@@ -213,17 +254,17 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
                         echo '<nav aria-label="Page navigation example">';
                         echo '<ul class="pagination">';
                         if ($current_page > 1) {
-                            echo '<li class="page-item  "><a class="page-link" href="SanPham.php?page=' . ($current_page - 1) . '">Previous</a></li>';
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . ($current_page - 1) . '">Previous</a></li>';
                         }
                         for ($pages = 1; $pages <= $number_of_pages; $pages++) {
                             if ($pages == $current_page) {
-                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                                echo '<li class="page-item active"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . $pages . '">' . $pages . '</a></li>';
                             } else {
-                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . $pages . '">' . $pages . '</a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . $pages . '">' . $pages . '</a></li>';
                             }
                         }
                         if ($current_page < $number_of_pages) {
-                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?page=' . ($current_page + 1) . '">Next</a></li>';
+                            echo '<li class="page-item"><a class="page-link" href="SanPham.php?' . $filter_query . (!empty($filter_query) ? "&" : "") . 'page=' . ($current_page + 1) . '">Next</a></li>';
                         }
                         echo '</ul>';
                         echo '</nav>';
