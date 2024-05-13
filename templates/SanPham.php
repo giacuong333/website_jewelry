@@ -459,31 +459,6 @@ $stmt->close();
                         <?php $conn->close(); ?>
                     </aside>
                 </form>
-<<<<<<< HEAD
-                <script>
-                    // Select all checkboxes within the filter items
-                    const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
-
-                    // Function to uncheck all other checkboxes except the one passed as parameter
-                    function uncheckOthers(currentCheckbox) {
-                        checkboxes.forEach((checkbox) => {
-                            if (checkbox !== currentCheckbox) {
-                                checkbox.checked = false;
-                            }
-                        });
-                    }
-
-                    // Add a change event listener to each checkbox
-                    checkboxes.forEach((checkbox) => {
-                        checkbox.addEventListener('change', function() {
-                            if (this.checked) {
-                                uncheckOthers(this);
-                            }
-                        });
-                    });
-                </script>
-=======
->>>>>>> c075ab7470ef9d33dbac31d73484750d0cf30f99
             </aside>
 
         </div>
