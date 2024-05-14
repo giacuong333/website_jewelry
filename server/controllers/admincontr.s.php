@@ -98,9 +98,9 @@ class AdminController extends Admin
         return $this->searchAllOrdersByDate($fromDate, $toDate);
     }
 
-    public function getOrderByUserId($user_id)
+    public function getOrderByUserIdAndOrderId($userId, $orderId)
     {
-        return Admin::getOrdersByUserId($user_id);
+        return Admin::getOrderByUserIdAndOrderId($userId, $orderId);
     }
 
     public function calculateTotalMoneyByUerId($user_id)

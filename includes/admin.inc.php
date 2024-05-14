@@ -308,7 +308,7 @@ if (isset($_GET["orderId"]) && isset($_GET["userId"])) {
   $userId = $_GET["userId"];
 
   foreach ($orders as $order) {
-    if ($order["id"] == $orderId) {
+    if ($order["orderid"] == $orderId) {
       $orderDetails = $order;
       break;
     }
@@ -329,7 +329,7 @@ if (isset($_GET["orderId"]) && isset($_GET["userId"])) {
                     </div>
                     <div class='content-body__top-right'>
                       <h4>Order ID</h4>
-                      <p>#{$orderDetails['id']}</p>
+                      <p>#{$orderDetails['orderid']}</p>
                     </div>
                   </div>
                   <div class='content-body__top-bottom'>
@@ -353,25 +353,30 @@ if (isset($_GET["orderId"]) && isset($_GET["userId"])) {
                 </div>
                 <div class='content-body__middle'>";
 
-  $orderOfUser = $admin->getOrderByUserId($userId);
+  $orderOfUser = $admin->getOrderByUserIdAndOrderId($userId, $orderId);
+  echo "<script>console.log('" . json_encode($orderOfUser) . "')</script>";
+
+  $totalOfOrder = 0;
+
   if (!empty($orderOfUser)) {
     foreach ($orderOfUser as $order) {
+      $totalOfOrder = $order["order_totalmoney"];
       $html .= "
             <div class='content-body__middle-product' id={$order['productId']}>
               <div class='content-body__middle-product-image'><img src='{$order['thumbnail']}' alt='Product Image'></div>
               <div class='content-body__middle-product-info'>
                 <div class='content-body__middle-product-name'>{$order['title']} <span>({$order['num']})</span></div>
-                <div class='content-body__middle-product-price'>{$order["price"]}</div>
+                <div class='content-body__middle-product-price'>{$order["orderdetail_totalmoney"]}</div>
               </div>
             </div>";
     }
   }
 
-  $totalOfOrder = $admin->calculateTotalMoneyByUerId($userId);
+  // $totalOfOrder = $admin->calculateTotalMoneyByUerId($userId);
   $html .= "</div>
         <div class='content-body__bottom'>
           <p style='display:inline-block; color: #1f7a77;'>Total</p>
-          <p class='content-body__bottom-total'>{$totalOfOrder["total_of_order"]}</p>
+          <p class='content-body__bottom-total'>{$totalOfOrder}</p>
         </div>
         </div>
           <div class='content-footer'>
@@ -919,7 +924,7 @@ if (isset($_POST["saveimportinvoice"])) {
   $product_id = $_POST["product_id"];
   $_SESSION["supplier_id"] = $_POST["supplier_id"];
   $product_amount = $_POST["product_amount"];
-  $import_product_price = $_POST["import_product_price"];
+  $import_product_price = $_POST["product_price"];
 
   $import_products[] = ["product_id" => $product_id, "product_amount" => $product_amount, "import_product_price" => $import_product_price];
 

@@ -11,12 +11,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-<<<<<<< HEAD
 $id = isset($_GET['data-productid']) ? $_GET['data-productid'] : "";
-=======
-$id = $_GET['data-productid'];
-
->>>>>>> ae481cb787ea4baa24e584a24c83124539065313
 // Tạo truy vấn SQL
 $sql = "SELECT * FROM `product` WHERE id = ?";
 // Chuẩn bị và thực thi truy vấn
@@ -117,7 +112,17 @@ $productDetails = $result->fetch_assoc();
                         </div>
                         <div class="pro-quantity border-item-bottom ">
                             <div class="pro-action ms-0 margin-bottom-20">
-                                <button class="btn btn-primary" type="button" name="add_product_to_cart"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
+                                <?php
+                                if (intval($productDetails['quantity']) <= 0) {
+                                ?>
+                                    <button class="btn" type="button" style="pointer-events:none; background-color:#6c757d; border-color:#6c757d;">
+                                        Hết hàng
+                                    </button>
+                                <?php } else { ?>
+                                    <button class="btn btn-primary" type="button" name="add_product_to_cart">
+                                        <i class="fa fa-shopping-cart"></i> Mua hàng
+                                    </button>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="top-left d-lg-flex d-md-flex d-none">

@@ -223,16 +223,18 @@ class Admin extends Database
 		}
 	}
 
-	protected function getOrdersByUserId($user_id)
+	protected function getOrderByUserIdAndOrderId($userId, $orderId)
 	{
 		try {
-			$sql = "SELECT *, `product`.`id` AS `productId` 
+			$sql = "SELECT *, `product`.`id` AS `productId`, `orderdetail`.`price` AS `orderdetail_price`,
+			`orderdetail`.`total_money` AS `orderdetail_totalmoney`, `order`.`total_money` AS `order_totalmoney`
 			FROM `order`
 			JOIN `orderdetail` ON `order`.`id` = `orderdetail`.`order_id`
 			JOIN `product` ON `orderdetail`.`product_id` = `product`.`id`
-			WHERE `order`.`user_id` = ? AND `order`.`isDeleted` != 1";
+			WHERE `order`.`user_id` = ? AND `order`.`isDeleted` != 1 AND `order`.`id` = ?";
+
 			$stmt = $this->connect()->prepare($sql);
-			$stmt->execute([$user_id]);
+			$stmt->execute([$userId, $orderId]);
 			$order = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			return $order ?? [];
 		} catch (Exception $e) {

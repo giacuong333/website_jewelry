@@ -99,7 +99,7 @@ $(document).ready(function () {
         </div>
         <div>
           <span class="me-5" style="font-size:14px">Trạng thái thanh toán: <i style="font-weight: 600; font-size: 16px; color:red">Chưa thanh toán</i></span>
-          <span style="font-size:14px">Trạng thái vận chuyển: <i style="font-weight: 600; font-size: 16px; color:red">${value.status == 1 ? "Đang vận chuyển" : "Đang xử lý"}</i></span>
+          <span style="font-size:14px">Trạng thái vận chuyển: <i style="font-weight: 600; font-size: 16px; color:red">${data[0].status == 1 ? "Đang vận chuyển" : "Đang xử lý"}</i></span>
         </div>
         <div class="container mt-4">
           <div class="row">

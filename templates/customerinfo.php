@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Thông tin khách hàng</title>
 
-
 	<!-- Fontawesome -->
 	<link rel="stylesheet" href="../assets/icons/css/all.min.css">
 

@@ -38,7 +38,10 @@ $isPlaced = $paymentObj->placeOrder($userInfo, $userProducts);
 
 if ($isPlaced) {
       unset($_SESSION['cart']);
-      $redirectUrl = $isPlaced ? "../templates/trangchu.php?success" : "../templates/trangchu.php?failed";
-      header("Location: $redirectUrl");
+      $_SESSION['order_placed'] = true;
+      header("Location: ../templates/trangchu.php");
       exit();
+} else {
+      $_SESSION['order_placed'] = false;
+      header("Location: ../templates/trangchu.php");
 }

@@ -59,10 +59,10 @@ $(document).ready(function () {
           isValid = isExceedDefault(inputObj.val(), 50, errorObj);
           break;
         case "amount":
-          isValid = isExceedDefault(inputObj.val(), 100, errorObj);
+          isValid = isExceedDefault(inputObj.val(), 50, errorObj);
           break;
-        case "import_product_price":
-          isValid = isExceedDefault(inputObj.val(), 900000000, errorObj);
+        case "product_price":
+          isValid = isExceedDefault(inputObj.val(), 500000000, errorObj);
           break;
       }
     }
@@ -78,8 +78,8 @@ $(document).ready(function () {
       const errorObj = inputObj.closest("td").find(".error-message");
       isValid = isValidInputs(inputObj, errorObj, inputType) && isValid;
 
-      if (key === "price" || key === "discount" || key === "product_amount" || key === "import_product_price") {
-        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : key === "discount" ? "discount" : key === "product_amount" ? "amount" : "import_product_price") && isValid;
+      if (key === "price" || key === "discount" || key === "product_amount" || key === "product_price") {
+        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : key === "discount" ? "discount" : key === "product_price" ? "product_price" : "amount") && isValid;
       }
 
       // Remove the error when the user is typing
@@ -437,6 +437,7 @@ $(document).ready(function () {
   // Handle the order when being clicked
   function viewOrderDetails() {
     const rowOrders = $(".row-order");
+
     rowOrders.each(function () {
       $(this).click(function (e) {
         const orderId = $(this).data("orderid");
@@ -445,7 +446,7 @@ $(document).ready(function () {
         $.ajax({
           type: "GET",
           url: "../includes/admin.inc.php",
-          data: { orderId: orderId, userId: userId },
+          data: { orderId, userId },
           success: function (response) {
             $("#order-body").prepend(response);
             const container = $(".container");
@@ -847,9 +848,9 @@ $(document).ready(function () {
       const product_id = $("#product_selected").val();
       const supplier_id = $("#supplier_selected").val();
       const product_amount = $("input[name='product_amount']");
-      const import_product_price = $("input[name='product_price']");
+      const product_price = $("input[name='product_price']");
 
-      const isValid = handleValidInput({ product_amount, import_product_price });
+      const isValid = handleValidInput({ product_amount, product_price });
 
       if (isValid) {
         $.ajax({
@@ -859,11 +860,11 @@ $(document).ready(function () {
             product_id: product_id,
             supplier_id: supplier_id,
             product_amount: product_amount.val(),
-            import_product_price: import_product_price.val(),
+            product_price: product_price.val(),
             saveimportinvoice: "saveimportinvoice",
           },
           success: function (response) {
-            alert("Saved");
+            $("button[name='addproduct']").attr("type", "submit");
 
             // Refresh input fields
             $("input[name='product_amount']").val("");

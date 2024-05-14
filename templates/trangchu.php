@@ -29,6 +29,17 @@
 </head>
 
 <body>
+    <?php
+    session_start();
+    if (isset($_SESSION['order_placed'])) {
+        if ($_SESSION['order_placed']) {
+            echo '<script>alert("Order placed successfully")</script>';
+        } else {
+            echo '<script>alert("Order placed failed")</script>';
+        }
+        unset($_SESSION['order_placed']);
+    }
+    ?>
     <div id="wrapper">
         <!--Start Header-->
         <?php include_once 'header.php'; ?>

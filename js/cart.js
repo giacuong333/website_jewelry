@@ -66,8 +66,11 @@ $(document).ready(function () {
               <td class="text-center">
                 <div>
                     <button type="button" class="minus">-</button>
-                    <input type="number" name="quantity" value="${product.customer_quantity}">
+                    <input type="number" name="quantity" disabled="disabled" style="min-width: 50px;" value="${product.customer_quantity}">
                     <button type="button" class="plus">+</button>
+                </div>
+                <div class="text-muted in-stock" style="font-size: 12px;" data-instock="${product.quantity}">
+                      In stock: ${product.quantity}
                 </div>
               </td>
               <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${totalPriceOfproduct}</td>
@@ -77,7 +80,7 @@ $(document).ready(function () {
 
           // Side effect
           $("#popuppanel__header_title > span").text(`${titleOfNewProduct}`);
-          $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
+          $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${totalOfProducts}) sản phẩm`);
           $("#total_or_order").text(totalOfOrder);
           $(".quantity").text(`${totalOfProducts}`);
 
@@ -96,7 +99,7 @@ $(document).ready(function () {
             updateTotalPrice($(this));
 
             const productObj = $(this).closest("tr");
-            changeQuantity(productObj, quantityInput.val());
+            changeQuantity(productObj, quantityInput.val(), quantityInput);
           });
 
           minusBtn.unbind("click").click(function (event) {
@@ -107,14 +110,14 @@ $(document).ready(function () {
             updateTotalPrice($(this));
 
             const productObj = $(this).closest("tr");
-            changeQuantity(productObj, quantityInput.val());
+            changeQuantity(productObj, quantityInput.val(), quantityInput);
           });
 
           quantityInput.on("input", function () {
             updateTotalPrice($(this));
 
             const productObj = $(this).closest("tr");
-            changeQuantity(productObj, quantityInput.val());
+            changeQuantity(productObj, quantityInput.val(), quantityInput);
           });
 
           // remove product from the cart
@@ -167,12 +170,15 @@ $(document).ready(function () {
           const productList = Object.values(JSON.parse(response));
           productObj.remove(); // remove the product from the cart UI
 
+          let totalOfProducts = 0;
+
           const totalOfOrder = productList.reduce((total, product) => {
+            totalOfProducts += Number(product.customer_quantity);
             return total + Number(product.price) * Number(product.customer_quantity);
           }, 0);
 
           // Side effect
-          $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
+          $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${totalOfProducts}) sản phẩm`);
           $("#total_or_order").text(totalOfOrder);
         } else if (response === "0") {
           alert("Failed");
@@ -184,7 +190,7 @@ $(document).ready(function () {
     });
   }
 
-  function changeQuantity(productObj, customer_quantity) {
+  function changeQuantity(productObj, customer_quantity, maxQuantity) {
     const productId = productObj.data("productid");
     $.ajax({
       type: "POST",
@@ -202,11 +208,27 @@ $(document).ready(function () {
         }, 0);
 
         // Side effect
-        $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
+        $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${customer_quantity}) sản phẩm`);
         $("#total_or_order").text(totalOfOrder);
         updateQuantityOfCart(quantity);
         if (quantity === 0) {
           handleCartEmpty(productList);
+        }
+
+        if (maxQuantity) {
+          console.log(maxQuantity);
+          const inputObj = $(maxQuantity).closest("td").find(".in-stock");
+          if (inputObj) {
+            const maxQuantityValue = Number(inputObj.data("instock"));
+            if (maxQuantity.val() >= maxQuantityValue) {
+              maxQuantity.val(maxQuantityValue);
+              maxQuantity.siblings(".plus").attr("disabled", "disabled");
+            } else {
+              maxQuantity.siblings(".plus").removeAttr("disabled");
+            }
+          } else {
+            console.log("Element not found");
+          }
         }
       },
     });
@@ -218,6 +240,7 @@ $(document).ready(function () {
 
   function updateQuantityOfCart(quantity) {
     $(".quantity").text(quantity);
+    $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${quantity}) sản phẩm`);
   }
 
   // See the products in the cart
@@ -262,8 +285,11 @@ $(document).ready(function () {
                   <td class="text-center">
                     <div>
                         <button type="button" class="minus">-</button>
-                        <input type="number" name="quantity" value="${product.customer_quantity}">
+                        <input type="number" name="quantity" disabled="disabled" style="min-width: 50px;" value="${product.customer_quantity}">
                         <button type="button" class="plus">+</button>
+                    </div>
+                    <div class="text-muted in-stock" style="font-size: 12px;" data-instock="${product.quantity}">
+                      In stock: ${product.quantity}
                     </div>
                   </td>
                   <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${totalPriceOfproduct}</td>
@@ -273,7 +299,7 @@ $(document).ready(function () {
               .join("");
 
             // Side effect
-            $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
+            $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${totalOfProducts}) sản phẩm`);
             $("#total_or_order").text(totalOfOrder);
             $(".quantity").text(`${totalOfProducts}`);
 
@@ -292,7 +318,7 @@ $(document).ready(function () {
               updateTotalPrice($(this));
 
               const productObj = $(this).closest("tr");
-              changeQuantity(productObj, quantityInput.val());
+              changeQuantity(productObj, quantityInput.val(), quantityInput);
             });
 
             minusBtn.unbind("click").click(function (event) {
@@ -303,14 +329,14 @@ $(document).ready(function () {
               updateTotalPrice($(this));
 
               const productObj = $(this).closest("tr");
-              changeQuantity(productObj, quantityInput.val());
+              changeQuantity(productObj, quantityInput.val(), quantityInput);
             });
 
             quantityInput.on("input", function () {
               updateTotalPrice($(this));
 
               const productObj = $(this).closest("tr");
-              changeQuantity(productObj, quantityInput.val());
+              changeQuantity(productObj, quantityInput.val(), quantityInput);
             });
 
             // remove product from the cart
@@ -318,8 +344,6 @@ $(document).ready(function () {
               const productObj = $(this).closest("tr");
               handleRemoveProduct(productObj);
             });
-          } else {
-            handleCartEmpty(productList);
           }
         }
       },

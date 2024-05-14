@@ -70,7 +70,7 @@
                                     foreach ($orders as $order) {
                                           $status = $order["status"] == 1 ? "Đã xử lý" : "Đang xử lý";
                               ?>
-                                          <tr class="row-order" data-orderid="<?php echo $order["id"]; ?>" data-userid="<?php echo $order["userid"] ?>">
+                                          <tr class="row-order" data-orderid="<?php echo $order["orderid"]; ?>" data-userid="<?php echo $order["userid"] ?>">
                                                 <td> <?php echo $order["orderid"]; ?></td>
                                                 <td> <?php echo $order["fullname"]; ?></td>
                                                 <td> <?php echo $order["orderemail"]; ?></td>
