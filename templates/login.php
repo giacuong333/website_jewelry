@@ -9,19 +9,21 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/config.css">
     <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="../assets/css/cart.css">
 
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
 
     <!-- Js -->
     <script src="../js/login.js" type="module"></script>
+    <script src="../js/cart.js"></script>
 </head>
 
 <body>
     <?php
-	include_once("../includes/login.inc.php");
-	include_once("../templates/header.php");
-	?>
+    include_once("../includes/login.inc.php");
+    include_once("../templates/header.php");
+    ?>
 
     <main id="login-main" class="container mt-xs-5">
         <div class="row">
@@ -59,8 +61,7 @@
                                 <span class="error-message"></span>
                             </div>
 
-                            <button type="button" class="btn btn--active btn-login" name="login" value="login"
-                                style="color: #fff!important;">ĐĂNG NHẬP</button>
+                            <button type="button" class="btn btn--active btn-login" name="login" value="login" style="color: #fff!important;">ĐĂNG NHẬP</button>
                             <a href="./signup.php">Đăng ký</a>
                         </form>
                     </div>
@@ -70,77 +71,73 @@
                     <div class="top">
 
                         <?php
-						if (!isset($_GET["success"])) {
-						?>
+                        if (!isset($_GET["success"])) {
+                        ?>
 
-                        <p>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email</p>
-
-                        <?php
-						} else {
-						?>
-
-                        <p>Nhập code để đổi mật khẩu mới</p>
+                            <p>Bạn quên mật khẩu? Nhập địa chỉ email để lấy lại mật khẩu qua email</p>
 
                         <?php
-						}
-						?>
+                        } else {
+                        ?>
+
+                            <p>Nhập code để đổi mật khẩu mới</p>
+
+                        <?php
+                        }
+                        ?>
 
                         <form action="../includes/forgetpassword.inc.php" method="post">
 
                             <?php
-							if (!isset($_GET["success"])) {
-							?>
+                            if (!isset($_GET["success"])) {
+                            ?>
 
-                            <div class="form-group">
-                                <label for="useremail" style="font-weight: 600;">Email
-                                    <span style="color:red;">*</span>
-                                </label>
+                                <div class="form-group">
+                                    <label for="useremail" style="font-weight: 600;">Email
+                                        <span style="color:red;">*</span>
+                                    </label>
 
-                                <input type="email" id="forgotuseremail" name="forgotuseremail" placeholder="Email" />
+                                    <input type="email" id="forgotuseremail" name="forgotuseremail" placeholder="Email" />
 
-                                <?php
-									if (isset($_GET["error"]) && $_GET["error"] == "wrongemail") {
-										echo '<span class="error-message">Email không tồn tại</span>';
-									} else if (isset($_GET["error"]) && $_GET["error"] == "emptyinput") {
-										echo '<span class="error-message">Vui lòng nhập email đã đăng ký</span>';
-									} else {
-										echo '<span class="error-message"></span>';
-									}
-									?>
+                                    <?php
+                                    if (isset($_GET["error"]) && $_GET["error"] == "wrongemail") {
+                                        echo '<span class="error-message">Email không tồn tại</span>';
+                                    } else if (isset($_GET["error"]) && $_GET["error"] == "emptyinput") {
+                                        echo '<span class="error-message">Vui lòng nhập email đã đăng ký</span>';
+                                    } else {
+                                        echo '<span class="error-message"></span>';
+                                    }
+                                    ?>
 
-                            </div>
+                                </div>
 
-                            <button type="submit" class="btn btn--active" name="getformerpassword"
-                                value="getformerpassword" style="color: #fff">LẤY LẠI MẬT KHẨU</button>
-
-                            <?php
-							}
-							?>
+                                <button type="submit" class="btn btn--active" name="getformerpassword" value="getformerpassword" style="color: #fff">LẤY LẠI MẬT KHẨU</button>
 
                             <?php
-							if (isset($_GET["success"]) && $_GET["success"] == "newpasswordsent") {
-							?>
-
-                            <div class="form-group">
-                                <label for="useremail" style="font-weight: 600;">Code
-                                    <span style="color:red;">*</span>
-                                </label>
-
-                                <input type="text" id="reset_token" name="reset_token" placeholder="Passcode" />
-
-                                <div class="error-message"></div>
-
-                                <button type="button" style="display: inline-block;" class="btn btn--active text-white"
-                                    name="confirmpasscode" value="confirmpasscode">XÁC NHẬN</button>
-
-                                <button
-                                    style="border:none; background-color: transparent; font-size: 16px; cursor: pointer;"
-                                    type="submit" name="sendcode" value="sendcode">Send code again</button>
-                            </div>
+                            }
+                            ?>
 
                             <?php
-							}
-							?>
+                            if (isset($_GET["success"]) && $_GET["success"] == "newpasswordsent") {
+                            ?>
+
+                                <div class="form-group">
+                                    <label for="useremail" style="font-weight: 600;">Code
+                                        <span style="color:red;">*</span>
+                                    </label>
+
+                                    <input type="text" id="reset_token" name="reset_token" placeholder="Passcode" />
+
+                                    <div class="error-message"></div>
+
+                                    <button type="button" style="display: inline-block;" class="btn btn--active text-white" name="confirmpasscode" value="confirmpasscode">XÁC NHẬN</button>
+
+                                    <button style="border:none; background-color: transparent; font-size: 16px; cursor: pointer;" type="submit" name="sendcode" value="sendcode">Send code again</button>
+                                </div>
+
+                            <?php
+                            }
+                            ?>
 
                         </form>
                     </div>
@@ -150,6 +147,9 @@
     </main>
 
     <?php include_once("../templates/footer.php") ?>
+
+    <!-- Cart -->
+    <?php include_once("./cart.php"); ?>
 </body>
 
 </html>

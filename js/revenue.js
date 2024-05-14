@@ -3,10 +3,14 @@ $(document).ready(function () {
   async function fetchData(url) {
     try {
       const response = await fetch(url);
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = response.json();
       return data;
     } catch (error) {
-      console.log(error);
+      console.log("Fetch data error:", error);
+      return null; // Return null in case of an error
     }
   }
 
@@ -81,6 +85,11 @@ $(document).ready(function () {
       const vaxis = [];
 
       data.forEach((item) => {
+        if (!item || typeof item !== "object") {
+          console.error("Invalid item in data:", item);
+          return;
+        }
+
         haxis.push(item.order_date);
         vaxis.push(item.revenue);
       });

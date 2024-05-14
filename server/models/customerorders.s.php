@@ -19,7 +19,7 @@ class CustomerOrdersModel extends Database
       protected function getOrderDetailsById($orderid, $userid)
       {
             try {
-                  $sql = "SELECT * FROM `order` 
+                  $sql = "SELECT *, `orderdetail`.`price` AS `orderdetail_price` FROM `order` 
                   JOIN `orderdetail` ON `order`.`id` = `orderdetail`.`order_id` 
                   JOIN `product` ON `orderdetail`.`product_id` = `product`.`id` 
                   WHERE `order`.`id` = ? 

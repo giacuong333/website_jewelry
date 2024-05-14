@@ -15,8 +15,7 @@ class Revenue extends Database
                   GROUP BY MONTH(`order_date`)
                   ORDER BY DATE(`order_date`);";
 
-                  $stmt = $this->connect()->prepare($sql);
-                  $stmt->execute();
+                  $stmt = $this->connect()->query($sql);
 
                   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

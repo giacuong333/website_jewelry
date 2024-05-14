@@ -44,3 +44,57 @@
 .productlist-table td {
   border: none;
 }
+
+.popupcart {
+  --position-distance: 10%;
+  position: fixed;
+  top: var(--position-distance);
+  right: var(--position-distance);
+  bottom: var(--position-distance);
+  left: var(--position-distance);
+  z-index: 5;
+}
+
+.popupcart_close {
+  --position-distance: 10px;
+  position: absolute;
+  top: var(--position-distance);
+  right: var(--position-distance);
+  padding: 3px 5px;
+  border-radius: 50%;
+  background-color: #7fcbc9;
+  color: #fff;
+  outline: none;
+  border: none;
+}
+
+button.plus,
+button.minus,
+input[name="quantity"] {
+  border: 1px solid #ccc;
+  outline: none;
+  font-weight: 500;
+  padding: 4px 10px;
+  background: #fff;
+  color: #000;
+}
+
+button.minus {
+  padding: 4px 12px;
+}
+
+input[name="quantity"] {
+  width: 10%;
+  padding: 4px 4px;
+}
+
+button[name="btn-placeorder"] {
+  float: right;
+  background-color: #7fcbc9 !important;
+  letter-spacing: 1.2px;
+  transition: all ease-in-out 0.2s;
+}
+
+button[name="btn-placeorder"]:hover {
+  border: 1px solid #000 !important;
+}

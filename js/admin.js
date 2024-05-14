@@ -61,6 +61,9 @@ $(document).ready(function () {
         case "amount":
           isValid = isExceedDefault(inputObj.val(), 100, errorObj);
           break;
+        case "import_product_price":
+          isValid = isExceedDefault(inputObj.val(), 900000000, errorObj);
+          break;
       }
     }
     return isValid;
@@ -75,8 +78,8 @@ $(document).ready(function () {
       const errorObj = inputObj.closest("td").find(".error-message");
       isValid = isValidInputs(inputObj, errorObj, inputType) && isValid;
 
-      if (key === "price" || key === "discount" || key === "product_amount") {
-        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : key === "discount" ? "discount" : "amount") && isValid;
+      if (key === "price" || key === "discount" || key === "product_amount" || key === "import_product_price") {
+        isValid = isValidInputs(inputObj, errorObj, key === "price" ? "price" : key === "discount" ? "discount" : key === "product_amount" ? "amount" : "import_product_price") && isValid;
       }
 
       // Remove the error when the user is typing
@@ -746,42 +749,21 @@ $(document).ready(function () {
     const img_chosen_error = img_chosen.closest(".form-group").find(".error-message");
     const img_title_error = img_title.closest(".form-group").find(".error-message");
 
-    let is_allowed = true;
+    $.ajax({
+      type: "POST",
+      url: "../includes/admin.inc.php",
+      data: { img_chosen, img_title, type: "" },
 
-    if (!isEmpty(img_chosen.val(), img_chosen_error)) {
-      is_allowed = false;
-    }
-
-    if (!isEmpty(img_title.val(), img_title_error)) {
-      is_allowed = false;
-    }
-
-    const formData = new FormData();
-    formData.append("image_path", img_chosen[0].files[0]);
-    formData.append("image_title", img_title.val());
-    formData.append("upload_img", "upload_img");
-
-    console.log(formData);
-
-    if (is_allowed) {
-      $.ajax({
-        type: "POST",
-        url: "../includes/admin.inc.php",
-        data: formData,
-        processData: false, // Prevent jQuery from processing the data
-        contentType: false, // Prevent jQuery from setting contentType
-
-        success: function (response) {
-          console.log(response); // fix response
-          if (response.includes("success")) {
-            alert("Upload image successfully");
-            window.location.reload();
-          } else if (response.includes("failed")) {
-            alert("Upload image failed");
-          }
-        },
-      });
-    }
+      success: function (response) {
+        console.log(response); // fix response
+        if (response.includes("success")) {
+          alert("Upload image successfully");
+          window.location.reload();
+        } else if (response.includes("failed")) {
+          alert("Upload image failed");
+        }
+      },
+    });
   }
 
   // Search gallery
@@ -864,27 +846,31 @@ $(document).ready(function () {
     $(".saveproducttempo").click(function () {
       const product_id = $("#product_selected").val();
       const supplier_id = $("#supplier_selected").val();
-      const product_amount = $("input[name='product_amount']").val();
-      const import_product_price = $("input[name='product_price']").val();
+      const product_amount = $("input[name='product_amount']");
+      const import_product_price = $("input[name='product_price']");
 
-      $.ajax({
-        type: "POST",
-        url: "../includes/admin.inc.php",
-        data: {
-          product_id: product_id,
-          supplier_id: supplier_id,
-          product_amount: product_amount,
-          import_product_price: import_product_price,
-          saveimportinvoice: "saveimportinvoice",
-        },
-        success: function (response) {
-          alert("Saved");
+      const isValid = handleValidInput({ product_amount, import_product_price });
 
-          // Refresh input fields
-          $("input[name='product_amount']").val("");
-          $("input[name='product_price']").val("");
-        },
-      });
+      if (isValid) {
+        $.ajax({
+          type: "POST",
+          url: "../includes/admin.inc.php",
+          data: {
+            product_id: product_id,
+            supplier_id: supplier_id,
+            product_amount: product_amount.val(),
+            import_product_price: import_product_price.val(),
+            saveimportinvoice: "saveimportinvoice",
+          },
+          success: function (response) {
+            alert("Saved");
+
+            // Refresh input fields
+            $("input[name='product_amount']").val("");
+            $("input[name='product_price']").val("");
+          },
+        });
+      }
     });
   }
   save_product_temp();

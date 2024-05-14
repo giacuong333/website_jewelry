@@ -9,10 +9,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/config.css"> <!-- Đường dẫn tới tập tin CSS của bạn -->
     <link rel="stylesheet" href="../assets/css/feedback.css"> <!-- CSS cho trang phản hồi -->
+    <link rel="stylesheet" href="../assets/css/sanpham.css">
     <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script> <!-- Đường dẫn tới jQuery -->
     <!-- JavaScript -->
     <script src="../js/feedback.js" type="module"></script> <!-- JavaScript cho trang phản hồi -->
+    <script src="../js/cart.js" defer></script>
 </head>
 
 <body>
@@ -50,6 +52,9 @@
     <?php
     include_once("../templates/footer.php");
     ?>
+
+    <!-- Cart -->
+    <?php include_once("./cart.php"); ?>
 </body>
 
 </html>

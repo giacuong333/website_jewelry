@@ -13,8 +13,7 @@ class Revenue extends Database
                   WHERE `status` = 1 
                   GROUP BY YEAR(`order_date`);";
 
-                  $stmt = $this->connect()->prepare($sql);
-                  $stmt->execute();
+                  $stmt = $this->connect()->query($sql);
 
                   $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

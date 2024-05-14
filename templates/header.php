@@ -14,6 +14,18 @@
 <!-- Js -->
 <script src="../js/header.js"></script>
 
+<!-- Count the total of quantity of products in the cart -->
+<?php
+session_start();
+$totalOfQuantiy = 0;
+if (isset($_SESSION["cart"])) {
+    $productList = $_SESSION["cart"];
+    foreach ($productList as $product) {
+        $totalOfQuantiy += intval($product["customer_quantity"]);
+    }
+}
+?>
+
 <div class="container-fluid">
     <div class="row">
         <header class="main-header">
@@ -32,7 +44,6 @@
                     <input type="checkbox" name="" id="userpanel" style="display: none;">
                     <div class="login-options">
                         <?php
-                        session_start();
                         if (isset($_SESSION["id"])) {
                             echo "
                                 <a href='./customerinfo.php'>
@@ -58,7 +69,7 @@
                     </div>
                     <a href="#" class="shoppingcart">
                         <i class="fa-solid fa-cart-shopping">
-                            <span class="quantity">0</span>
+                            <span class="quantity"><?php echo $totalOfQuantiy; ?></span>
                         </i>
                     </a>
                     <!-- Used for < medium screen -->

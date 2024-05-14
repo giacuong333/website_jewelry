@@ -134,7 +134,7 @@ $(document).ready(function () {
                   <th class="text-center">Tổng</th>
                 </tr>
               </thead>
-              <tbody class="productlist-tbody"> // Css max-height cho class nay
+              <tbody class="productlist-tbody">
         `;
 
         html += data
@@ -146,7 +146,7 @@ $(document).ready(function () {
               <span class="ms-2">${order.title}</span>
             </td>
             <td class="text-center" style="vertical-align:middle;">
-              <p class="m-0">${order.price}</p>
+              <p class="m-0">${order.orderdetail_price}</p>
             </td>
             <td class="text-center" style="vertical-align:middle;">
               <p class="m-0">${order.num}</p>

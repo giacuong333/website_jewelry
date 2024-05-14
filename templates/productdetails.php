@@ -11,16 +11,16 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$id = $_GET['data-productid'];
+$id = isset($_GET['data-productid']) ? $_GET['data-productid'] : "";
 // Tạo truy vấn SQL
-$sql = "SELECT * FROM product WHERE id = ?";
+$sql = "SELECT * FROM `product` WHERE id = ?";
 // Chuẩn bị và thực thi truy vấn
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 // Lấy kết quả
 $result = $stmt->get_result();
-$product = $result->fetch_assoc();
+$productDetails = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -36,13 +36,15 @@ $product = $result->fetch_assoc();
 
     <!-- ICON -->
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
-    <!-- SCRIPT -->
+    <!-- JQUERY -->
     <script src="../assets/libs/jquery-3.7.1.min.js"></script>
-    <script src="../js/header.js"></script>
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
+    <!-- JS -->
+    <script src="../js/cart.js"></script>
     <style>
         .product-info {
             margin-left: 100px;
@@ -59,7 +61,7 @@ $product = $result->fetch_assoc();
 <body>
     <div class="page">
         <!--Start Header-->
-        <?php include('header.php'); ?>
+        <?php include_once('header.php'); ?>
         <!-- End Header -->
         <!--Start bread-crumb -->
         <div class="main-bread-crumb">
@@ -68,7 +70,7 @@ $product = $result->fetch_assoc();
             $breadcrumb_parts = [
                 ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
                 ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
-                ['name' => $product['title'], 'url' => 'productdetails.php'],
+                ['name' => $productDetails['title'], 'url' => 'productdetails.php'],
 
             ];
 
@@ -93,27 +95,24 @@ $product = $result->fetch_assoc();
         </div>
         <!-- End bread-crumb -->
         <div class="container">
-            <div class="row">
+            <div class="row productdetail-item" data-productquantity="<?php echo $row["quantity"]; ?>" data-productid="<?php echo $productDetails["id"]; ?>">
                 <div class="col-md-6">
                     <div class="pro-image">
-                        <img src="<?php echo $product['thumbnail']; ?>" alt="">
+                        <img src="<?php echo $productDetails['thumbnail']; ?>" alt="">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="product-info">
                         <div class="border-item-bottom">
-                            <h2 class="pro-name"><?php echo $product['title']; ?></h2>
-                            <div class="pro-price margin-bottom-20"> <?php echo $product['price'] . "đ"; ?> </div>
+                            <h2 class="pro-name"><?php echo $productDetails['title']; ?></h2>
+                            <div class="pro-price margin-bottom-20"> <?php echo $productDetails['price'] . "đ"; ?> </div>
                         </div>
                         <div class="pro-description border-item-bottom margin-bottom-20">
-                            <p><?php echo $product['description']; ?></p>
+                            <p><?php echo $productDetails['description']; ?></p>
                         </div>
                         <div class="pro-quantity border-item-bottom ">
-                            <button class="margin-bottom-20" onclick="handelMinus()"><i class="fa-solid fa-minus"></i></button>
-                            <input type="number" size="4" name="quantity" data-zeros="true" value="1" min="1" max="10" class="form-control form-control-impressed stepper-input margin-bottom-20" id="amount">
-                            <button class="margin-bottom-20" onclick=" handelPlus()"><i class="fa-solid fa-plus"></i></button>
-                            <div class="pro-action margin-bottom-20">
-                                <button class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
+                            <div class="pro-action ms-0 margin-bottom-20">
+                                <button class="btn btn-primary" type="button" name="add_product_to_cart"><i class="fa fa-shopping-cart"></i> Mua hàng</button>
                             </div>
                         </div>
                         <div class="top-left d-lg-flex d-md-flex d-none">
@@ -130,29 +129,17 @@ $product = $result->fetch_assoc();
         </div>
         <div class="res-tab">
             <h2 class="mota border-item-bottom ">Mô tả sản phẩm</h2>
-            <p><?php echo $product['description']; ?></p>
-            <img src="<?php echo $product['thumbnail']; ?>" alt="">
+            <p><?php echo $productDetails['description']; ?></p>
+            <img src="<?php echo $productDetails['thumbnail']; ?>" alt="">
         </div>
-
-        <script>
-            let amountElement = document.getElementById('amount');
-            let amount = amountElement.value;
-            //Handel Plus
-            let handelPlus = () => {
-                amount++;
-                amountElement.value = amount;
-            }
-            let handelMinus = () => {
-                if (amount > 1) {
-                    amount--;
-                    amountElement.value = amount;
-                }
-            }
-        </script>
         <!-- Footer -->
-        <?php include('footer.php'); ?>
+        <?php include_once('footer.php'); ?>
         <!-- End Footer -->
     </div>
+
+    <!-- Cart -->
+    <?php include("./cart.php"); ?>
+
 </body>
 
 </html>

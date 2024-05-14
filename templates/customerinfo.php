@@ -26,6 +26,7 @@
 
 	<!-- Js -->
 	<script src="../js/customerinfo.js" type="module"></script>
+	<script src="../js/cart.js" defer></script>
 </head>
 
 <body>
@@ -197,6 +198,8 @@
 	</div>
 
 	<?php include_once("./footer.php") ?>
+	<!-- Cart -->
+	<?php include_once("./cart.php"); ?>
 </body>
 
 </html>

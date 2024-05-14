@@ -13,9 +13,11 @@
 
     <!-- Css -->
     <link rel="stylesheet" href="../assets/css/signup.css">
+    <link rel="stylesheet" href="../assets/css/cart.css">
 
     <!-- Js -->
     <script src="../js/signup.js" type="module"></script>
+    <script src="../js/cart.js"></script>
 
     <title>Sign up</title>
 </head>
@@ -107,6 +109,9 @@
     </div>
 
     <?php include_once("../templates/footer.php") ?>
+
+    <!-- Cart -->
+    <?php include_once("./cart.php"); ?>
 </body>
 
 </html>

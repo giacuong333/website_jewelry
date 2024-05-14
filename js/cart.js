@@ -4,13 +4,22 @@ $(document).ready(function () {
     .unbind("click")
     .click(() => (window.location.href = "../templates/payment.php"));
 
-  $(".product-item")
-    .unbind("click")
+  $(".product-item .product-img, button[name='add_product_to_cart']")
+    .off("click")
     .click(function () {
-      const productid = $(this).data("productid");
+      let productid = null;
+      if ($(this).hasClass("product-img")) {
+        productid = $(this).closest(".product-item").data("productid");
+      } else if ($(this).attr("name") === "add_product_to_cart") {
+        productid = $(this).closest(".productdetail-item").data("productid");
+      }
 
-      handleAddProductToCart(productid);
-      sideEffectOfCart();
+      if (productid) {
+        handleAddProductToCart(productid);
+        sideEffectOfCart();
+      } else {
+        console.log("Product ID not found.");
+      }
     });
 
   $(".shoppingcart").unbind("click").click(sideEffectOfCart);
@@ -209,5 +218,111 @@ $(document).ready(function () {
 
   function updateQuantityOfCart(quantity) {
     $(".quantity").text(quantity);
+  }
+
+  // See the products in the cart
+  $(".shoppingcart")
+    .unbind("click")
+    .click(function () {
+      sideEffectOfCart();
+      seeCart();
+    });
+
+  function seeCart() {
+    $.ajax({
+      type: "GET",
+      data: {},
+      url: "../includes/seeProductInCart.inc.php",
+      success: function (response) {
+        if (response !== "none") {
+          const productList = Object.values(JSON.parse(response));
+          console.log(productList);
+          const productInCartObj = $(".product_in_cart");
+
+          if (productList) {
+            let totalOfOrder = 0;
+            let totalOfProducts = 0;
+
+            const html = productList
+              .map((product, index) => {
+                const totalPriceOfproduct = Number(product.customer_quantity) * Number(product.price);
+                totalOfOrder += totalPriceOfproduct;
+                totalOfProducts += Number(product.customer_quantity);
+
+                return `
+                <tr data-productid=${product.id} data-productindex="${index}">
+                  <td class="d-flex align-items-start">
+                      <img src="${product.thumbnail}" alt="" class="img-responsive border" style="width: 80px">
+                      <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
+                          <span style="font-size: 14px; font-weight: 600; color: #7fcbc9;" class="mb-2">${product.title}</span>
+                          <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer" class="remove-product"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
+                      </div>
+                  </td>
+                  <td class="text-center product-price" data-productprice="${product.price}" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${product.price}</td>
+                  <td class="text-center">
+                    <div>
+                        <button type="button" class="minus">-</button>
+                        <input type="number" name="quantity" value="${product.customer_quantity}">
+                        <button type="button" class="plus">+</button>
+                    </div>
+                  </td>
+                  <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${totalPriceOfproduct}</td>
+                </tr>
+            `;
+              })
+              .join("");
+
+            // Side effect
+            $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
+            $("#total_or_order").text(totalOfOrder);
+            $(".quantity").text(`${totalOfProducts}`);
+
+            productInCartObj.html(html);
+
+            // Set value for quantity
+            const plusBtn = $("button.plus");
+            const minusBtn = $("button.minus");
+            const quantityInput = $("input[name='quantity']");
+
+            plusBtn.unbind("click").click(function (event) {
+              event.preventDefault();
+              const quantityInput = $(this).siblings("input[name='quantity']");
+              const currentValue = Number(quantityInput.val()) || 1;
+              quantityInput.val(currentValue + 1);
+              updateTotalPrice($(this));
+
+              const productObj = $(this).closest("tr");
+              changeQuantity(productObj, quantityInput.val());
+            });
+
+            minusBtn.unbind("click").click(function (event) {
+              event.preventDefault();
+              const quantityInput = $(this).siblings("input[name='quantity']");
+              const currentValue = Number(quantityInput.val()) || 1;
+              quantityInput.val(currentValue - 1);
+              updateTotalPrice($(this));
+
+              const productObj = $(this).closest("tr");
+              changeQuantity(productObj, quantityInput.val());
+            });
+
+            quantityInput.on("input", function () {
+              updateTotalPrice($(this));
+
+              const productObj = $(this).closest("tr");
+              changeQuantity(productObj, quantityInput.val());
+            });
+
+            // remove product from the cart
+            productInCartObj.off("click", ".remove-product").on("click", ".remove-product", function () {
+              const productObj = $(this).closest("tr");
+              handleRemoveProduct(productObj);
+            });
+          } else {
+            handleCartEmpty(productList);
+          }
+        }
+      },
+    });
   }
 });

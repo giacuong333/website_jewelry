@@ -778,7 +778,7 @@ if (isset($_GET["show_img_upload_panel"])) {
             <div class="image-details__img-up" style="border: none;">
               <img src="" alt="">
             </div>
-            <button id="uploadgallery" class="btn- btn--hover" type="button">Upload</button>
+            <button id="uploadgallery" name="upload_img" value="upload_img" class="btn- btn--hover" type="submit">Upload</button>
           </form>
     </div>
   ';
@@ -827,9 +827,17 @@ if (isset($_POST["upload_img"])) {
       $is_uploaded = $admin->addGallery($image_title, $image_path);
 
       if ($is_uploaded) {
-        echo "success";
+        echo "
+          <script>alert('Add successfully')
+            window.location.href='../admin/gallerymanager.php'
+          </script>;
+        ";
       } else {
-        echo "failed";
+        echo "
+        <script>alert('Add failed')
+        window.location.href='../admin/gallerymanager.php'
+      </script>;
+        ";
       }
     }
   }

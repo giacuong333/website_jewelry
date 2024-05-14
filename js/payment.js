@@ -1,7 +1,7 @@
 import { isEmpty, isEmail, isPhoneNumber } from "./config.js";
 
 $(document).ready(function () {
-  function handleSubmitFeedback(e) {
+  function handleSubmitFeedback(event) {
     let isValid = true;
 
     // Check input fields before placing order
@@ -19,7 +19,7 @@ $(document).ready(function () {
     });
 
     if (isValid) {
-      $(e.target).attr("type", "submit").trigger("click");
+      $(event.target).attr("type", "submit").trigger("click");
     }
   }
 
@@ -31,11 +31,11 @@ $(document).ready(function () {
   // Handle events
   $("button[name='place-order']")
     .unbind("click")
-    .click(() => {
+    .click((event) => {
       const userId = $("input[name='userid']").data("userid");
 
       if (userId !== "none") {
-        handleSubmitFeedback();
+        handleSubmitFeedback(event);
       } else {
         alert("Log in to place the order");
       }

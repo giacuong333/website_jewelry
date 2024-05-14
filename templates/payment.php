@@ -28,19 +28,21 @@
 
       <?php
       session_start();
-      $productList = $_SESSION["cart"];
-      $totalOfOrder = 0;
-      foreach ($productList as $product) {
-            $totalOfOrder += (intval($product['customer_quantity']) * intval($product['price']));
-      }
-      $totalOfOrderHasFee = $totalOfOrder +  intval(40000);
+      if (isset($_SESSION["cart"])) {
+            $productList = $_SESSION["cart"];
+            $totalOfOrder = 0;
+            foreach ($productList as $product) {
+                  $totalOfOrder += (intval($product['customer_quantity']) * intval($product['price']));
+            }
+            $totalOfOrderHasFee = $totalOfOrder +  intval(40000);
 
-      // User info 
-      if (isset($_SESSION['id'], $_SESSION['fullname'], $_SESSION['email'], $_SESSION['phone_number'])) {
-            $userid = $_SESSION['id'];
-            $userFullName = $_SESSION['fullname'];
-            $userEmail =  $_SESSION['email'];
-            $userPhoneNumber = $_SESSION['phone_number'];
+            // User info 
+            if (isset($_SESSION['id'], $_SESSION['fullname'], $_SESSION['email'], $_SESSION['phone_number'])) {
+                  $userid = $_SESSION['id'];
+                  $userFullName = $_SESSION['fullname'];
+                  $userEmail =  $_SESSION['email'];
+                  $userPhoneNumber = $_SESSION['phone_number'];
+            }
       }
       ?>
 </head>
