@@ -7,7 +7,7 @@
 .main-bread-crumb {
   padding-top: 160px;
   padding-bottom: 20px;
-  margin-left: 180px;
+  margin-left: 160px;
 }
 
 /* Product View */
@@ -68,9 +68,8 @@
   margin-left: 10px;
 }
 
-.width-50{
+.width-50 {
   width: 50% !important;
-
 }
 
 .product-img {

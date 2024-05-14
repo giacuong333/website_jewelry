@@ -26,6 +26,7 @@ $(document).ready(function () {
           const productList = Object.values(JSON.parse(response));
           const productInCartObj = $(".product_in_cart");
           let totalOfOrder = 0;
+          let totalOfProducts = 0;
 
           const indexOfNewProduct = productList.findIndex((product) => productId === product.id);
           const titleOfNewProduct = productList[indexOfNewProduct].title;
@@ -33,6 +34,7 @@ $(document).ready(function () {
           const html = productList.map((product, index) => {
             const totalPriceOfproduct = Number(product.customer_quantity) * Number(product.price);
             totalOfOrder += totalPriceOfproduct;
+            totalOfProducts += Number(product.customer_quantity);
 
             return `
             <tr data-productid=${product.id} data-productindex="${index}">
@@ -68,7 +70,7 @@ $(document).ready(function () {
           $("#popuppanel__header_title > span").text(`${titleOfNewProduct}`);
           $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
           $("#total_or_order").text(totalOfOrder);
-          // $(".quantity").text(`${}`);
+          $(".quantity").text(`${totalOfProducts}`);
 
           productInCartObj.html(html.join(""));
 
@@ -183,15 +185,29 @@ $(document).ready(function () {
         if (customer_quantity == 0) {
           productObj.remove();
         }
+        let quantity = 0;
         const productList = Object.values(JSON.parse(response));
         const totalOfOrder = productList.reduce((total, product) => {
+          quantity += Number(product.customer_quantity);
           return total + Number(product.price) * Number(product.customer_quantity);
         }, 0);
 
         // Side effect
         $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${productList.length}) sản phẩm`);
         $("#total_or_order").text(totalOfOrder);
+        updateQuantityOfCart(quantity);
+        if (quantity === 0) {
+          handleCartEmpty(productList);
+        }
       },
     });
+  }
+
+  function handleCartEmpty(productList) {
+    $(".product_in_cart").html("<td colspan='4'>Không có sản phẩm nào trong giỏ hàng. Quay lại<a href='../templates/SanPham.php' style='color: #7fcbc9'>cửa hàng</a>để tiếp tục mua sắm.</td>");
+  }
+
+  function updateQuantityOfCart(quantity) {
+    $(".quantity").text(quantity);
   }
 });

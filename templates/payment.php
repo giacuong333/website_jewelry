@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="row pb-3 mb-3">
                                           <div class="back_to_cart d-flex justify-content-between align-items-center">
-                                                <a href="#" style="color: #7fcbc9;">Back to cart</a>
+                                                <a href="./SanPham.php" style="color: #7fcbc9;">Back to shop</a>
                                                 <button type="button" name="place-order" value="place-order" class="btn btn-primary" style="background-color: #7fcbc9; border: none; padding: 12px 16px;">PLACE ORDER</button>
                                           </div>
                                     </div>
