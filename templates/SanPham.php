@@ -274,6 +274,7 @@ $stmt->close();
 
                                 <div class="product-price">
                                     <?php
+<<<<<<< HEAD
                                     $discountPercent = isset($row['discount']) ? $row['discount'] : 0;
                                     $originalPrice = $row['price'];
                                     $discountAmount = ($originalPrice * $discountPercent) / 100;
@@ -288,6 +289,23 @@ $stmt->close();
                                         echo number_format($originalPrice) . "đ";
                                     }
                                     ?>
+=======
+    $discountPercent = isset($row['discount']) ? $row['discount'] : 0; 
+    $originalPrice = $row['price'] / (1 - $discountPercent / 100);
+    $finalPrice = $row['price'];
+
+    if ($discountPercent > 0) {
+        
+        
+        echo "<div style='color: #7fcbc9; font-size:large;'>" . number_format($finalPrice) . "đ</div>";
+        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray; font-size:small;' >" . number_format($originalPrice) . "đ</div>";
+        
+    } else {
+        // Nếu không có giảm giá, chỉ hiển thị giá gốc
+        echo number_format($originalPrice) . "đ";
+    }
+    ?>
+>>>>>>> 56f13320da2bd3dd854cf4a9df55cc6e49fa5bb8
                                 </div>
                             </div>
                         <?php
@@ -358,7 +376,7 @@ $stmt->close();
                                 </li>
                                 <li class="nav-item ">
                                     <i class="fa fa-caret-right"></i>
-                                    <a href="">Sản Phẩm</a>
+                                    <a href="SanPham.php">Sản Phẩm</a>
                                     <i class="fa fa-angle-down sub-btn"></i>
                                     <div class="sub-menu">
                                         <?php
@@ -448,6 +466,7 @@ $stmt->close();
                         <?php $conn->close(); ?>
                     </aside>
                 </form>
+<<<<<<< HEAD
                 <script>
                     // Select all checkboxes within the filter items
                     const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
@@ -470,6 +489,8 @@ $stmt->close();
                         });
                     });
                 </script>
+=======
+>>>>>>> 56f13320da2bd3dd854cf4a9df55cc6e49fa5bb8
             </aside>
 
         </div>
