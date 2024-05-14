@@ -12,6 +12,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $id = $_GET['data-productid'];
+
 // Tạo truy vấn SQL
 $sql = "SELECT * FROM product WHERE id = ?";
 // Chuẩn bị và thực thi truy vấn
