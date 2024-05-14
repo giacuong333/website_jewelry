@@ -11,7 +11,12 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+<<<<<<< HEAD
 $id = isset($_GET['data-productid']) ? $_GET['data-productid'] : "";
+=======
+$id = $_GET['data-productid'];
+
+>>>>>>> ae481cb787ea4baa24e584a24c83124539065313
 // Tạo truy vấn SQL
 $sql = "SELECT * FROM `product` WHERE id = ?";
 // Chuẩn bị và thực thi truy vấn

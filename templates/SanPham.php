@@ -112,7 +112,7 @@ foreach ($paramsFromUrl as $key => $value) {
 // Bây giờ $filters sẽ chứa tất cả các tham số lọc hiện tại cùng với bất kỳ tham số mới nào từ URL mà không cập nhật lại các giá trị hiện có
 
 // Loại bỏ tham số 'page'
-print_r($filters);
+
 $filter_query = http_build_query($filters); // Tạo chuỗi truy vấn từ các tham số lọc
 // Display pagination links
 for ($page = 1; $page <= $number_of_pages; $page++) {
@@ -144,8 +144,10 @@ $stmt->close();
     <!-- ICON -->
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
     <!-- JS -->
@@ -195,15 +197,20 @@ $stmt->close();
                             <div class="sort-product mb-4">
                                 <label for="sort" class="form-label"></label>
                                 <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                                    <option value="default" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
+                                    <option value="default"
+                                        <?php if (isset($_GET['sort']) && $_GET['sort'] == 'default') echo 'selected'; ?>>
                                         Mặc định</option>
-                                    <option value="price-asc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
+                                    <option value="price-asc"
+                                        <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-asc') echo 'selected'; ?>>
                                         Giá: Thấp đến Cao</option>
-                                    <option value="price-desc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
+                                    <option value="price-desc"
+                                        <?php if (isset($_GET['sort']) && $_GET['sort'] == 'price-desc') echo 'selected'; ?>>
                                         Giá: Cao đến Thấp</option>
-                                    <option value="name-asc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
+                                    <option value="name-asc"
+                                        <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-asc') echo 'selected'; ?>>
                                         Tên: A-Z</option>
-                                    <option value="name-desc" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
+                                    <option value="name-desc"
+                                        <?php if (isset($_GET['sort']) && $_GET['sort'] == 'name-desc') echo 'selected'; ?>>
                                         Tên: Z-A</option>
                                 </select>
                             </div>
@@ -224,7 +231,8 @@ $stmt->close();
                         <div class="search-pro">
                             <form action="SanPham.php" method="get">
                                 <div class="input-group mb-5 width-50">
-                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm" name="search" onchange="this.form.submit()">
+                                    <input type="text" class="form-control  " placeholder="Tìm kiếm sản phẩm"
+                                        name="search" onchange="this.form.submit()">
                                 </div>
                             </form>
                         </div>
@@ -239,6 +247,7 @@ $stmt->close();
 
                         ?>
 
+<<<<<<< HEAD
                             <div class="product-item" data-productquantity="<?php echo intval($row["quantity"]); ?>" data-productid="<?php echo $row["id"] ?>">
                                 <div class="product">
                                     <div class="product-img">
@@ -268,9 +277,45 @@ $stmt->close();
                                     <div class="product-name">
                                         <p class="big"><a href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
                                             </a></p>
+=======
+                        <div class="product-item" data-productid="<?php echo $row["id"] ?>">
+                            <div class="product">
+                                <div class="product-img">
+                                    <a href="#">
+                                        <img class="img-prd" src="<?php echo $row['thumbnail'] ?>" alt="anh san pham ">
+                                    </a>
+                                    <div class="cart-icon " data-quantity="<?php echo $row['quantity']; ?>"
+                                        style="<?php if ($row['quantity'] <= 0) {
+                                                                                                                            echo 'display: block;   pointer-events: none; opacity: 0.5;';
+                                                                                                                        }  ?>">
+                                        <?php if ($row['quantity'] <= 0) { ?>
+                                        <span class="out-of-stock">Hết Hàng</span>
+                                        <style>
+                                        .out-of-stock {
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);
+                                            font-size: medium;
+                                            color: #fff;
+                                            padding: 5px 10px;
+                                            border-radius: 5px;
+                                        }
+                                        </style>
+                                        <?php } else { ?>
+                                        <i class="fa fa-shopping-cart cart-icon-btn"></i>
+                                        <?php } ?>
+>>>>>>> ae481cb787ea4baa24e584a24c83124539065313
                                     </div>
                                 </div>
+                                <div class="product-name">
+                                    <p class="big"><a
+                                            href="productdetails.php?data-productid=<?php echo $row["id"]; ?>"><?php echo $row['title'] ?>
+                                        </a></p>
+                                </div>
+                            </div>
 
+<<<<<<< HEAD
                                 <div class="product-price">
                                     <?php
                                     $discountPercent = isset($row['discount']) ? $row['discount'] : 0;
@@ -288,7 +333,28 @@ $stmt->close();
                                     }
                                     ?>
                                 </div>
+=======
+
+                            <div class="product-price">
+                                <?php
+    $discountPercent = isset($row['discount']) ? $row['discount'] : 0; 
+    $originalPrice = $row['price'] / (1 - $discountPercent / 100);
+    $finalPrice = $row['price'];
+
+    if ($discountPercent > 0) {
+        
+        
+        echo "<div style='color: #7fcbc9; font-size:large;'>" . number_format($finalPrice) . "đ</div>";
+        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray; font-size:small;' >" . number_format($originalPrice) . "đ</div>";
+        
+    } else {
+        // Nếu không có giảm giá, chỉ hiển thị giá gốc
+        echo number_format($originalPrice) . "đ";
+    }
+    ?>
+>>>>>>> ae481cb787ea4baa24e584a24c83124539065313
                             </div>
+                        </div>
                         <?php
                         }
                         ?>
@@ -301,7 +367,7 @@ $stmt->close();
                     if (!isset($_GET["input-min"]) && !isset($_GET["input-max"])) {
                     ?>
 
-                        <?php
+                    <?php
                         echo '<nav aria-label="Page navigation example">';
                         echo '<ul class="pagination">';
                         if ($current_page > 1) {
@@ -393,12 +459,16 @@ $stmt->close();
                         <div class="price-input">
                             <div class="field">
 
-                                <input type="number" class="input-min" value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>" name="input-min">
+                                <input type="number" class="input-min"
+                                    value="<?php echo isset($_GET['input-min']) ? $_GET['input-min'] : "250000" ?>"
+                                    name="input-min">
                             </div>
                             <div class="separator">-</div>
                             <div class="field">
 
-                                <input type="number" class="input-max" value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>" name="input-max">
+                                <input type="number" class="input-max"
+                                    value="<?php echo isset($_GET['input-max']) ? $_GET['input-max'] : '750000'; ?>"
+                                    name="input-max">
                             </div>
                         </div>
                         <div class="slider">
@@ -410,7 +480,8 @@ $stmt->close();
                         </div>
                     </div>
                     <div class="btn-filter-price">
-                        <button class="btn btn-primary" name="filter-product" value="filter-product" type="submit">Lọc</button>
+                        <button class="btn btn-primary" name="filter-product" value="filter-product"
+                            type="submit">Lọc</button>
                     </div>
                 </form>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -447,6 +518,7 @@ $stmt->close();
                         <?php $conn->close(); ?>
                     </aside>
                 </form>
+<<<<<<< HEAD
                 <script>
                     // Select all checkboxes within the filter items
                     const checkboxes = document.querySelectorAll('.filter-item input[type="checkbox"]');
@@ -469,23 +541,119 @@ $stmt->close();
                         });
                     });
                 </script>
+=======
+>>>>>>> ae481cb787ea4baa24e584a24c83124539065313
             </aside>
 
         </div>
         <script>
-            $(document).ready(function() {
-                $('.sub-btn').click(function() {
-                    $(this).next('.sub-menu').slideToggle();
-                });
+        $(document).ready(function() {
+            $('.sub-btn').click(function() {
+                $(this).next('.sub-menu').slideToggle();
             });
+        });
         </script>
         <!-- Footer -->
         <?php include_once('./footer.php'); ?>
         <!-- End Footer -->
     </div>
 
+<<<<<<< HEAD
     <!-- Cart -->
     <?php include_once("./cart.php"); ?>
+=======
+    <?php
+    // session_start();
+    // unset($_SESSION["cart"]);
+    ?>
+
+    <!-- Minh Kha -->
+    <div class="overlay d-none"></div>
+    <div class="popupcart bg-white p-5 d-none">
+        <div class="popuppanel">
+            <div class="popuppanel__header mb-3">
+                <i class="fa-solid fa-check" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
+                <span id="popuppanel__header_title" style="font-weight: 900; font-size: 18px">Bạn đã thêm <span
+                        style="color: #7fcbc9;"></span> vào giỏ hàng</span>
+            </div>
+            <div class="popuppanel__subheader mb-2">
+                <i class="fa-solid fa-cart-shopping" style="color: #7fcbc9; font-weight: 900; font-size: 20px"></i>
+                <a href="./cart.php" id="popuppanel__subheader_cart"></a>
+            </div>
+            <div style="max-height: 250px; overflow-y: scroll;" class="mb-3">
+                <table class="popuppanel__table table border">
+                    <thead class="sticky-top">
+                        <tr style="background-color: #f7f7f7;">
+                            <th style="font-size: 14px;" class="border">SẢN PHẨM</th>
+                            <th style="font-size: 14px;" class="border text-center">ĐƠN GIÁ</th>
+                            <th style="font-size: 14px;" class="border text-center">SỐ LƯỢNG</th>
+                            <th style="font-size: 14px;" class="border text-center">THÀNH TIỀN</th>
+                        </tr>
+                    </thead>
+                    <tbody class="product_in_cart">
+                        <!-- <tr class="productid-1">
+                        <td class="d-flex align-items-start">
+                            <img src="../assets/imgs/Nhẫn vòng ADV.png" alt="" class="img-responsive border" style="width: 80px">
+                            <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
+                                <span style="font-size: 14px; font-weight: 600; color: #7fcbc9;" class="mb-2">Vòng tay cao cấp</span>
+                                <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">
+                            500.000đ
+                        </td>
+                        <td class="text-center">
+                            <div>
+                                <button type="button" class="minus">-</button>
+                                <input type="number" name="quantity" value="1">
+                                <button type="button" class="plus">+</button>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
+                    </tr>
+
+                    <tr class="productid-2">
+                        <td class="d-flex align-items-start">
+                            <img src="../assets/imgs/Nhẫn vòng ADV.png" alt="" class="img-responsive border" style="width: 80px">
+                            <div class="d-inline-flex flex-column justify-content-start align-items-start ms-2">
+                                <span style="font-size: 14px; font-weight: 600; color: #7fcbc9;" class="mb-2">Vòng tay cao cấp</span>
+                                <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
+                                <span style=" color: #898989; font-size: 14px"><i class="fa-solid fa-check me-1" style="color: #7fcbc9; font-weight: 900; font-size: 14px"></i>Sản phẩm vừa thêm!</span>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">
+                            500.000đ
+                        </td>
+                        <td class="text-center">
+                            <div>
+                                <button type="button" class="minus">-</button>
+                                <input type="number" name="quantity" value="1">
+                                <button type="button" class="plus">+</button>
+                            </div>
+                        </td>
+                        <td class="text-center" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">1.500.000đ</td>
+                    </tr> -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="popuppanel__bottom d-flex align-items-center justify-content-between">
+                <div class="popuppanel__bottom-left" style="font-size: 14px;">
+                    <p class="mb-0">Giao hàng trên toàn quốc</p>
+                    <a href="SanPham.php" style="font-size: 12px;">Tiếp tục mua hàng</a>
+                </div>
+                <div class="popuppanel__bottom-right">
+                    <p>Thành tiền: <span style="color: #7fcbc9; font-weight: 600" id="total_or_order"></span></p>
+                </div>
+            </div>
+
+            <button type="button" name="btn-placeorder" class="btn btn-primary rounded-0">TIẾN HÀNH ĐẶT HÀNG</button>
+
+            <!-- Close icon -->
+            <button type="button" class="fa-solid fa-close popupcart_close"></button>
+        </div>
+    </div>
+>>>>>>> ae481cb787ea4baa24e584a24c83124539065313
 </body>
 
 </html>
