@@ -36,9 +36,9 @@ if (isset($_SESSION["cart"])) {
                     <i class="fa-brands fa-google"></i>
                     <i class="fa-brands fa-square-instagram"></i>
                 </div>
-                <div class="top-middle">
+                <a href="./trangchu.php" class="top-middle d-block" style="text-decoration: none;">
                     <img src="../assets/imgs/brand/logo.png" alt="">
-                </div>
+                </a>
                 <div class="top-right">
                     <label for="userpanel" class="fa-solid fa-user"></label>
                     <input type="checkbox" name="" id="userpanel" style="display: none;">

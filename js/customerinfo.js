@@ -5,6 +5,11 @@ $(document).ready(function () {
   const btnGroup = $(".btns-group > .btn");
   const customerinfoContent = $(".customerinfo-content > div");
 
+  // Format vnd currency
+  function formatVndPrice(price) {
+    return price.toLocaleString("it-IT", { style: "currency", currency: "VND" });
+  }
+
   btnGroup.each(function () {
     $(this)
       .unbind("click")
@@ -146,13 +151,13 @@ $(document).ready(function () {
               <span class="ms-2">${order.title}</span>
             </td>
             <td class="text-center" style="vertical-align:middle;">
-              <p class="m-0">${order.orderdetail_price}</p>
+              <p class="m-0">${formatVndPrice(Number(order.orderdetail_price))}</p>
             </td>
             <td class="text-center" style="vertical-align:middle;">
               <p class="m-0">${order.num}</p>
             </td>
             <td class="text-center" style="vertical-align:middle;">
-              <p class="m-0">${order.total_money}</p>
+              <p class="m-0">${formatVndPrice(Number(order.total_money))}</p>
             </td>
           </tr>
             `;
@@ -173,14 +178,14 @@ $(document).ready(function () {
                     <span>Phí vận chuyển</span>
                   </td>
                   <td>
-                    <span>40.000 (Giao hàng tận nơi)</span>
+                    <span>40.000 VND(Giao hàng tận nơi)</span>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <span>Tổng tiền</span>
                   </td>
-                  <td>${value.ordertotal}</td>
+                  <td>${formatVndPrice(Number(value.ordertotal))}</td>
                 </tr>
               </tbody>
             </table>
@@ -220,7 +225,7 @@ $(document).ready(function () {
               </td>
               <td class="text-center">${value.order_date}</td>
               <td class="text-center">${value.address}</td>
-              <td class="text-center">${value.total_money}</td>
+              <td class="text-center">${formatVndPrice(Number(value.total_money))}</td>
               <td class="text-center">${value.status == 1 ? "Đang vận chuyển" : "Đang xử lý"}</td>
             </tr>
           `;

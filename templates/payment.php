@@ -39,16 +39,7 @@
             }
             $totalOfOrderHasFee = $totalOfOrder +  intval(40000);
             $vndTotalOfOrderHasFee = number_format($totalOfOrderHasFee, 0, '', ',') . ' VND';
-            $vndTotalOfOrder = number_format($totalOfOrderHasFee, 0, '', ',') . ' VND';
-
-
-            // User info 
-            if (isset($_SESSION['id'], $_SESSION['fullname'], $_SESSION['email'], $_SESSION['phone_number'])) {
-                  $userid = $_SESSION['id'];
-                  $userFullName = $_SESSION['fullname'];
-                  $userEmail =  $_SESSION['email'];
-                  $userPhoneNumber = $_SESSION['phone_number'];
-            }
+            $vndTotalOfOrder = number_format($totalOfOrder, 0, '', ',') . ' VND';
       }
       ?>
 </head>
@@ -69,32 +60,32 @@
                                                 <a href="../templates/login.php" style="color: #7fcbc9;"><i class="fa-solid fa-user"></i> Đăng nhập</a>
                                           </div>
                                           <div class="row">
-                                                <input type="text" hidden name="userid" value="<?php echo $userid; ?>">
-                                                <div class="form-group">
-                                                      <input type="email" name="email" class="form-control" placeholder="Email *" value="<?php echo isset($userEmail) ? $userEmail : ""; ?>">
+                                                <input type="text" hidden name="userid" value="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ""; ?>">
+                                                <div class="form-group ps-0">
+                                                      <input type="email" name="email" class="form-control" placeholder="Email *" value="<?php echo isset($_SESSION['useremail']) ? $_SESSION['useremail'] : ""; ?>">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
-                                                      <input type="text" name="fullname" class="form-control" placeholder="Full name *" value="<?php echo isset($userFullName) ? $userFullName : ""; ?>">
+                                                <div class="form-group ps-0">
+                                                      <input type="text" name="fullname" class="form-control" placeholder="Full name *" value="<?php echo  isset($_SESSION['fullname']) ? $_SESSION['fullname'] : ""; ?>">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
-                                                      <input type="text" name="phonenumber" class="form-control" placeholder="Phone number *" value="<?php echo isset($userPhoneNumber) ? $userPhoneNumber :  ""; ?>">
+                                                <div class="form-group ps-0">
+                                                      <input type="text" name="phonenumber" class="form-control" placeholder="Phone number *" value="<?php echo isset($_SESSION['phone_number']) ? $_SESSION['phone_number'] : ""; ?>">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group ps-0">
                                                       <input type="text" name="province" class="form-control" placeholder="Province *">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group ps-0">
                                                       <input type="text" name="district" class="form-control" placeholder="District *">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group ps-0">
                                                       <input type="text" name="address" class="form-control" placeholder="Address *">
                                                       <div class="error-message"></div>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group ps-0">
                                                       <textarea name="note" class="form-control" placeholder="Note (Optional)"></textarea>
                                                       <div class="error-message"></div>
                                                 </div>
@@ -130,10 +121,12 @@
                                           foreach ($productList as $product) {
                                           ?>
                                                 <div class="p-0 d-flex justify-content-between align-items-center mb-2" data-productid="<?php echo $product['id']; ?>">
-                                                      <div class="">
-                                                            <img src="<?php echo $product['thumbnail']; ?>" class="border rounded-3" alt="" width="50" height="50">
-                                                            <span><?php echo $product['title']; ?></span>
-                                                            <span>(<?php echo $product['customer_quantity']; ?>)</span>
+                                                      <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="me-1">
+                                                                  <img src="<?php echo $product['thumbnail']; ?>" class="border rounded-3" alt="" width="50" height="50">
+                                                                  <span>(<?php echo $product['customer_quantity']; ?>)</span>
+                                                            </div>
+                                                            <span style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; width: 150px; display: inline-block;"><?php echo $product['title']; ?></span>
                                                       </div>
                                                       <div class=""><?php echo  number_format($product['price'], 0, '', ',') . ' VND'; ?></div>
                                                 </div>
@@ -143,7 +136,7 @@
                                     </div>
                                     <div class="row pb-3 border-bottom mb-3">
                                           <input type="text" class="form-control" placeholder="Enter discount code" style="width: 68%" />
-                                          <button type="button" class="btn btn-primary p-2 mb-0 ms-auto" style="width: 30%; background-color: #7fcbc9; border: none;">Apply</button>
+                                          <button type="button" name="apply-discount-btn" class="btn btn-primary p-2 mb-0 ms-auto" style="width: 30%; background-color: #7fcbc9; border: none;">Apply</button>
                                     </div>
                                     <div class="row pb-3 border-bottom mb-3">
                                           <div class="calculate_temp d-flex justify-content-between align-items-center mb-1 text-muted">
@@ -152,7 +145,7 @@
                                           </div>
                                           <div class="delivery_fee d-flex justify-content-between align-items-center text-muted">
                                                 <span>Delivery fee</span>
-                                                <span>40.000 VND</span>
+                                                <span>40,000 VND</span>
                                           </div>
                                     </div>
                                     <div class="row">
