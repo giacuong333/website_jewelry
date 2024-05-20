@@ -32,7 +32,9 @@ $(document).ready(function () {
         const html = categoryList
           .map((item) => {
             return `
-            <li class="child-item dropdown-item" data-categoryid='${item.id}'>${item.name}</li>
+            <li class="child-item dropdown-item" data-categoryid='${item.id}'>
+              <a href="../templates/SanPham.php?category_id=${item.id}">${item.name}</a>
+            </li>
           `;
           })
           .join("");
