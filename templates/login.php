@@ -148,8 +148,6 @@
 
     <?php include_once("../templates/footer.php") ?>
 
-    <!-- Cart -->
-    <?php include_once("./cart.php"); ?>
 </body>
 
 </html>

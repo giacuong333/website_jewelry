@@ -64,38 +64,42 @@ $productDetails = $result->fetch_assoc();
         <!--Start Header-->
         <?php include_once('header.php'); ?>
         <!-- End Header -->
-        <!--Start bread-crumb -->
-        <div class="main-bread-crumb">
-            <?php
-            // Giả sử bạn có một mảng chứa các phần của breadcrumb
-            $breadcrumb_parts = [
-                ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
-                ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
-                ['name' => $productDetails['title'], 'url' => 'productdetails.php'],
 
-            ];
 
-            // Tạo một chuỗi HTML từ mảng này
-            $breadcrumb_html = array_map(function ($part) {
-                // Kiểm tra xem URL của phần này có phải là URL của trang hiện tại không
-                $is_current_page = (parse_url(str_replace('/website_jewelry/templates/', '', $_SERVER['REQUEST_URI']), PHP_URL_PATH) == $part['url']);
+        <div class="container" style="margin-top: 160px;">
+            <div class="row">
+                <!--Start bread-crumb -->
+                <div class="main-bread-crumb">
+                    <?php
+                    // Giả sử bạn có một mảng chứa các phần của breadcrumb
+                    $breadcrumb_parts = [
+                        ['name' => 'Trang chủ', 'url' => 'trangchu.php'],
+                        ['name' => 'Sản phẩm', 'url' => 'SanPham.php'],
+                        ['name' => $productDetails['title'], 'url' => 'productdetails.php'],
 
-                // Nếu đúng, thêm lớp 'current' vào phần tử này
-                $class = $is_current_page ? ' class="current"' : '';
+                    ];
 
-                return '<a href="' . $part['url'] . '"' . $class . '>' . $part['name'] . '</a>';
-            }, $breadcrumb_parts);
+                    // Tạo một chuỗi HTML từ mảng này
+                    $breadcrumb_html = array_map(function ($part) {
+                        // Kiểm tra xem URL của phần này có phải là URL của trang hiện tại không
+                        $is_current_page = (parse_url(str_replace('/website_jewelry/templates/', '', $_SERVER['REQUEST_URI']), PHP_URL_PATH) == $part['url']);
 
-            // Chuyển mảng thành chuỗi, phân tách bởi ' > '
-            $breadcrumb_html = implode(' > ', $breadcrumb_html);
+                        // Nếu đúng, thêm lớp 'current' vào phần tử này
+                        $class = $is_current_page ? ' class="current"' : '';
 
-            // Hiển thị breadcrumb
-            echo '<div class="breadcrumb">' . $breadcrumb_html . '</div>';
+                        return '<a href="' . $part['url'] . '"' . $class . '>' . $part['name'] . '</a>';
+                    }, $breadcrumb_parts);
 
-            ?>
-        </div>
-        <!-- End bread-crumb -->
-        <div class="container">
+                    // Chuyển mảng thành chuỗi, phân tách bởi ' > '
+                    $breadcrumb_html = implode(' > ', $breadcrumb_html);
+
+                    // Hiển thị breadcrumb
+                    echo '<div class="breadcrumb">' . $breadcrumb_html . '</div>';
+
+                    ?>
+                </div>
+                <!-- End bread-crumb -->
+            </div>
             <div class="row productdetail-item" data-productquantity="<?php echo $row["quantity"]; ?>" data-productid="<?php echo $productDetails["id"]; ?>">
                 <div class="col-md-6">
                     <div class="pro-image">
