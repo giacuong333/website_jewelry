@@ -27,7 +27,10 @@
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 
       <?php
-      session_start();
+      if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+      }
+
       if (isset($_SESSION["cart"])) {
             $productList = $_SESSION["cart"];
             $totalOfOrder = 0;
@@ -35,6 +38,9 @@
                   $totalOfOrder += (intval($product['customer_quantity']) * intval($product['price']));
             }
             $totalOfOrderHasFee = $totalOfOrder +  intval(40000);
+            $vndTotalOfOrderHasFee = number_format($totalOfOrderHasFee, 0, '', ',') . ' VND';
+            $vndTotalOfOrder = number_format($totalOfOrderHasFee, 0, '', ',') . ' VND';
+
 
             // User info 
             if (isset($_SESSION['id'], $_SESSION['fullname'], $_SESSION['email'], $_SESSION['phone_number'])) {
@@ -63,7 +69,7 @@
                                                 <a href="../templates/login.php" style="color: #7fcbc9;"><i class="fa-solid fa-user"></i> Đăng nhập</a>
                                           </div>
                                           <div class="row">
-                                                <input type="text" hidden name="userid" value="<?php echo $userId; ?>">
+                                                <input type="text" hidden name="userid" value="<?php echo $userid; ?>">
                                                 <div class="form-group">
                                                       <input type="email" name="email" class="form-control" placeholder="Email *" value="<?php echo isset($userEmail) ? $userEmail : ""; ?>">
                                                       <div class="error-message"></div>
@@ -99,7 +105,7 @@
                                                 <p style="font-size: 18px; font-weight: 600;" class="mb-2 p-0">Vận chuyển</p>
                                                 <div class="form-control p-3 d-flex align-items-center justify-content-between">
                                                       <span class="d-flex align-items-center"><input type="radio" checked style="width: 20px; height: 18px;" id="delivery" /><label for="delivery" class="ms-2">Delivery to your doorstep</label></span>
-                                                      <span>40000</span>
+                                                      <span>40.000 VND</span>
                                                 </div>
                                           </div>
 
@@ -129,7 +135,7 @@
                                                             <span><?php echo $product['title']; ?></span>
                                                             <span>(<?php echo $product['customer_quantity']; ?>)</span>
                                                       </div>
-                                                      <div class=""><?php echo $product['price']; ?></div>
+                                                      <div class=""><?php echo  number_format($product['price'], 0, '', ',') . ' VND'; ?></div>
                                                 </div>
                                           <?php
                                           }
@@ -142,17 +148,17 @@
                                     <div class="row pb-3 border-bottom mb-3">
                                           <div class="calculate_temp d-flex justify-content-between align-items-center mb-1 text-muted">
                                                 <span>Provisional</span>
-                                                <span><?php echo $totalOfOrder; ?></span>
+                                                <span><?php echo $vndTotalOfOrder; ?></span>
                                           </div>
                                           <div class="delivery_fee d-flex justify-content-between align-items-center text-muted">
                                                 <span>Delivery fee</span>
-                                                <span>40000</span>
+                                                <span>40.000 VND</span>
                                           </div>
                                     </div>
                                     <div class="row">
                                           <div class="total_order  d-flex justify-content-between align-items-center text-muted">
                                                 <span style="font-size: 18px;">Total</span>
-                                                <span style="color: #7fcbc9; font-size: 22px; font-weight: 600"><?php echo $totalOfOrderHasFee; ?></span>
+                                                <span style="color: #7fcbc9; font-size: 22px; font-weight: 600"><?php echo $vndTotalOfOrderHasFee; ?></span>
                                           </div>
                                     </div>
                                     <div class="row pb-3 mb-3">

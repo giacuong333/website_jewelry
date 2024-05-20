@@ -21,9 +21,32 @@ $(document).ready(function () {
     }
   }
 
+  function renderCategoryList() {
+    $.ajax({
+      type: "GET",
+      url: "../server/models/getcategory.s.php",
+      success: function (response) {
+        const categoryList = JSON.parse(response);
+        const categoryListObj = $("ul.child-list-items");
+
+        const html = categoryList
+          .map((item) => {
+            return `
+            <li class="child-item dropdown-item" data-categoryid='${item.id}'>${item.name}</li>
+          `;
+          })
+          .join("");
+
+        categoryListObj.html(html);
+      },
+    });
+  }
+
+  // Events
   $(window).scroll(handleScroll);
   $(window).resize(handleDropdownChild);
   $("li.item.dropdown")
     .unbind("click")
     .click(() => (window.location.href = "../templates/SanPham.php"));
+  $(window).onload = renderCategoryList();
 });

@@ -24,6 +24,11 @@ $(document).ready(function () {
 
   $(".shoppingcart").unbind("click").click(sideEffectOfCart);
 
+  // Format vnd currency
+  function formatVndPrice(price) {
+    return price.toLocaleString("it-IT", { style: "currency", currency: "VND" });
+  }
+
   function handleAddProductToCart(productId) {
     $.ajax({
       type: "POST",
@@ -62,7 +67,7 @@ $(document).ready(function () {
                       }
                   </div>
               </td>
-              <td class="text-center product-price" data-productprice="${product.price}" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${product.price}</td>
+              <td class="text-center product-price" data-productprice="${product.price}" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${formatVndPrice(Number(product.price))}</td>
               <td class="text-center">
                 <div>
                     <button type="button" class="minus">-</button>
@@ -73,7 +78,7 @@ $(document).ready(function () {
                       In stock: ${product.quantity}
                 </div>
               </td>
-              <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${totalPriceOfproduct}</td>
+              <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${formatVndPrice(Number(totalPriceOfproduct))}</td>
             </tr>
             `;
           });
@@ -81,7 +86,7 @@ $(document).ready(function () {
           // Side effect
           $("#popuppanel__header_title > span").text(`${titleOfNewProduct}`);
           $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${totalOfProducts}) sản phẩm`);
-          $("#total_or_order").text(totalOfOrder);
+          $("#total_or_order").text(formatVndPrice(Number(totalOfOrder)));
           $(".quantity").text(`${totalOfProducts}`);
 
           productInCartObj.html(html.join(""));
@@ -154,7 +159,7 @@ $(document).ready(function () {
       var quantityInput = button.siblings("input[name='quantity']");
     }
     const quantity = Number(quantityInput.val() || 1);
-    const totalPrice = pricePerUnit * quantity;
+    const totalPrice = formatVndPrice(Number(pricePerUnit * quantity));
 
     totalPriceCell.text(totalPrice);
   }
@@ -209,7 +214,7 @@ $(document).ready(function () {
 
         // Side effect
         $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${customer_quantity}) sản phẩm`);
-        $("#total_or_order").text(totalOfOrder);
+        $("#total_or_order").text(formatVndPrice(Number(totalOfOrder)));
         updateQuantityOfCart(quantity);
         if (quantity === 0) {
           handleCartEmpty(productList);
@@ -281,7 +286,7 @@ $(document).ready(function () {
                           <span style="font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer" class="remove-product"><i class="fa-solid fa-close me-1 mb-2" style="font-weight: 900; font-size: 14px"></i>Bỏ sản phẩm</span>
                       </div>
                   </td>
-                  <td class="text-center product-price" data-productprice="${product.price}" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${product.price}</td>
+                  <td class="text-center product-price" data-productprice="${product.price}" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${formatVndPrice(Number(product.price))}</td>
                   <td class="text-center">
                     <div>
                         <button type="button" class="minus">-</button>
@@ -292,7 +297,7 @@ $(document).ready(function () {
                       In stock: ${product.quantity}
                     </div>
                   </td>
-                  <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${totalPriceOfproduct}</td>
+                  <td class="text-center total-price" style="font-size: 14px; font-weight: 600; color: #7fcbc9;">${formatVndPrice(Number(totalPriceOfproduct))}</td>
                 </tr>
             `;
               })
@@ -300,7 +305,7 @@ $(document).ready(function () {
 
             // Side effect
             $("#popuppanel__subheader_cart").text(`Giỏ hàng của bạn (${totalOfProducts}) sản phẩm`);
-            $("#total_or_order").text(totalOfOrder);
+            $("#total_or_order").text(formatVndPrice(Number(totalOfOrder)));
             $(".quantity").text(`${totalOfProducts}`);
 
             productInCartObj.html(html);

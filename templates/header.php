@@ -88,10 +88,10 @@ if (isset($_SESSION["cart"])) {
                     <li class="item dropdown">
                         <a href="" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="openchildmenu" style="text-decoration: none;">SẢN PHẨM</a>
                         <ul class="child-list-items bg-white dropdown-menu py-0" aria-labelledby="openchildmenu">
-                            <li class="child-item dropdown-item">Nhẫn</li>
+                            <!-- <li class="child-item dropdown-item">Nhẫn</li>
                             <li class="child-item dropdown-item">Bông tai</li>
                             <li class="child-item dropdown-item">Dây chuyền</li>
-                            <li class="child-item dropdown-item">Trâm cài</li>
+                            <li class="child-item dropdown-item">Trâm cài</li> -->
                         </ul>
                     </li>
                     <li class="item">

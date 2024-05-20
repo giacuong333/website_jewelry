@@ -6,33 +6,60 @@ $(document).ready(function () {
     handleLogin();
   });
 
-  function handleLogin() {
-    const userEmail = $("#useremail").val().trim();
-    const userPassword = $("#password").val().trim();
-    const errorEmailMessage = $(".error-message")[0];
-    const errorPasswordMessage = $(".error-message")[1];
+  function handleValidLogin() {
+    let isValid = true;
 
-    if (!isEmpty(userEmail, errorEmailMessage)) return;
-    if (!isEmail(userEmail, errorEmailMessage)) return;
-    if (!isEmpty(userPassword, errorPasswordMessage)) return;
+    $(".middle .form-group").each(function () {
+      const inputField = $(this).find("input");
+      console.log(inputField);
+      const textareaField = $(this).find("textarea");
+      const error = $(this).find(".error-message");
 
-    $.ajax({
-      type: "POST",
-      url: "../includes/login.inc.php",
-      data: { useremail: userEmail, password: userPassword, login: "login" },
-      success: function (response) {
-        if (response == "1") {
-          window.location.href = "../admin/admin.php";
-        } else if (response == "2") {
-          window.location.href = "../templates/trangchu.php";
-        } else if (response == "usernotfound") {
-          $(errorEmailMessage).text("Tài khoản không tồn tại"); // Alert for account not found
-        } else if (response == "wrongpassword") {
-          $(errorPasswordMessage).text("Sai mật khẩu");
-        }
-      },
+      if (inputField.length && !isEmpty(inputField.val(), error)) {
+        isValid = false;
+      } else if (inputField.attr("type") === "email" && !isEmail(inputField.val(), error)) {
+        isValid = false;
+      } else if (inputField.attr("name") === "phonenumber" && !isPhoneNumber(inputField.val(), error)) {
+        isValid = false;
+      }
+
+      if (textareaField.length && !isEmpty(textareaField.val(), error)) {
+        isValid = false;
+      }
     });
+
+    return isValid;
   }
+
+  function handleLogin() {
+    let isValid = handleValidLogin();
+
+    if (isValid) {
+      const userEmail = $("#useremail");
+      const userPassword = $("#password");
+      const errorEmailMessage = userEmail.closest(".form-group").find(".error-message");
+      const errorPasswordMessage = userPassword.closest(".form-group").find(".error-message");
+
+      $.ajax({
+        type: "POST",
+        url: "../includes/login.inc.php",
+        data: { useremail: userEmail.val().trim(), password: userPassword.val().trim(), login: "login" },
+        success: function (response) {
+          if (response == "1") {
+            window.location.href = "../admin/admin.php";
+          } else if (response == "2") {
+            window.location.href = "../templates/trangchu.php";
+          } else if (response == "usernotfound") {
+            $(errorEmailMessage).text("Tài khoản không tồn tại"); // Alert for account not found
+          } else if (response == "wrongpassword") {
+            $(errorPasswordMessage).text("Sai mật khẩu");
+          }
+        },
+      });
+    }
+  }
+
+  // ========================================== GET PASSWORD VIA EMAIL
 
   // Sent pass code to email
   $("button[name='getformerpassword']").click(function (e) {

@@ -279,11 +279,11 @@ $stmt->close();
                                     if ($discountPercent > 0) {
 
 
-                                        echo "<div style='color: #7fcbc9; font-size:large;'>" . number_format($finalPrice) . "đ</div>";
-                                        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray; font-size:small;' >" . number_format($originalPrice) . "đ</div>";
+                                        echo "<div style='color: #7fcbc9; font-size:large;'>" . number_format($finalPrice) . " VND</div>";
+                                        echo "<div style='text-decoration: line-through; margin-left:5px; color:gray; font-size:small;' >" . number_format($originalPrice) . " VND</div>";
                                     } else {
                                         // Nếu không có giảm giá, chỉ hiển thị giá gốc
-                                        echo number_format($originalPrice) . "đ";
+                                        echo number_format($originalPrice) . " VND";
                                     }
                                     ?>
                                 </div>

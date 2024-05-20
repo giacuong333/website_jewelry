@@ -45,6 +45,7 @@ $productDetails = $result->fetch_assoc();
 
     <!-- JS -->
     <script src="../js/cart.js"></script>
+    <script src="../js/productdetail.js"></script>
     <style>
         .product-info {
             margin-left: 100px;
@@ -105,7 +106,7 @@ $productDetails = $result->fetch_assoc();
                     <div class="product-info">
                         <div class="border-item-bottom">
                             <h2 class="pro-name"><?php echo $productDetails['title']; ?></h2>
-                            <div class="pro-price margin-bottom-20"> <?php echo $productDetails['price'] . "đ"; ?> </div>
+                            <div class="pro-price margin-bottom-20"><?php echo $productDetails['price']; ?> </div>
                         </div>
                         <div class="pro-description border-item-bottom margin-bottom-20">
                             <p><?php echo $productDetails['description']; ?></p>

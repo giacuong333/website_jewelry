@@ -497,6 +497,10 @@ h4 {
 }
 .text-base {
   color: #141414;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 250px;
 }
 
 .big {
@@ -508,11 +512,11 @@ h4 {
   height: auto;
 }
 .unit-left {
-  width: 100%;
+  /* width: 100%; */
 }
 .unit-body {
   padding-left: 20px;
-  width: 100%;
+  /* width: 100%; */
 }
 .p > a {
   font-size: 14px;
@@ -524,7 +528,7 @@ h4 {
 
 .cell-product {
   flex-basis: 33.3333%;
-  max-width: 50%;
+  /* max-width: 33.3333%; */
 }
 
 .range-product {
@@ -538,7 +542,7 @@ h4 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 26px;
   width: 100%;
 }
 
