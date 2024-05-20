@@ -33,7 +33,7 @@
 
 	<div class="container customerinfo-wrap">
 		<div class="row">
-			<div class="header my-5">
+			<div class="header mb-2">
 				<a href="../templates/trangchu.php">Trang chủ</a> >
 				<span style="color: #7fcbc9; font-weight: 600;"> Thông tin khách hàng</span>
 			</div>
@@ -53,6 +53,7 @@
 						<button type="button" class="btn" data-customerinfo_address>Sổ địa chỉ (0)</button>
 					</div>
 				</div>
+
 				<div class="col-md-9 ps-md-5">
 					<h5 class="customerinfo-header" style="letter-spacing: 2px;">
 						THÔNG TIN TÀI KHOẢN
@@ -89,12 +90,12 @@
 							</div>
 							<div class="form-group">
 								<label for="newpwd" style="font-weight: 600;">Mật khẩu mới<span class="text-danger"> *</span></label>
-								<input type="password" id="newpwd" class=" w-50">
+								<input type="password" id="newpwd" class="w-50">
 								<div class="error-message"></div>
 							</div>
 							<div class="form-group">
 								<label for="verifypwd" style="font-weight: 600;">Xác nhận lại mật khẩu<span class="text-danger"> *</span></label>
-								<input type="password" id="verifypwd" class=" w-50">
+								<input type="password" id="verifypwd" class="w-50">
 								<div class="error-message"></div>
 							</div>
 							<button type="button" class="btn btn-outline-none resetpwd-btn" style="color: #fff; background-color: #7fcbc9;">Đặt lại mật khẩu</button>

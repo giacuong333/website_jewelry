@@ -1,5 +1,5 @@
 .customerinfo-wrap {
-  margin-top: 10rem;
+  margin-top: 160px;
 }
 
 .btns-group > button {
@@ -97,4 +97,10 @@ button[name="btn-placeorder"] {
 
 button[name="btn-placeorder"]:hover {
   border: 1px solid #000 !important;
+}
+
+button.resetpwd-btn:hover,
+.customerinfo_address > button:hover {
+  background-color: #000 !important;
+  color: #fff !important;
 }
