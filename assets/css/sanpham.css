@@ -307,8 +307,6 @@ input[type="range"]::-moz-range-thumb {
   text-align: left;
 }
 .pro-image {
-  width: 500px;
-  height: 500px;
   border: 1px solid #ccc;
 }
 .pro-name {
@@ -372,8 +370,6 @@ input[type="range"]::-moz-range-thumb {
   text-transform: uppercase;
 }
 .res-tab {
-  max-width: 1320px;
-  margin: 0px 140px;
   padding: 20px 24px;
 }
 

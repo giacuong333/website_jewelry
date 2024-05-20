@@ -100,14 +100,14 @@ $productDetails = $result->fetch_assoc();
                 </div>
                 <!-- End bread-crumb -->
             </div>
-            <div class="row productdetail-item" data-productquantity="<?php echo $row["quantity"]; ?>" data-productid="<?php echo $productDetails["id"]; ?>">
-                <div class="col-md-6">
+            <div class="row productdetail-item" data-productquantity="<?php echo $productDetails["quantity"]; ?>" data-productid="<?php echo $productDetails["id"]; ?>">
+                <div class="col-md-6 col-lg-16 col-12">
                     <div class="pro-image">
-                        <img src="<?php echo $productDetails['thumbnail']; ?>" alt="">
+                        <img class="img-responsive" style="object-fit: cover; object-position: center;" src="<?php echo $productDetails['thumbnail']; ?>" alt="">
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="product-info">
+                <div class="col-md-6 col-lg-16 col-12">
+                    <div class="product-info mt-lg-0 mt-md-0 m-0 mt-3">
                         <div class="border-item-bottom">
                             <h2 class="pro-name"><?php echo $productDetails['title']; ?></h2>
                             <div class="pro-price margin-bottom-20"><?php echo $productDetails['price']; ?> </div>
@@ -115,7 +115,7 @@ $productDetails = $result->fetch_assoc();
                         <div class="pro-description border-item-bottom margin-bottom-20">
                             <p><?php echo $productDetails['description']; ?></p>
                         </div>
-                        <div class="pro-quantity border-item-bottom ">
+                        <div class="pro-quantity d-block d-md-flex d-lg-flex border-item-bottom ">
                             <div class="pro-action ms-0 margin-bottom-20">
                                 <?php
                                 if (intval($productDetails['quantity']) <= 0) {
@@ -142,10 +142,10 @@ $productDetails = $result->fetch_assoc();
             </div>
 
         </div>
-        <div class="res-tab">
+        <div class="res-tab text-center w-100">
             <h2 class="mota border-item-bottom ">Mô tả sản phẩm</h2>
-            <p><?php echo $productDetails['description']; ?></p>
-            <img src="<?php echo $productDetails['thumbnail']; ?>" alt="">
+            <p class="text-center"><?php echo $productDetails['description']; ?></p>
+            <img class="img-responsive w-100" style="object-fit: cover; object-position: center;" src="<?php echo $productDetails['thumbnail']; ?>" alt="">
         </div>
         <!-- Footer -->
         <?php include_once('footer.php'); ?>
