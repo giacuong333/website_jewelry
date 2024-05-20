@@ -1,6 +1,8 @@
 <?php
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 
 include_once("../server/connection/connect.s.php");
 include_once("../server/models/adminmodel.s.php");
@@ -917,7 +919,9 @@ if (isset($_POST["addproduct"])) {
 
 // Save import products temporarily 
 if (isset($_POST["saveimportinvoice"])) {
-  session_start();
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
 
   $import_products = [];
 
@@ -1057,7 +1061,10 @@ if (isset($_POST["fromDate"]) && isset($_POST["toDate"]) && isset($_POST["search
 
 // 
 if (isset($_POST["exitnewimport"]) && isset($_SESSION["import_products"])) {
-  session_start();
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+
   unset($_SESSION["import_products"]);
 }
 

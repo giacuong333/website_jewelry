@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Chủ</title>
 
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/css/config.css">
     <link rel="stylesheet" href="../assets/css/sanpham.css">
@@ -23,10 +18,11 @@
 
     <!-- ICON -->
     <link rel="stylesheet" href="../assets/icons/css/all.min.css">
+
     <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    </script> -->
 </head>
 
 <body>
@@ -50,16 +46,16 @@
                 <!-- End Header -->
                 <!-- Banner -->
                 <div class="banner m-0" style="height: 470px;">
-                    <div class="banner-item">
-                        <img class="img-responsive w-100 h-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img1.jpg" alt="" />
+                    <div class="banner-item w-100">
+                        <img class="img-responsive w-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img1.jpg" alt="" />
 
                     </div>
-                    <div class="banner-item">
-                        <img class="img-responsive w-100 h-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img2.jpg" alt="" />
+                    <div class="banner-item w-100">
+                        <img class="img-responsive w-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img2.jpg" alt="" />
 
                     </div>
-                    <div class="banner-item">
-                        <img class="img-responsive w-100 h-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img3.jpg" alt="" />
+                    <div class="banner-item w-100">
+                        <img class="img-responsive w-100" style="object-fit:cover; object-position:center;" src="../assets/imgs/banner/img3.jpg" alt="" />
 
                     </div>
                 </div>
