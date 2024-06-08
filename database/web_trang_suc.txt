@@ -427,8 +427,7 @@ INSERT INTO `user` (`fullname`, `email`, `phone_number`, `password`, `role_id`) 
 ('Gia Cường', 'legiacuong789@gmail.com', '0948800917', '$2a$12$L4AwLzAJb662zW1CD/tpHOVRnFIYQbj2q8rd.fdTrOk9Ccq0S7H82', 1),
 ('Nhung Vy', 'vnhung@gmail.com', '0372352186', '$2a$12$PPskDJkYOV/7EYk.W0/DGeeho0l69iOa1heL7x/2aO27X4VgNpRMS', 3),
 ('Minh Cảnh', 'mcanh@gmail.com', '0914072076', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 2),
-('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3),
-('Kim Bạc', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 4);
+('Minh Lâm', 'malm@gmail.com', '0345511698', '$2a$12$vpRbjSQCAOpjP7lg0NOrmOs9vzPF67GTjrC1AddtCea60HtuWloJK', 3);
 
 INSERT INTO `order` (`fullname`, `email`, `phone_number`, `address`, `note`, `status`, `user_id`, `isDeleted`) VALUES
 ('Gia Cường', 'lgcuong@gmail.com', '0948800917', 'Tuy Hòa, Phú Yên', 'Che tên sản phẩm', 1, 1, 0),

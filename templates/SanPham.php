@@ -121,7 +121,7 @@ for ($page = 1; $page <= $number_of_pages; $page++) {
     echo '<a href="' . $link . '">' . $page . '</a> ';
 }
 
-$sql = "SELECT * FROM category";
+$sql = "SELECT * FROM `category`";
 $result = $conn->query($sql);
 
 // Close the statement

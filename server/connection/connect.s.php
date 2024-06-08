@@ -5,10 +5,6 @@ class Database
     private const PASSWORD = "";
     private const DTBNAME = "web_trang_suc";
 
-    public function __construct()
-    {
-    }
-
     public function connect()
     {
         try {

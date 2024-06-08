@@ -1,0 +1,14 @@
+Admin: 
+Email: legiacuong789@gmail.com
+Password: 123
+
+User:
+Email: vnhung@gmail.com
+Password: 456
+
+Employer:
+Email: mcanh@gmail.com
+Password: 789
+Email: malm@gmail.com
+Password: 456
+
