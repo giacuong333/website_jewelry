@@ -7,7 +7,8 @@ I. Technologies
   - Database
       + MySQL (Using trigger to automatically calculate price, quantity as well as other parts)
 II. Project description
-  - This website is dedicated to selling jewelry, built using the basic MVC model. The UI and UX, along with the website's operations, are designed to be user-friendly.III. Expectations in the future
+  - This website is dedicated to selling jewelry, built using the basic MVC model. The UI and UX, along with the website's operations, are designed to be user-friendly.
+III. Expectations in the future
   - Fix UI, UX, responsive of the admin section
   - Fix the statistic of the admin section
   - Fix the order of the admin section
