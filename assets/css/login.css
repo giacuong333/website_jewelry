@@ -28,11 +28,6 @@
   margin-bottom: 10px;
 }
 
-.top .loginby {
-  color: #fff;
-  font-size: 14px;
-}
-
 .top .loginby i {
   padding: 10px 16px;
 }
@@ -44,11 +39,18 @@
   font-size: 10px;
 }
 
-.top .loginby > i:first-child {
+.loginby > .loginby-social {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.top .loginby > .loginby-social:first-child {
   background-color: #3b5998;
 }
 
-.top .loginby > i:last-child {
+.top .loginby > .loginby-social:last-child {
   background-color: #e14b33;
 }
 

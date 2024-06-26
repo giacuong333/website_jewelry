@@ -37,8 +37,13 @@
                     <div class="top">
                         <h3>ĐĂNG NHẬP TÀI KHOẢN</h3>
                         <div class="loginby">
-                            <i class="fa-brands fa-facebook-f mb-md-0 mb-2 "><span>Facebook</span></i>
-                            <i class="fa-brands fa-google"><span>Google</span></i>
+                            <a href="../includes/loginbyfacebook.inc.php" class="loginby-social">
+                                <i class="fa-brands fa-facebook-f mb-md-0 mb-2"><span>Facebook</span></i>
+                            </a>
+                            <a href="../includes/loginbygoogle.inc.php" class="loginby-social">
+                                <i class="fa-brands fa-google"><span>Google</span></i>
+                            </a>
+
                         </div>
                         <p class="mt-4">Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
                     </div>
