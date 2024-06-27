@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once '../vendor/autoload.php';
 require_once '../server/connection/connect.s.php';
 
 use Dotenv\Dotenv;
@@ -40,11 +40,10 @@ if (isset($_GET['code'])) :
             $google_account_info = $google_oauth->userinfo->get();
             $email = $google_account_info->email;
             $name = $google_account_info->name;
-            $phoneNumber = $google_account_info->phone;
+            $phoneNumber = $google_account_info->phone ?? '';
 
             // Use this profile info to create or update account in your website
             $database = new Database();
-
             // Check if user already exists in your database
             $statement = $database->connect()->prepare("SELECT * FROM `user` WHERE email = ?");
             $statement->execute([$email]);
