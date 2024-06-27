@@ -43,7 +43,6 @@
                             <a href="../includes/loginbygoogle.inc.php" class="loginby-social">
                                 <i class="fa-brands fa-google"><span>Google</span></i>
                             </a>
-
                         </div>
                         <p class="mt-4">Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
                     </div>

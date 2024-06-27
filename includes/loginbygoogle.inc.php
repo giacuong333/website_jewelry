@@ -2,19 +2,22 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once '../server/connection/connect.s.php';
-require_once 'configcredentials.inc.php';
 
+use Dotenv\Dotenv;
 use Google\Client as Google_Client;
 use Google\Service\Oauth2 as Google_Service_Oauth2;
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE)
       session_start();
-}
+
+// Load environment variables
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 // Initialize configuration
-$clientID = $config['clientID'];
-$clientSecret = $config['clientSecret'];
-$redirectUri = $config['redirectUri'];
+$clientID = $_ENV['GOOGLE_CLIENT_ID'];
+$clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'];
+$redirectUri = $_ENV['GOOGLE_REDIRECT_URI'];
 
 // Create Google Client instance
 $client = new Google_Client();
@@ -26,7 +29,7 @@ $client->addScope("email");
 $client->addScope("profile");
 
 // Authenticate code from Google OAuth Flow
-if (isset($_GET['code'])) {
+if (isset($_GET['code'])) :
       try {
             // Exchange authorization code for access token
             $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
@@ -47,7 +50,7 @@ if (isset($_GET['code'])) {
             $statement->execute([$email]);
             $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if ($user) {
+            if ($user) :
                   // User exists, set session variables and redirect to homepage
                   $_SESSION["id"] = $user["id"];
                   $_SESSION["useremail"] = $user["email"];
@@ -56,7 +59,7 @@ if (isset($_GET['code'])) {
                   $_SESSION["role_id"] = $user["role_id"];
                   $user['role_id'] !== 3 ? header("Location: ../admin/admin.php") : header("Location: ../templates/trangchu.php");
                   exit();
-            } else {
+            else :
                   // User doesn't exist, insert new user into database
                   $statement = $database->connect()->prepare('INSERT INTO `user` (`fullname`, `email`, `phone_number`, `role_id`) VALUES (?, ?, ?, ?)');
                   $statement->execute([$name, $email, $phoneNumber, 3]);
@@ -74,14 +77,14 @@ if (isset($_GET['code'])) {
                   $_SESSION["role_id"] = $result["role_id"];
                   $user['role_id'] !== 3 ? header("Location: ../admin/admin.php") : header("Location: ../templates/trangchu.php");
                   exit();
-            }
+            endif;
       } catch (Exception $e) {
             // Handle any errors that occur during OAuth or database operations
             echo 'Caught exception: ' . $e->getMessage();
       }
-} else {
+else :
       // Redirect to Google OAuth login
       $authUrl = $client->createAuthUrl();
       header("Location: $authUrl");
       exit();
-}
+endif;
